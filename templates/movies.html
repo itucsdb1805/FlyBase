@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Movie list{% endblock %}
+{% block content %}
+    <h1 class="title">Movies</h1>
+
+    {% if movies %}
+    <table class="table is-striped is-fullwidth">
+      {% for movie_key, movie in movies %}
+      <tr>
+        <td>
+          <a href="{{ url_for('movie_page', movie_key=movie_key) }}">
+            {{ movie.title }}
+            {% if movie.year %} ({{ movie.year }}) {% endif %}
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+
+{% endblock %}
