@@ -19,10 +19,10 @@ def create_app():
     db.add_movie(Movie("The Shining"))
     appp.config["db"] = db
 
-    return app
+    return appp
 
 
 if __name__ == "__main__":
     appp = create_app()
-    port = app.config.get("PORT", 5000)
+    port = appp.config.get("PORT", 5000)
     appp.run(host="0.0.0.0", port=port)
