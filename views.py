@@ -1,6 +1,5 @@
 from datetime import datetime
-from flask import abort, render_template
-from flask import current_app as application
+from flask import abort, current_app, render_template
 
 def home_page():
     today = datetime.today()
