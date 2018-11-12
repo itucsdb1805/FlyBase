@@ -73,8 +73,8 @@ INIT_STATEMENTS = [
 """ CREATE TABLE IF NOT EXISTS FLIGHTS(
         flight_id serial PRIMARY KEY,
         airline_id integer NOT NULL REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
-        aircraft_id integer NOT NULL REFERENCES AIRLINES(aircraft_id) ON DELETE RESTRICT,
-        route_id integer NOT NULL REFERENCES AIRLINES(route_id) ON DELETE RESTRICT,
+        aircraft_id integer NOT NULL REFERENCES AIRCRAFTS(aircraft_id) ON DELETE RESTRICT,
+        route_id integer NOT NULL REFERENCES ROUTES(route_id) ON DELETE RESTRICT,
         flight_date varchar(10) NOT NULL,
         flight_airport varchar(15) NOT NULL
         );""",
