@@ -9,6 +9,33 @@ INIT_STATEMENTS = [
         country_id serial PRIMARY KEY,
         country_name varchar(50) NOT NULL
         );""",
+        
+""" CREATE TABLE IF NOT EXISTS AIRLINES(
+        airline_id serial PRIMARY KEY,
+        airline_name varchar(50) NOT NULL
+        );""",
+ 
+" INSERT INTO AIRLINES(airline_name) VALUES ('Lufthansa'); ",
+" INSERT INTO AIRLINES(airline_name) VALUES ('Turk Hava Yollari'); ",
+" INSERT INTO AIRLINES(airline_name) VALUES ('Air France'); ",
+        
+""" CREATE TABLE IF NOT EXISTS AIRCRAFTS(
+        aircraft_id serial PRIMARY KEY,
+        aircraft_name varchar(50) NOT NULL
+        );""",
+       
+" INSERT INTO AIRCRAFTS(aircraft_name) VALUES ('Boeing 747'); ",
+" INSERT INTO AIRCRAFTS(aircraft_name) VALUES ('Airbus A320'); ",
+" INSERT INTO AIRCRAFTS(aircraft_name) VALUES ('Boeing 767'); ",
+      
+""" CREATE TABLE IF NOT EXISTS ROUTES(
+        route_id serial PRIMARY KEY,
+        route_name varchar(50) NOT NULL
+        );""",
+
+" INSERT INTO ROUTES(route_name) VALUES ('ISTESB'); ",
+" INSERT INTO ROUTES(route_name) VALUES ('ISTLON'); ",
+" INSERT INTO ROUTES(route_name) VALUES ('LONCDG'); ",        
 
 """ CREATE TABLE IF NOT EXISTS PASSENGERS(
         passenger_id serial PRIMARY KEY,
@@ -34,23 +61,37 @@ INIT_STATEMENTS = [
         birth_date date NOT NULL,
         country_id integer NOT NULL ,
         flight_hours integer DEFAULT 0,
-        --airline_id integer NOT NULL REFERENCES AIRLINES(airline_ID) ON DELETE RESTRICT,
+        airline_id integer NOT NULL REFERENCES AIRLINES(airline_ID) ON DELETE RESTRICT,
         job  varchar(15) NOT NULL
             CHECK (job IN ( 'pilot' , 'hostess' , 'other' ) ),
         photo varchar(50) DEFAULT './photos/default.jpg',
         FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
         );""",
 
+--""" CREATE TABLE IF NOT EXISTS FLIGHTS(
+--      flight_id serial PRIMARY KEY,
+--        airline_id integer NOT NULL REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
+--        aircraft_id integer NOT NULL REFERENCES AIRLINES(aircraft_id) ON DELETE RESTRICT,
+--        route_id integer NOT NULL REFERENCES AIRLINES(route_id) ON DELETE RESTRICT,
+--        departure timestamp,
+--        arrival timestamp,
+--        passenger_count integer DEFAULT 0,
+--        fuel_required decimal DEFAULT 0.0
+--        );""",
+        
+        
 """ CREATE TABLE IF NOT EXISTS FLIGHTS(
         flight_id serial PRIMARY KEY,
-        --airline_id integer NOT NULL REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
-        --aircraft_id integer NOT NULL REFERENCES AIRLINES(aircraft_id) ON DELETE RESTRICT,
-        --route_id integer NOT NULL REFERENCES AIRLINES(route_id) ON DELETE RESTRICT,
-        departure timestamp,
-        arrival timestamp,
-        passenger_count integer DEFAULT 0,
-        fuel_required decimal DEFAULT 0.0
-        );"""
+        airline_id integer NOT NULL REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
+        aircraft_id integer NOT NULL REFERENCES AIRLINES(aircraft_id) ON DELETE RESTRICT,
+        route_id integer NOT NULL REFERENCES AIRLINES(route_id) ON DELETE RESTRICT,
+        flight_date varchar(10) NOT NULL,
+        flight_airport varchar(15) NOT NULL
+        );""",
+        
+" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (1, 1, 1, '28-09-2018', 'Istanbul Ataturk'); ",
+" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (2, 1, 2, '28-09-2018', 'Istanbul Ataturk'); ",
+" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (3, 2, 3, '28-09-2018', 'London Heatrow'); ",
 
 """ CREATE TABLE IF NOT EXISTS WORKERS_PER_FLIGHT(
         flight_id integer NOT NULL,
