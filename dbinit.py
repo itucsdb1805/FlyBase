@@ -67,17 +67,7 @@ INIT_STATEMENTS = [
         photo varchar(50) DEFAULT './photos/default.jpg',
         FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
         );""",
-
---""" CREATE TABLE IF NOT EXISTS FLIGHTS(
---      flight_id serial PRIMARY KEY,
---        airline_id integer NOT NULL REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
---        aircraft_id integer NOT NULL REFERENCES AIRLINES(aircraft_id) ON DELETE RESTRICT,
---        route_id integer NOT NULL REFERENCES AIRLINES(route_id) ON DELETE RESTRICT,
---        departure timestamp,
---        arrival timestamp,
---        passenger_count integer DEFAULT 0,
---        fuel_required decimal DEFAULT 0.0
---        );""",
+        
         
         
 """ CREATE TABLE IF NOT EXISTS FLIGHTS(
