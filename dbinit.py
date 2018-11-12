@@ -79,9 +79,9 @@ INIT_STATEMENTS = [
         flight_airport varchar(15) NOT NULL
         );""",
         
-" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (1, 1, 1, '28-09-2018', 'Istanbul Ataturk'); ",
-" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (2, 1, 2, '28-09-2018', 'Istanbul Ataturk'); ",
-" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (3, 2, 3, '28-09-2018', 'London Heatrow'); ",
+--" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (1, 1, 1, '28-09-2018', 'Istanbul Ataturk'); ",
+--" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (2, 1, 2, '28-09-2018', 'Istanbul Ataturk'); ",
+--" INSERT INTO FLIGHTS(airline_id, aircraft_id, route_id, flight_date, flight_airport) VALUES (3, 2, 3, '28-09-2018', 'London Heatrow'); ",
 
 """ CREATE TABLE IF NOT EXISTS WORKERS_PER_FLIGHT(
         flight_id integer NOT NULL,
