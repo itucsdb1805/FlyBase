@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Flight list{% endblock %}
+{% block content %}
+    <h1 class="title">Flights</h1>
+
+    {% if flights %}
+    <table class="table is-striped is-fullwidth">
+      {% for flight_key, flight in flights %}
+      <tr>
+        <td>
+          <a href="{{ url_for('flight_page', flight_key=flight_key) }}">
+            {{ flight.title }}
+            {% if flight.date %} ({{ flight.date }}) {% endif %}
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+
+{% endblock %}

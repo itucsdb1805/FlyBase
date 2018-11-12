@@ -2,7 +2,7 @@ from flask import Flask
 
 import views
 from database import Database
-from movie import Movie
+from flight import Flight
 
 
 def create_app():
@@ -10,18 +10,19 @@ def create_app():
     app.config.from_object("settings")
 
     app.add_url_rule("/", view_func=views.home_page)
-    app.add_url_rule("/movies", view_func=views.movies_page)
-    app.add_url_rule("/movies/<int:movie_key>", view_func=views.movie_page)
+    app.add_url_rule("/flights", view_func=views.flights_page)
+    app.add_url_rule("/flights/<int:flight_key>", view_func=views.flight_page)
 
     db = Database()
-    db.add_movie(Movie("Slaughterhouse-Five", year=1972))
-    db.add_movie(Movie("The Shining"))
+    db.add_flight(Flight("IST-ESB", date="10-10-2018", airport="IST"))
+    db.add_flight(Flight("IST-LON", date="09-10-2018", airport="IST"))
     app.config["db"] = db
 
     return app
 
 
 app = create_app()
+
 
 if __name__ == "__main__":
     port = app.config.get("PORT", 5000)

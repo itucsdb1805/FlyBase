@@ -1,30 +1,30 @@
-from movie import Movie
+from flight import Flight
 
 
 class Database:
     def __init__(self):
-        self.movies = {}
-        self._last_movie_key = 0
+        self.flights = {}
+        self._last_flight_key = 0
 
-    def add_movie(self, movie):
-        self._last_movie_key += 1
-        self.movies[self._last_movie_key] = movie
-        return self._last_movie_key
+    def add_flight(self, flight):
+        self._last_flight_key += 1
+        self.flights[self._last_flight_key] = flight
+        return self._last_flight_key
 
-    def delete_movie(self, movie_key):
-        if movie_key in self.movies:
-            del self.movies[movie_key]
+    def delete_flight(self, flight_key):
+        if flight_key in self.flights:
+            del self.flights[flight_key]
 
-    def get_movie(self, movie_key):
-        movie = self.movies.get(movie_key)
-        if movie is None:
+    def get_flight(self, flight_key):
+        flight = self.flights.get(flight_key)
+        if flight is None:
             return None
-        movie_ = Movie(movie.title, year=movie.year)
-        return movie_
+        flight_ = Flight(flight.title, date=flight.date, airport=flight.airport)
+        return flight_
 
-    def get_movies(self):
-        movies = []
-        for movie_key, movie in self.movies.items():
-            movie_ = Movie(movie.title, year=movie.year)
-            movies.append((movie_key, movie_))
-        return movies
+    def get_flights(self):
+        flights = []
+        for flight_key, flight in self.flights.items():
+            flight_ = Flight(flight.title, date=flight.date, airport=flight.airport)
+            flights.append((flight_key, flight_))
+        return flights

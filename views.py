@@ -6,14 +6,14 @@ def home_page():
     day_name = today.strftime("%A")
     return render_template("home.html", day=day_name)
 
-def movies_page():
+def flights_page():
     db = current_app.config["db"]
-    movies = db.get_movies()
-    return render_template("movies.html", movies=sorted(movies))
+    flights = db.get_flights()
+    return render_template("flights.html", flights=sorted(flights))
 
-def movie_page(movie_key):
+def flight_page(flight_key):
     db = current_app.config["db"]
-    movie = db.get_movie(movie_key)
-    if movie is None:
+    flight = db.get_flight(flight_key)
+    if flight is None:
         abort(404)
-    return render_template("movie.html", movie=movie)
+    return render_template("flight.html", flight=flight)
