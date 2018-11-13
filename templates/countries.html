@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Country list{% endblock %}
+{% block content %}
+    <h1 class="title">Countries</h1>
+
+    {% if data %}
+    <table class="table is-striped is-fullwidth">
+      {% for country_id, country_name in data %}
+      <tr>
+        <td>
+            {{data[0]}}
+            {{ data.country_id }}
+            {{ data.country_name }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+
+{% endblock %}
