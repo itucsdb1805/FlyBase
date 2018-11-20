@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block title %}Passenger Adding{% endblock %}
+{% block content %}
+    <h1 class="title">Book a flight</h1><br/>
+
+    <form action="" method="post" name="passenger_adding">
+      <div class="field">
+        <label for="name" class="label">Name</label>
+        <div class="control">
+          <input type="text" name="name" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="surname" class="label">Surname</label>
+        <div class="control">
+          <input type="text" name="surname" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="country" class="label">Country</label>
+        <div class="control">
+          <input type="text" name="country" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="phone" class="label">Phone No</label>
+        <div class="control">
+          <input type="text" name="phone" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="airline" class="label">Airline</label>
+        <div class="control">
+          <input type="text" name="airline" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="departure" class="label">Departure</label>
+        <div class="control">
+          <input type="text" name="departure" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="arrival" class="label">Arrival</label>
+        <div class="control">
+          <input type="text" name="arrival" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="date" class="label">Date</label>
+        <div class="control">
+          <input type="text" name="date" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="payment" class="label">Payment Type</label>
+        <div class="control">
+          <input type="text" name="payment" class="input" required="required"/>
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-small">Save</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}
