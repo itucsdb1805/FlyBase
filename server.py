@@ -19,6 +19,7 @@ def create_app():
         "/add_country", view_func=views.add_page, methods=["GET", "POST"]
     )
     app.add_url_rule("/countries", view_func=views.countries_page)
+    # app.add_url_rule("/add-passenger", view_func=views.passenger_add_page, methods=["GET", "POST"])
 
     db = Database()
     db.add_flight(Flight("IST-ESB", date="10-10-2018", airport="IST"))
