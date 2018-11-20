@@ -53,7 +53,7 @@ def countries_page():
         connection = dbapi2.connect(dsn)
         cursor = connection.cursor()
         cursor.execute(statement)
-        data = curser.fetchall()
+        data = cursor.fetchall()
         for country_id, country_name in cursor:
             print('%(id)s: %(nm)s' % {'id': country_id, 'nm': country_name})
         cursor.close()
