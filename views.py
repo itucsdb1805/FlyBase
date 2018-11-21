@@ -63,4 +63,25 @@ def countries_page():
     finally:
   
         return render_template("countries.html", data=sorted(data))
+
+
+# def passenger_add_page():
+    # if request.method == "GET":
+        # return render_template("passenger_adding.html")
+
+    # else:
+        # form_name = request.form["name"]
+        # form_surname = request.form["surname"]
+        # form_country = request.form["country"]
+        # form_phone = request.form["phone"]
+        # form_airline = request.form["airline"]
+        # form_departure = request.form["departure"]
+        # form_arrival = request.form["arrival"]
+        # form_date = request.form["date"]
+        # form_payment = request.form["payment"]
+
+        
+        # db = current_app.config["db"]
+        
+        # return redirect(url_for("", ))
     
