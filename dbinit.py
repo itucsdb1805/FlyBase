@@ -1,6 +1,5 @@
 import os
 import sys
-
 import psycopg2 as dbapi2
 
 INIT_STATEMENTS = [
@@ -9,32 +8,28 @@ INIT_STATEMENTS = [
             country_name varchar(50) NOT NULL
             );""",
 
+
+
     """ CREATE TABLE IF NOT EXISTS AIRLINES(
             airline_id serial PRIMARY KEY,
             airline_name varchar(50) NOT NULL
             );""",
 
-    " INSERT INTO AIRLINES(airline_name) VALUES ('Lufthansa'); ",
-    " INSERT INTO AIRLINES(airline_name) VALUES ('Turk Hava Yollari'); ",
-    " INSERT INTO AIRLINES(airline_name) VALUES ('Air France'); ",
+
 
     """ CREATE TABLE IF NOT EXISTS AIRCRAFTS(
             aircraft_id serial PRIMARY KEY,
             aircraft_name varchar(50) NOT NULL
             );""",
 
-    " INSERT INTO AIRCRAFTS(aircraft_name) VALUES ('Boeing 747'); ",
-    " INSERT INTO AIRCRAFTS(aircraft_name) VALUES ('Airbus A320'); ",
-    " INSERT INTO AIRCRAFTS(aircraft_name) VALUES ('Boeing 767'); ",
+
 
     """ CREATE TABLE IF NOT EXISTS ROUTES(
             route_id serial PRIMARY KEY,
             route_name varchar(50) NOT NULL
             );""",
 
-    " INSERT INTO ROUTES(route_name) VALUES ('ISTESB'); ",
-    " INSERT INTO ROUTES(route_name) VALUES ('ISTLON'); ",
-    " INSERT INTO ROUTES(route_name) VALUES ('LONCDG'); ",
+
 
     """ CREATE TABLE IF NOT EXISTS PASSENGERS(
             passenger_id serial PRIMARY KEY,
@@ -88,6 +83,18 @@ INIT_STATEMENTS = [
 
 ]
 
+INIT_STATEMENTS2 = [
+
+    " DROP TABLE FLIGHTS ",
+    " DROP TABLE AIRLINE_WORKERS ",
+    " DROP TABLE PASSENGERS ",
+    " DROP TABLE ROUTES ",
+    " DROP TABLE AIRCRAFTS ",
+    " DROP TABLE AIRLINES ",
+    " DROP TABLE COUNTRIES "
+    " DROP TABLE WORKERS_PER_FLIGHT "
+]
+
 
 def initialize(url):
     with dbapi2.connect(url) as connection:
@@ -98,7 +105,7 @@ def initialize(url):
 
 
 if __name__ == "__main__":
-    url = "postgres://itucs:itucspw@localhost:32768/itucsdb"  # os.getenv("DATABASE_URL")
+    url = "postgres://itucs:itucspw@localhost:32769/itucsdb"  # os.getenv("DATABASE_URL")
     print(url)
     if url is None:
         print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)

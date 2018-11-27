@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from sqlite3 import dbapi2
+import psycopg2 as dbapi2
 
 from flask import abort, current_app, render_template
 from flask import request
@@ -39,7 +39,7 @@ def add_page():
         form_name = request.form["name"]
 
         try:
-            url = "postgres://itucs:itucspw@localhost:32768/itucsdb"
+            url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
             connection = dbapi2.connect(url)
             cursor = connection.cursor()
             if (form_name):
@@ -64,7 +64,7 @@ def countries_page():
     data = ""
     try:
 
-        url = "postgres://itucs:itucspw@localhost:32768/itucsdb"
+        url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
         connection = dbapi2.connect(url)
         cursor = connection.cursor()
 
@@ -73,7 +73,7 @@ def countries_page():
 
         data = cursor.fetchall()
         print(data)
-        for country_id, country_name in cursor:
+        for country_id, country_name in data:
             print('%(id)s: %(nm)s' % {'id': country_id, 'nm': country_name})
         cursor.close()
         connection.close()
