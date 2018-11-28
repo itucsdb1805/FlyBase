@@ -1,12 +1,17 @@
 import os
 from datetime import datetime
+from passlib.hash import pbkdf2_sha256 as hasher
 import psycopg2 as dbapi2
 
-from flask import abort, current_app, render_template
+from flask import abort, current_app, render_template, flash
 from flask import request
 from flask import redirect
 from flask import url_for
+from flask_login import login_required, current_user, login_user, logout_user
 from psycopg2.tests import dsn
+
+from forms import LoginForm
+from user import get_user
 
 
 def home_page():
@@ -14,21 +19,14 @@ def home_page():
     day_name = today.strftime("%A")
     return render_template("home.html", day=day_name)
 
-def flights_page():
-    db = current_app.config["db"]
-    flights = db.get_flights()
-    return render_template("flights.html", flights=sorted(flights))
-
-def flight_page(flight_key):
-    db = current_app.config["db"]
-    flight = db.get_flight(flight_key)
-    if flight is None:
-        abort(404)
-    return render_template("flight.html", flight=flight)
 
 
 
+@login_required
 def add_page():
+    if not current_user.is_admin:
+        abort(401)
+
     statement = """INSERT INTO COUNTRIES (country_name)
         VALUES (%(name)s)"""
 
@@ -57,11 +55,16 @@ def add_page():
         finally:
             return redirect(url_for("countries_page"))
 
+@login_required
 def countries_page():
 
     statement = """SELECT country_id, country_name
         FROM COUNTRIES"""
     data = ""
+
+    if request.method == "GET":
+        return render_template("countries.html")
+
     try:
 
         url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
@@ -85,3 +88,24 @@ def countries_page():
     finally:
         return render_template("countries.html", data=sorted(data))
     
+def login_page():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.data["username"]
+        user = get_user(username)
+        if user is not None:
+            password = form.data["password"]
+            if hasher.verify(password, user.password):
+                login_user(user)
+                flash("You have logged in.")
+                next_page = request.args.get("next", url_for("home_page"))
+                return redirect(next_page)
+        flash("Invalid credentials.")
+    return render_template("login.html", form=form)
+
+
+def logout_page():
+    logout_user()
+    flash("You have logged out.")
+    return redirect(url_for("home_page"))

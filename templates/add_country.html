@@ -5,7 +5,7 @@
 
     <form action="" method="post" name="Country add">
       <div class="field">
-        <label for="name" class="label">Title</label>
+        <label for="name" class="label">Country Info</label>
         <div class="control">
           <input type="text" name="name" class="input" required="required"/>
         </div>
@@ -15,6 +15,12 @@
         <div class="control">
           <button class="button is-primary is-small">Save</button>
         </div>
+
+      </div>
+    </form>
+    <form action="" method="get" name="Country see">
+      <div class="control">
+        <a class="button is-primary is-small" href="{{ url_for('countries_page')}}" style="margin-top: 0.3cm">See All</a>
       </div>
     </form>
 {% endblock %}

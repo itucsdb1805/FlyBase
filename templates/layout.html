@@ -16,17 +16,36 @@
           <span class="navbar-item">
             <a class="button is-link" href="{{ url_for('home_page') }}">Home</a>
           </span>
+
+          {% if not current_user.is_authenticated %}
+
           <span class="navbar-item">
-            <a class="button is-link" href="{{ url_for('flights_page') }}">Flights</a>
+            <a class="button is-link" href="{{ url_for('login_page') }}">Login</a>
           </span>
           <span class="navbar-item">
-            <a class="button is-link" href="{{ url_for('add_page') }}">Add country</a>
+            <a class="button is-link" href="{{ url_for('home_page') }}">Register</a>
           </span>
+          {% else %}
+
+          <span class="navbar-item">
+            <a class="button is-link" href="{{ url_for('add_page') }}">{{ current_user.username }}</a>
+          </span>
+          <span class="navbar-item">
+            <a class="button is-link" href="{{ url_for('logout_page') }}">Logout</a>
+          </span>
+          {% endif %}
+
+
+
         </div>
       </nav>
     </header>
 
     <main>
+        {% for message in get_flashed_messages() %}
+        <div class="notification is-info">{{ message }}</div>
+        {% endfor %}
+
       <section class="section">
         <div class="content">
           {% block content %}{% endblock %}
@@ -34,9 +53,9 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="content">
-        <small>&copy; 2018-2018, FlySys</small>
+    <footer class="footer" style="position: absolute; right: 0; bottom: 10px; left: 0; padding: 1rem; text-align: center">
+      <div class="content" >
+        <small>&copy; 2018, FlySys</small>
       </div>
     </footer>
   </body>

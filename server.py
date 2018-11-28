@@ -2,10 +2,17 @@ from flask import Flask
 from flask import request
 from flask import redirect
 from flask import url_for
+from flask_login import LoginManager
+from user import get_user
 
 import views
-from database import Database
 from flight import Flight
+
+lm = LoginManager()
+
+@lm.user_loader
+def load_user(user_id):
+    return get_user(user_id)
 
 
 def create_app():
@@ -13,18 +20,19 @@ def create_app():
     app.config.from_object("settings")
 
     app.add_url_rule("/", view_func=views.home_page)
-    app.add_url_rule("/flights", view_func=views.flights_page)
-    app.add_url_rule("/flights/<int:flight_key>", view_func=views.flight_page)
+    app.add_url_rule("/login", view_func=views.login_page, methods=["GET", "POST"])
+    app.add_url_rule("/logout", view_func=views.logout_page)
+
     app.add_url_rule(
         "/add_country", view_func=views.add_page, methods=["GET", "POST"]
     )
     app.add_url_rule("/countries", view_func=views.countries_page)
     # app.add_url_rule("/add-passenger", view_func=views.passenger_add_page, methods=["GET", "POST"])
 
-    db = Database()
-    db.add_flight(Flight("IST-ESB", date="10-10-2018", airport="IST"))
-    db.add_flight(Flight("IST-LON", date="09-10-2018", airport="IST"))
-    app.config["db"] = db
+    lm.init_app(app)
+    lm.login_view = "login_page"
+
+
 
     return app
 
