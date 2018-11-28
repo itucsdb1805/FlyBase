@@ -105,7 +105,7 @@ def initialize(url):
 
 
 if __name__ == "__main__":
-    url = "postgres://itucs:itucspw@localhost:32769/itucsdb"  # os.getenv("DATABASE_URL")
+    url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
     print(url)
     if url is None:
         print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)
