@@ -39,7 +39,7 @@ def add_page():
         form_name = request.form["name"]
 
         try:
-            url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
+            url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
             connection = dbapi2.connect(url)
             cursor = connection.cursor()
             if (form_name):
@@ -64,7 +64,7 @@ def countries_page():
     data = ""
     try:
 
-        url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
+        url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
         connection = dbapi2.connect(url)
         cursor = connection.cursor()
 
