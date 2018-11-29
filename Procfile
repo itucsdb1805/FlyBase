@@ -1,2 +1,2 @@
-web: python app.py server:app
+web: python server.py server:app
 release: python dbinit.py
