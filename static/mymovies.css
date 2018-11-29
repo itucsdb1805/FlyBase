@@ -3,5 +3,11 @@ h1.title {
  }
 
 .footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 100px;
+    padding: 1rem;
     text-align: center;
 }
