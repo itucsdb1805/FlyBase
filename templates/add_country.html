@@ -1,26 +1,34 @@
 {% extends "layout.html" %}
 {% block title %}Add country{% endblock %}
 {% block content %}
-    <h1 class="title">Add a country</h1>
+    <h1 class="title">Countries</h1>
 
-    <form action="" method="post" name="Country add">
+    <form action="" method="post" name="Country add/delete">
       <div class="field">
         <label for="name" class="label">Country Info</label>
         <div class="control">
-          <input type="text" name="name" class="input" required="required"/>
+          <input type="text" name="name" class="input" style="width:30%"/>
         </div>
       </div>
 
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-primary is-small">Save</button>
+          <button  type="submit" name="addDeleteShow" value="add" class="button is-primary is-small">Add</button>
+        </div>
+        <div class="control">
+          <button  type="submit" name="addDeleteShow" value="delete" class="button is-primary is-small">Delete</button>
+        </div>
+        <div class="control">
+          <button  type="submit" name="addDeleteShow" value="deleteAll" class="button is-primary is-small">Delete All</button>
+        </div>
+        <div class="control">
+        <button type="submit" name="addDeleteShow" value="show" class="button is-primary is-small" >See All</button>
         </div>
 
       </div>
     </form>
-    <form action="" method="get" name="Country see">
-      <div class="control">
-        <a class="button is-primary is-small" href="{{ url_for('countries_page')}}" style="margin-top: 0.3cm">See All</a>
-      </div>
-    </form>
+
+
+
+
 {% endblock %}

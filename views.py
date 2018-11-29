@@ -22,38 +22,72 @@ def home_page():
 
 
 
+
 @login_required
 def add_page():
     if not current_user.is_admin:
         abort(401)
 
-    statement = """INSERT INTO COUNTRIES (country_name)
+
+
+    statement1 = """INSERT INTO COUNTRIES (country_name)
         VALUES (%(name)s)"""
+
+    statement2 = """DELETE FROM COUNTRIES 
+            WHERE country_name = %(name)s"""
+
+    statement3 = """DELETE FROM COUNTRIES 
+                """
 
 
     if request.method == "GET":
         return render_template("add_country.html")
     else:
-        form_name = request.form["name"]
+        form_name = request.form['name']
+        addOrDelete = request.form['addDeleteShow']
+        print(addOrDelete)
 
         try:
-            url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
+            url = os.getenv("DATABASE_URL")  # url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
             connection = dbapi2.connect(url)
             cursor = connection.cursor()
-            if (form_name):
-                cursor.execute(statement, {'name': form_name})
+            if (addOrDelete == 'add'):
+                if(form_name == ''):
+                    flash("Country info cannot be empty.")
+                    return redirect(url_for("add_page"))
 
-                print("Execute works!")
+                cursor.execute(statement1, {'name': form_name})
+                print("add Execute works!")
                 connection.commit()
+
+            elif (addOrDelete == 'delete'):
+                if (form_name == ''):
+                    flash("Country info cannot be empty.")
+                    return redirect(url_for("add_page"))
+
+
+                cursor.execute(statement2, {'name': form_name})
+                print("delete Execute works!")
+                connection.commit()
+
+            elif (addOrDelete == 'deleteAll'):
+                cursor.execute(statement3)
+                print("deleteAll Execute works!")
+                connection.commit()
+
+
+            elif (addOrDelete == 'show'):
+                return redirect(url_for("countries_page"))
 
             cursor.close()
             connection.close()
+            return redirect(url_for("countries_page"))
+
         except dbapi2.DatabaseError:
             print("dataerror1")
             print(dbapi2.DatabaseError)
             connection.rollback()
-        finally:
-            return redirect(url_for("countries_page"))
+
 
 @login_required
 def countries_page():
@@ -67,7 +101,7 @@ def countries_page():
         statement = """SELECT *
         FROM COUNTRIES"""
         data = ""
-        url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
+        url = os.getenv("DATABASE_URL")  # url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
         connection = dbapi2.connect(url)
         cursor = connection.cursor()
         cursor.execute(statement)
@@ -78,7 +112,7 @@ def countries_page():
 
     try:
 
-        url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
+        url = os.getenv("DATABASE_URL")  # url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
         connection = dbapi2.connect(url)
         cursor = connection.cursor()
 
