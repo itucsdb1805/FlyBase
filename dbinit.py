@@ -5,7 +5,7 @@ import psycopg2 as dbapi2
 INIT_STATEMENTS = [
     """ CREATE TABLE IF NOT EXISTS COUNTRIES(
             country_id serial PRIMARY KEY,
-            country_name varchar(50) NOT NULL
+            country_name varchar(50) UNIQUE NOT NULL
             );""",
 
 
