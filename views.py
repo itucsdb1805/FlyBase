@@ -63,7 +63,18 @@ def countries_page():
     data = ""
 
     if request.method == "GET":
-        return render_template("countries.html")
+        
+        statement = """SELECT *
+        FROM COUNTRIES"""
+        data = ""
+        url =  os.getenv("DATABASE_URL")  #"postgres://itucs:itucspw@localhost:32769/itucsdb"
+        connection = dbapi2.connect(url)
+        cursor = connection.cursor()
+        cursor.execute(statement)
+        data = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return render_template("countries.html", data=sorted(data))
 
     try:
 
