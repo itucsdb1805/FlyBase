@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Update{% endblock %}
+{% block content %}
+    {% if table == 'COUNTRIES' %}
+
+    
+    <h1 class="title">Update Countries</h1>
+
+    <form method="POST" type="number">
+      Enter ID to update:<br>
+      <input type="number" name="country_id">
+      <br>
+      New country name:<br>
+      <input type="text" name="country_name" >
+      <br><br>
+      <input type="submit" value="Submit">
+    </form> 
+
+
+    {% elif table == 'test' %}
+
+    
+    <h1 class="title">test</h1>
+
+    <form method="POST" type="number">
+      Enter ID to update:<br>
+      <input type="number" name="id">
+      <br>
+      New country name:<br>
+      <input type="text" name="country_name" >
+      <br><br>
+      <input type="submit" value="Submit">
+    </form> 
+
+    {% endif %}
+
+{% endblock %}

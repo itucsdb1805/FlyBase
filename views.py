@@ -10,9 +10,10 @@ from flask import url_for
 from flask_login import login_required, current_user, login_user, logout_user
 from psycopg2.tests import dsn
 
+from flask import session
+
 from forms import LoginForm
 from user import get_user
-
 
 def home_page():
     today = datetime.today()
@@ -20,11 +21,33 @@ def home_page():
     return render_template("home.html", day=day_name)
 
 
+def execute_sql(command):
+    print("executing...")
+    print(command)
+    #command = """UPDATE COUNTRIES SET country_name = Turkey WHERE country_id = 1;"""
+    try:
+            url = "postgres://itucs:itucspw@localhost:32770/itucsdb"#url = os.getenv("DATABASE_URL")  # 
+            print("debug0")
+            connection = dbapi2.connect(url)
+            print("debug1")
+            cursor = connection.cursor()
+            print("debug2")
+            cursor.execute(command)
+            print("Execute works!")
+            connection.commit()
+            data = cursor.fetchall()
+            cursor.close()
+            connection.close()
 
-
+    except dbapi2.DatabaseError:
+            print("dataerror2")
+            print(dbapi2.DatabaseError)
+            connection.rollback()
+            return -1;
+    return data
 
 @login_required
-def add_page():
+def add_page(): # rewrite using execute_sql()
     if not current_user.is_admin:
         abort(401)
 
@@ -48,7 +71,7 @@ def add_page():
         print(addOrDelete)
 
         try:
-            url = os.getenv("DATABASE_URL")  # url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
+            url = "postgres://itucs:itucspw@localhost:32770/itucsdb"#url = os.getenv("DATABASE_URL")  # 
             connection = dbapi2.connect(url)
             cursor = connection.cursor()
             if (addOrDelete == 'add'):
@@ -90,7 +113,7 @@ def add_page():
 
 
 @login_required
-def countries_page():
+def countries_page():  #rewrite using execute_sql()
 
     statement = """SELECT country_id, country_name
         FROM COUNTRIES"""
@@ -101,7 +124,7 @@ def countries_page():
         statement = """SELECT *
         FROM COUNTRIES"""
         data = ""
-        url = os.getenv("DATABASE_URL")  # url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
+        url = "postgres://itucs:itucspw@localhost:32770/itucsdb" #os.getenv("DATABASE_URL")  #
         connection = dbapi2.connect(url)
         cursor = connection.cursor()
         cursor.execute(statement)
@@ -112,7 +135,7 @@ def countries_page():
 
     try:
 
-        url = os.getenv("DATABASE_URL")  # url = "postgres://itucs:itucspw@localhost:32769/itucsdb"
+        url = "postgres://itucs:itucspw@localhost:32770/itucsdb" #os.getenv("DATABASE_URL")
         connection = dbapi2.connect(url)
         cursor = connection.cursor()
 
@@ -154,3 +177,73 @@ def logout_page():
     logout_user()
     flash("You have logged out.")
     return redirect(url_for("home_page"))
+
+@login_required
+def admin_page():
+    if not current_user.is_admin:
+        abort(401)
+    return render_template("admin_page.html")
+
+@login_required
+def admin_select_table():
+    if not current_user.is_admin:
+        abort(401)
+    command = request.args.get('command')
+    if request.method == "GET":
+        return render_template("admin_select_table.html")
+    if request.method == "POST":
+        table_name = request.form['table']
+        
+        session['table'] = table_name # store parameter in cookie
+
+        #new_url = "/admin_page/" + command 
+        if (command == "add"):
+            return redirect(url_for("add_page"))  #change to admin_add_page
+        elif (command == "delete"):
+            return redirect(url_for("admin_delete_page"))
+        elif (command == "update"):
+            return redirect(url_for("admin_update_page"))
+        elif (command == "view"):
+            return redirect(url_for("admin_view_page"))
+        elif (command == "sql"):
+            return redirect(url_for("admin_sql_page"))    
+        else:
+            print("error1")
+            return redirect(url_for("admin_page"))  
+
+@login_required
+def admin_add_page():
+    if not current_user.is_admin:
+        abort(401)
+    return render_template("add_country.html")
+
+@login_required
+def admin_delete_page():
+    if not current_user.is_admin:
+        abort(401)
+    return render_template("add_country.html")
+
+@login_required
+def admin_update_page():
+    if not current_user.is_admin:
+        abort(401)
+    my_table = session['table']       # get table from session cookie, defined in admin_select_table()
+    if (my_table == ""):
+        abort(401)
+    print(my_table)
+    if request.method == "GET":  
+        return render_template("admin_update_page.html", table = my_table)
+    if request.method == "POST":
+        command = ""     #write code to generate update based on number of non-empty inputs and table name
+        if (my_table == 'COUNTRIES'):
+            new_name = request.form['country_name']
+            new_id = request.form['country_id']
+            #rewrite command so that empty forms do not change during the update command
+            command = """UPDATE COUNTRIES 
+                        SET country_name = '%(name)s'  
+                        WHERE country_id = %(id)s;"""
+            
+            execute_sql(command % {'name': new_name, 'id' : new_id})
+        return redirect(url_for("admin_page")) #change this into a page that displays whether operation was successful or not
+        
+

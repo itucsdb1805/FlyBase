@@ -7,7 +7,7 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"/>
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='mymovies.css') }}"/>
+          href="{{ url_for('static', filename='template.css') }}"/>
   </head>
   <body>
     <header>
@@ -28,7 +28,7 @@
           {% else %}
 
           <span class="navbar-item">
-            <a class="button is-link" href="{{ url_for('add_page') }}">{{ current_user.username }}</a>
+            <a class="button is-link" href="{{ url_for('admin_page') }}">{{ current_user.username }}</a>
           </span>
           <span class="navbar-item">
             <a class="button is-link" href="{{ url_for('logout_page') }}">Logout</a>
@@ -55,7 +55,7 @@
 
     <footer class="footer">
       <div class="content" >
-        <small>&copy; 2018, FlySys</small>
+        <small>&copy; 2018, FlySys.</small>
       </div>
     </footer>
   </body>
