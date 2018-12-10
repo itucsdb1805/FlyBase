@@ -8,104 +8,184 @@ INIT_STATEMENTS = [
             country_name varchar(50) UNIQUE NOT NULL
             );""",
 
+    " INSERT INTO COUNTRIES (country_name) VALUES ('Turkey');",
+    " INSERT INTO COUNTRIES (country_name) VALUES ('France');",
+    " INSERT INTO COUNTRIES (country_name) VALUES ('Germany');",
+    " INSERT INTO COUNTRIES (country_name) VALUES ('United States of America');",
+    " INSERT INTO COUNTRIES (country_name) VALUES ('Russia');",
+    " INSERT INTO COUNTRIES (country_name) VALUES ('Latvia');",
+
+    """ CREATE TABLE IF NOT EXISTS TEST(
+            test_id serial PRIMARY KEY,
+            test_date date NOT NULL
+            );""",
+
 
 
     """ CREATE TABLE IF NOT EXISTS AIRLINES(
             airline_id serial PRIMARY KEY,
-            airline_name varchar(50) NOT NULL
+            airline_name varchar(20) UNIQUE NOT NULL
             );""",
 
+    " INSERT INTO AIRLINES (airline_name) VALUES ('THY1');",
+    " INSERT INTO AIRLINES (airline_name) VALUES ('THY2');",
+    " INSERT INTO AIRLINES (airline_name) VALUES ('THY3');",
+
+    """ CREATE TABLE IF NOT EXISTS AIRPORTS(
+            airport_id serial PRIMARY KEY,
+            country_id integer NOT NULL,
+            airport_name varchar(30) NOT NULL,
+            city_name varchar(30) NOT NULL,
+            FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
+            );""",
+
+    " INSERT INTO AIRPORTS (country_id, airport_name, city_name) VALUES (1, 'Ataturk Airport', 'Istanbul');",
+    " INSERT INTO AIRPORTS (country_id, airport_name, city_name) VALUES (1, 'Sabiha Gokcen Airport', 'Istanbul');",
+    " INSERT INTO AIRPORTS (country_id, airport_name, city_name) VALUES (1, 'Esenboga Airport', 'Ankara');",
 
 
     """ CREATE TABLE IF NOT EXISTS AIRCRAFTS(
             aircraft_id serial PRIMARY KEY,
-            aircraft_name varchar(50) NOT NULL
+            airline_id integer NOT NULL,
+            capacity integer NOT NULL,
+            company_name varchar(20) NOT NULL,
+            model_name varchar(20) NOT NULL,
+            maximum_range integer NOT NULL,
+            year_produced integer NOT NULL,
+            FOREIGN KEY (airline_id) REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT
             );""",
 
-
+    " INSERT INTO AIRCRAFTS (airline_id, capacity, company_name, model_name, maximum_range, year_produced) VALUES (1, 300, 'Boeing', '737', 2500, 1999);",
+    " INSERT INTO AIRCRAFTS (airline_id, capacity, company_name, model_name, maximum_range, year_produced) VALUES (1, 400, 'Airbus', 'A320', 2300, 2002);",
 
     """ CREATE TABLE IF NOT EXISTS ROUTES(
             route_id serial PRIMARY KEY,
-            route_name varchar(50) NOT NULL
+            dep_airport_id integer NOT NULL,
+            arr_airport_id integer NOT NULL,
+            route_name varchar(20) NOT NULL,
+            distance integer NOT NULL,
+            number_of_flights integer DEFAULT 0,
+            number_of_airlines integer NOT NULL,
+            number_of_passengers integer DEFAULT 0,
+            FOREIGN KEY (dep_airport_id) REFERENCES AIRPORTS(airport_id) ON DELETE RESTRICT,
+            FOREIGN KEY (arr_airport_id) REFERENCES AIRPORTS(airport_id) ON DELETE RESTRICT
             );""",
 
+    " INSERT INTO ROUTES (dep_airport_id, arr_airport_id, route_name, distance, number_of_airlines) VALUES (1, 3, 'IST-ESB', 600, 2);",
+    " INSERT INTO ROUTES (dep_airport_id, arr_airport_id, route_name, distance, number_of_airlines) VALUES (2, 3, 'SBH-ESB', 600, 3);",
 
 
     """ CREATE TABLE IF NOT EXISTS PASSENGERS(
             passenger_id serial PRIMARY KEY,
-            name varchar (20) NOT NULL,
-            middle_name varchar (20) DEFAULT NULL,
-            surname varchar (20) NOT NULL,
-            gender  varchar (1) NOT NULL
-                CHECK (gender IN ( 'F' , 'M' ) ),
-            birth_date date NOT NULL,
             country_id integer NOT NULL,
-            flight_count integer DEFAULT 0,
-            last_flight_day date DEFAULT NULL,
+            passenger_name varchar (30) NOT NULL,
+            passenger_last_name varchar (30) NOT NULL,
+            email varchar (50),
+            number_of_flights integer DEFAULT 0,
+            last_flight_date varchar (10) DEFAULT NULL,
             FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
             );""",
 
-    """ CREATE TABLE IF NOT EXISTS AIRLINE_WORKERS(
-            worker_id serial PRIMARY KEY,
-            name varchar (20) NOT NULL,
-            middle_name varchar (20) DEFAULT NULL,
-            surname varchar (20) NOT NULL,
-            gender  varchar (1) NOT NULL
-                CHECK (gender IN ( 'F' , 'M' ) ),
-            birth_date date NOT NULL,
-            country_id integer NOT NULL ,
-            flight_hours integer DEFAULT 0,
-            airline_id integer NOT NULL REFERENCES AIRLINES(airline_ID) ON DELETE RESTRICT,
-            job  varchar(15) NOT NULL
-                CHECK (job IN ( 'pilot' , 'hostess' , 'other' ) ),
-            photo varchar(50) DEFAULT './photos/default.jpg',
-            FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
+    " INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name) VALUES (1, 'Bulut', 'Ozler');",
+    " INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name) VALUES (4, 'Chandler', 'Bing');",
+
+
+    """ CREATE TABLE IF NOT EXISTS STAFF(
+            staff_id serial PRIMARY KEY,
+            country_id integer NOT NULL,
+            airline_id integer NOT NULL,
+            job_title varchar (20) NOT NULL,
+            staff_name varchar (30) NOT NULL,
+            staff_last_name varchar (30) NOT NULL,
+            start_date varchar (10) NOT NULL,
+            number_of_flights integer DEFAULT 0,
+            FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id),
+            FOREIGN KEY (airline_id) REFERENCES AIRLINES(airline_id)
             );""",
+
+    " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date) VALUES (1, 2, 'Pilot', 'John', 'Doe', '2017-10-09');",
+
+
 
     """ CREATE TABLE IF NOT EXISTS FLIGHTS(
             flight_id serial PRIMARY KEY,
-            airline_id integer NOT NULL REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
-            aircraft_id integer NOT NULL REFERENCES AIRCRAFTS(aircraft_id) ON DELETE RESTRICT,
-            route_id integer NOT NULL REFERENCES ROUTES(route_id) ON DELETE RESTRICT,
-            flight_date varchar(10) NOT NULL,
-            flight_airport varchar(15) NOT NULL
+            aircraft_id integer NOT NULL,
+            route_id integer NOT NULL,
+            staff_id integer NOT NULL,
+            departure_date varchar (10) NOT NULL,
+            arrival_date varchar (10) NOT NULL,
+            number_of_passengers integer NOT NULL,
+            duration integer NOT NULL,
+            number_of_staff integer NOT NULL,
+            FOREIGN KEY (aircraft_id) REFERENCES AIRCRAFTS(aircraft_id) ON DELETE RESTRICT,
+            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE RESTRICT,
+            FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id) ON DELETE RESTRICT
             );""",
 
-    """ CREATE TABLE IF NOT EXISTS WORKERS_PER_FLIGHT(
+    " INSERT INTO FLIGHTS (aircraft_id, route_id, staff_id, departure_date, arrival_date, number_of_passengers, duration, number_of_staff) VALUES (1, 2, 1, '2019-01-02', '2019-01-03', 300, 14, 2);",
+
+
+    """ CREATE TABLE IF NOT EXISTS BOOKINGS(
             flight_id integer NOT NULL,
-            worker_id integer NOT NULL,
-            ord integer DEFAULT 0,
-                CHECK (ord > 0),
-            FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id),
-            FOREIGN KEY (worker_id) REFERENCES AIRLINE_WORKERS(worker_id),
-            PRIMARY KEY (flight_id,worker_id)
+            passenger_id integer NOT NULL,
+            payment_type varchar (15) NOT NULL,
+            miles_used integer,
+            seat varchar (3) NOT NULL,
+            class_of_seat varchar (15) NOT NULL,
+            fare integer NOT NULL,
+            FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE RESTRICT,
+            FOREIGN KEY (passenger_id) REFERENCES PASSENGERS(passenger_id) ON DELETE RESTRICT,
+            PRIMARY KEY (flight_id, passenger_id)
             );"""
+
+    " INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, miles_used, seat, class_of_seat, fare) VALUES (1, 2,  'Credit Card', 200, '42F', 'First Class', 300);",
 
 ]
 
 INIT_STATEMENTS2 = [
 
+    " DROP TABLE BOOKINGS ",
     " DROP TABLE FLIGHTS ",
-    " DROP TABLE AIRLINE_WORKERS ",
-    " DROP TABLE PASSENGERS ",
-    " DROP TABLE ROUTES ",
+    " DROP TABLE STAFF ",
     " DROP TABLE AIRCRAFTS ",
     " DROP TABLE AIRLINES ",
+    " DROP TABLE ROUTES ",
+    " DROP TABLE AIRPORTS ",
+    " DROP TABLE PASSENGERS ",
     " DROP TABLE COUNTRIES "
-    " DROP TABLE WORKERS_PER_FLIGHT "
+
+]
+
+INIT_STATEMENTS3 = [
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]
 
 
 def initialize(url):
     with dbapi2.connect(url) as connection:
         cursor = connection.cursor()
+        for statement in INIT_STATEMENTS2:
+            cursor.execute(statement)
         for statement in INIT_STATEMENTS:
             cursor.execute(statement)
+
         cursor.close()
 
 
 if __name__ == "__main__":
-    url = "postgres://itucs:itucspw@localhost:32770/itucsdb"#os.getenv("DATABASE_URL")
+    url = "postgres://itucs:itucspw@localhost:32769/itucsdb"#os.getenv("DATABASE_URL")
     print(url)
     if url is None:
         print("Usage: DATABASE_URL=url python dbinit.py", file=sys.stderr)

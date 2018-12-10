@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Delete{% endblock %}
+{% block content %}
+    {% if table == 'COUNTRIES' %}
+
+
+    <h1 class="title">Countries</h1>
+
+    {% if data %}
+    <table class="table is-striped is-fullwidth">
+
+      {% for country_id, country_name in data %}
+      <tr>
+        <td>
+            {{ country_id }}
+            {{ country_name }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+
+    {% elif table == 'AIRCRAFTS' %}
+
+
+    <h1 class="title">Aircrafts</h1>
+
+    {% if data %}
+    <table class="table is-striped is-fullwidth">
+
+      {% for aircraft_id, aircraft_name in data %}
+      <tr>
+        <td>
+            {{ aircraft_id }}
+            {{ aircraft_name }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+
+    {% endif %}
+
+{% endblock %}

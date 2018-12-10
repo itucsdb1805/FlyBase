@@ -3,34 +3,34 @@
 {% block content %}
     {% if table == 'COUNTRIES' %}
 
-    
-    <h1 class="title">Update Countries</h1>
+
+    <h1 class="title">Update a Country</h1>
 
     <form method="POST" type="number">
-      Enter ID to update:<br>
+      Enter country id to update:<br>
       <input type="number" name="country_id">
       <br>
       New country name:<br>
       <input type="text" name="country_name" >
       <br><br>
       <input type="submit" value="Submit">
-    </form> 
+    </form>
 
 
-    {% elif table == 'test' %}
+    {% elif table == 'AIRCRAFTS' %}
 
-    
-    <h1 class="title">test</h1>
+
+    <h1 class="title">Update an Aircraft</h1>
 
     <form method="POST" type="number">
-      Enter ID to update:<br>
-      <input type="number" name="id">
+      Enter aircraft id to update:<br>
+      <input type="number" name="aircraft_id">
       <br>
-      New country name:<br>
-      <input type="text" name="country_name" >
+      New aircraft name:<br>
+      <input type="text" name="aircraft_name" >
       <br><br>
       <input type="submit" value="Submit">
-    </form> 
+    </form>
 
     {% endif %}
 

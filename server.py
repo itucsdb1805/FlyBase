@@ -26,10 +26,6 @@ def create_app():
     app.add_url_rule("/logout", view_func=views.logout_page)
 
 
-    app.add_url_rule(
-        "/add_country", view_func=views.add_page, methods=["GET", "POST"]
-    )
-    app.add_url_rule("/countries", view_func=views.countries_page)
     # app.add_url_rule("/add-passenger", view_func=views.passenger_add_page, methods=["GET", "POST"])
     
     
@@ -37,9 +33,9 @@ def create_app():
     app.add_url_rule("/admin_page/select_table", view_func=views.admin_select_table, methods=["GET", "POST"])
     
     app.add_url_rule("/admin_page/add", view_func=views.admin_add_page, methods=["GET", "POST"]) 
-    app.add_url_rule("/admin_page/delete", view_func=views.admin_add_page, methods=["GET", "POST"]) 
+    app.add_url_rule("/admin_page/delete", view_func=views.admin_delete_page, methods=["GET", "POST"])
     app.add_url_rule("/admin_page/update", view_func=views.admin_update_page, methods=["GET", "POST"])
-    #app.add_url_rule("/admin_page/view", view_func=views.admin_view_page, methods=["GET", "POST"])
+    app.add_url_rule("/admin_page/view", view_func=views.admin_view_page, methods=["GET", "POST"])
     #app.add_url_rule("/admin_page/sql", view_func=views.admin_sql_page, methods=["GET", "POST"])
     
     lm.init_app(app)

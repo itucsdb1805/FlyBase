@@ -1,0 +1,197 @@
+{% extends "layout.html" %}
+{% block title %}Add{% endblock %}
+{% block content %}
+    {% if table == 'PASSENGERS' %}
+
+
+    <h1 class="title">Add a Passenger</h1>
+
+    <form method="POST" type="number">
+
+      Country ID:<br>
+      <input type="number" name="country_id" >
+      <br><br>
+      Name:<br>
+      <input type="text" name="passenger_name" >
+      <br><br>
+      Last Name:<br>
+      <input type="text" name="passenger_last_name" >
+      <br><br>
+      Email:<br>
+      <input type="text" name="email" >
+      <br><br>
+      Number of Flights:<br>
+      <input type="number" name="number_of_flights" >
+      <br><br>
+      Last Flight Date:<br>
+      <input type="date" name="last_flight_date" >
+      <br><br>
+      <input type="submit" value="Submit">
+    </form>
+
+
+    {% elif table == 'FLIGHTS' %}
+
+
+    <h1 class="title">Add a Flight</h1>
+
+    <form method="POST" type="number">
+
+      Aircraft ID:<br>
+      <input type="number" name="aircraft_id" >
+      <br><br>
+      Route ID:<br>
+      <input type="text" name="route_id" >
+      <br><br>
+      Staff ID:<br>
+      <input type="number" name="staff_id" >
+      <br><br>
+      Departure Date:<br>
+      <input type="date" name="departure_date" >
+      <br><br>
+      Arrival Date:<br>
+      <input type="date" name="arrival_date" >
+      <br><br>
+      Number of Passengers:<br>
+      <input type="number" name="number_of_passengers" >
+      <br><br>
+      Duration:<br>
+      <input type="number" name="duration" >
+      <br><br>
+      Number of Staff:<br>
+      <input type="number" name="number_of_staff" >
+      <br><br>
+      <input type="submit" value="Submit">
+    </form>
+
+
+    {% elif table == 'BOOKINGS' %}
+
+
+    <h1 class="title">Add a Booking</h1>
+
+    <form method="POST" type="number">
+
+      Flight ID:<br>
+      <input type="number" name="flight_id" >
+      <br><br>
+      Passenger ID:<br>
+      <input type="number" name="passenger_id" >
+      <br><br>
+      Payment Type:<br>
+      <input type="text" name="payment_type" >
+      <br><br>
+      Miles Used:<br>
+      <input type="number" name="miles_used" >
+      <br><br>
+      Seat:<br>
+      <input type="text" name="seat" >
+      <br><br>
+      Class:<br>
+      <input type="text" name="class" >
+      <br><br>
+      Fare:<br>
+      <input type="number" name="fare" >
+      <br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    {% elif table == 'AIRCRAFTS' %}
+
+
+    <h1 class="title">Add an Aircraft</h1>
+
+    <form method="POST" type="number">
+
+      Airline ID:<br>
+      <input type="number" name="airline_id" >
+      <br><br>
+      Capacity:<br>
+      <input type="number" name="capacity" >
+      <br><br>
+      Company Name:<br>
+      <input type="text" name="company_name" >
+      <br><br>
+      Model Name:<br>
+      <input type="text" name="model_name" >
+      <br><br>
+      Maximum Range:<br>
+      <input type="number" name="maximum_range" >
+      <br><br>
+      Year Produced:<br>
+      <input type="number" name="year_produced" >
+      <br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+
+    {% elif table == 'ROUTES' %}
+
+
+    <h1 class="title">Add a Route</h1>
+
+    <form method="POST" type="number">
+
+      Departure Airport ID:<br>
+      <input type="number" name="dep_airport_id" >
+      <br><br>
+      Arrival Airport ID:<br>
+      <input type="number" name="arr_airport_id" >
+      <br><br>
+      Route Name:<br>
+      <input type="text" name="route_name" >
+      <br><br>
+      Distance:<br>
+      <input type="number" name="distance" >
+      <br><br>
+      Number of Flights:<br>
+      <input type="number" name="number_of_flights" >
+      <br><br>
+      Number of Airlines:<br>
+      <input type="number" name="number_of_airlines" >
+      <br><br>
+      Number of Passengers:<br>
+      <input type="number" name="number_of_passengers" >
+      <br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+
+    {% elif table == 'STAFF' %}
+
+
+    <h1 class="title">Add a Staff</h1>
+
+    <form method="POST" type="number">
+
+      Country ID:<br>
+      <input type="number" name="country_id" >
+      <br><br>
+      Airline ID:<br>
+      <input type="number" name="airline_id" >
+      <br><br>
+      Job Title:<br>
+      <input type="text" name="job_title" >
+      <br><br>
+      Name:<br>
+      <input type="text" name="staff_name" >
+      <br><br>
+      Last Name:<br>
+      <input type="text" name="staff_last_name" >
+      <br><br>
+      Date of Start:<br>
+      <input type="date" name="start_date" >
+      <br><br>
+      Number of Flights:<br>
+      <input type="number" name="number_of_flights" >
+      <br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    {% endif %}
+
+{% endblock %}
