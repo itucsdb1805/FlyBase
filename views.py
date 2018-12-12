@@ -84,8 +84,11 @@ def execute_sql(command):
 
     try:
             data_column = []
-            data_column.append(tuple([desc[0] for desc in cursor.description]))
             data_content = cursor.fetchall()
+            if(data_content[0][0] == None):
+                return -2
+            data_column.append(tuple([desc[0] for desc in cursor.description]))
+
             print(data_column)
             print(data_content)
             data_column += data_content
