@@ -438,8 +438,8 @@ def admin_update_page():
             column_names = ["booking_id", "flight_id", "passenger_id", "payment_type", "seat_number", "class_type", "fare"]
         elif (my_table == 'FLIGHTS'):
             table_name = "FLIGHTS"
-            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"]]
-            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_consumption"]
+            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"],  request.form["duration"], request.form["average_altitude"]]
+            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_consumption", "duration", "average_altitude"]
         elif (my_table == 'AIRCRAFTS'):
             table_name = "AIRCRAFTS"  
             values = [request.form["aircraft_id"], request.form["airline_id"],request.form["capacity"], request.form["company_name"],request.form["model_name"], request.form["maximum_range"], request.form["year_produced"]]
