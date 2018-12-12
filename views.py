@@ -15,6 +15,19 @@ from flask import session
 from forms import LoginForm
 from user import get_user
 
+def sqlgen_update(table_name, column_names, variables): #(string, list, list) !ID must be first item in lists. 
+    command = "UPDATE " + table_name + " "
+    for index in range(1,len(column_names)):#start from 1 to not change id
+        if (variables[index] == "null"): 
+            command += "SET " + column_names[index] + " = NULL, "         
+        elif (variables[index] != ""):
+            command += "SET " + column_names[index] + " = '" + variables[index] + "', "
+    command = command[:-2] #remove last character (,) from string
+    command += " WHERE " + column_names[0] + " = '" + variables[0] + "';"
+    print("result: ")
+    print(command)
+    return command
+
 def login_page():
     form = LoginForm()
 
@@ -395,19 +408,21 @@ def admin_update_page():
 
 
     if request.method == "POST":
-        command = ""     #write code to generate update based on number of non-empty inputs and table name
+     #write code to generate update based on number of non-empty inputs and table name
         if (my_table == 'COUNTRIES'):
             country_name = request.form['country_name']
             country_id = request.form['country_id']
+            
             if (country_id == '' or country_name == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_update_page"))
             #rewrite command so that empty forms do not change during the update command
-            command = """UPDATE COUNTRIES 
-                        SET country_name = '%(name)s'  
-                        WHERE country_id = %(id)s;"""
+            #command = """UPDATE COUNTRIES 
+            #            SET country_name = '%(name)s'  
+            #           WHERE country_id = %(id)s;"""
+            command = sqlgen_update("COUNTRIES", ["country_id", "country_name"] ,[country_id, country_name])
             
-            data = execute_sql(command % {'name': country_name, 'id' : country_id})
+            data = execute_sql(command)
 
 
 
