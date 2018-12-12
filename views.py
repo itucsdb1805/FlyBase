@@ -403,46 +403,44 @@ def admin_update_page():
     if (my_table == ""):
         abort(401)
     print(my_table)
-    if request.method == "GET":
+    if request.method == "GET":  
         return render_template("admin_update_page.html", table = my_table)
-
-
     if request.method == "POST":
-     #write code to generate update based on number of non-empty inputs and table name
-        if (my_table == 'COUNTRIES'):
-            country_name = request.form['country_name']
-            country_id = request.form['country_id']
-            
-            if (country_id == '' or country_name == ''):
-                flash("Insufficient Entry")
-                return redirect(url_for("admin_update_page"))
-            #rewrite command so that empty forms do not change during the update command
-            #command = """UPDATE COUNTRIES 
-            #            SET country_name = '%(name)s'  
-            #           WHERE country_id = %(id)s;"""
-            command = sqlgen_update("COUNTRIES", ["country_id", "country_name"] ,[country_id, country_name])
-            
-            data = execute_sql(command)
-
-
-
-
+        command = ""     #write code to generate update based on number of non-empty inputs and table name
+        #if (my_table == 'COUNTRIES'):
+         #   new_name = request.form['country_name']
+         #   new_id = request.form['country_id']
+         #   table_name = "COUNTRIES"
+        #    command = sqlgen_update(table_name, ["country_id", "country_name"], [new_name, new_id])
+        if (my_table == 'PASSENGERS'):
+            table_name = "PASSENGERS"
+            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"]] #add fotograph
+            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name" ]
+        elif (my_table == 'STAFF'):
+            table_name = "STAFF"
+            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"]] #add fotograph
+            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date" ]
+        elif (my_table == 'BOOKINGS'):
+            table_name = "BOOKINGS"
+            values = [request.form["booking_id"], request.form["flight_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fare"]]
+            column_names = ["booking_id", "flight_id", "departure_date", "arrival_date", "fare"]
+        elif (my_table == 'FLIGHTS'):
+            table_name = "FLIGHTS"
+            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"]]
+            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_consumption"]
         elif (my_table == 'AIRCRAFTS'):
-            aircraft_name = request.form['aircraft_name']
-            aircraft_id = request.form['aircraft_id']
-            if (aircraft_id == '' or aircraft_name == ''):
-                flash("Insufficient Entry")
-                return redirect(url_for("admin_update_page"))
-            # rewrite command so that empty forms do not change during the update command
-            command = """UPDATE AIRCRAFTS 
-                        SET aircraft_name = '%(name)s'  
-                        WHERE aircraft_id = %(id)s;"""
+            table_name = "AIRCRAFTS"  
+            values = [request.form["aircraft_id"], request.form["airline_id"],request.form["capacity"], request.form["company_name"],request.form["model_name"], request.form["maximum_range"], request.form["year_produced"]]
+            column_names =  ["aircraft_id", "airline_id","capacity", "company_name", "model_name", "maximum_range", "year_produced"]      
+        elif (my_table == 'ROUTES'):
+            table_name = "ROUTES"  
+            values = [request.form["route_id"], request.form["dep_airport_id"], request.form["arr_airport_id"], request.form["route_name"], request.form["distance"], request.form["number_of_airlines"], request.form["altitude"]]
+            column_names = ["route_id", "dep_airport_id", "arr_airport_id", "route_name", "distance", "number_of_airlines", "altitude"]  
 
-            data = execute_sql(command % {'name': aircraft_name, 'id': aircraft_id})
+        command = sqlgen_update(table_name, column_names, values)
+        execute_sql(command)
+        return redirect(url_for("admin_page")) #change this into a page that displays whether operation was successful or not
 
-
-
-        return redirect(url_for("admin_page"))  # change this into a page that displays whether operation was successful or not
 
 @login_required
 def admin_view_page():
