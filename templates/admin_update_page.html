@@ -85,13 +85,18 @@
       <input type="date" name="arrival_date">
       <br>Fuel consumption in liters:
       <input type="number" name="fuel_consumption">
+      <br>Average altitude:
+      <input type="number" name="average_altitude">
+      <br>Flight duration:
+      <input type="number" name="duration">
+
       <br><input type="submit" value="Submit">
 
     </form>
 
     {% elif table == 'BOOKINGS' %}
 
-    
+
     <h1 class="title">Update Bookings</h1>
 
     <form method="POST" type="number">
@@ -124,7 +129,7 @@
 
     {% elif table == 'AIRCRAFTS' %}
 
-    
+
     <h1 class="title">Update Aircrafts</h1>
 
     <form method="POST" type="number">
@@ -152,7 +157,7 @@
     </form>
     {% elif table == 'ROUTES' %}
 
-    
+
     <h1 class="title">Update Routes</h1>
 
     <form method="POST" type="number">
@@ -175,7 +180,7 @@
 
     {% elif table == 'test' %}
 
-    
+
     <h1 class="title">test</h1>
 
     <form method="POST" type="number">
@@ -186,7 +191,7 @@
       <input type="text" name="country_name" >
       <br><br>
       <input type="submit" value="Submit">
-    </form> 
+    </form>
 
     {% endif %}
 

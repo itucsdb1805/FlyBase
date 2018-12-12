@@ -83,7 +83,14 @@ def execute_sql(command):
             return -1;
 
     try:
-            data = cursor.fetchall()
+            data_column = []
+            data_column.append(tuple([desc[0] for desc in cursor.description]))
+            data_content = cursor.fetchall()
+            print(data_column)
+            print(data_content)
+            data_column += data_content
+            print(data_column)
+
             cursor.close()
             connection.close()
 
@@ -93,7 +100,7 @@ def execute_sql(command):
             connection.rollback()
             return -2;
 
-    return data
+    return data_column
 
 @login_required
 def admin_page():
@@ -460,8 +467,9 @@ def admin_view_page():
                           %(name)s;"""
 
         data = execute_sql(command % {'name': my_table})
+        data[1:] = sorted(data[1:])
 
-        return render_template("admin_view_page.html", table=my_table, data=sorted(data))
+        return render_template("admin_view_page.html", table=my_table, data=data)
 
 
 
