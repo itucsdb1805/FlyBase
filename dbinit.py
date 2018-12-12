@@ -111,18 +111,16 @@ INIT_STATEMENTS = [
             flight_id serial PRIMARY KEY,
             aircraft_id integer NOT NULL,
             route_id integer NOT NULL,
-            staff_id integer NOT NULL,
             departure_date varchar (10) NOT NULL,
             arrival_date varchar (10) NOT NULL,
-            number_of_passengers integer NOT NULL,
+            fuel_consumption integer NOT NULL,
             duration integer NOT NULL,
-            number_of_staff integer NOT NULL,
+            average_altitude integer NOT NULL,
             FOREIGN KEY (aircraft_id) REFERENCES AIRCRAFTS(aircraft_id) ON DELETE RESTRICT,
-            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE RESTRICT,
-            FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id) ON DELETE RESTRICT
+            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE RESTRICT
             );""",
 
-    " INSERT INTO FLIGHTS (aircraft_id, route_id, staff_id, departure_date, arrival_date, number_of_passengers, duration, number_of_staff) VALUES (1, 2, 1, '2019-01-02', '2019-01-03', 300, 14, 2);",
+    " INSERT INTO FLIGHTS (aircraft_id, route_id, departure_date, arrival_date, fuel_consumption, duration, average_altitude) VALUES (1, 2, '2019-01-02', '2019-01-03', 150000, 10, 12000);",
 
 
     """ CREATE TABLE IF NOT EXISTS BOOKINGS(
