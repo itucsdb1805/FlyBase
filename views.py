@@ -474,6 +474,21 @@ def admin_view_page():
 
         return render_template("admin_view_page.html", table=my_table, data=data)
 
+def admin_sql_page():
+    if not current_user.is_admin:
+        abort(401)
+    my_table = session['table']  # get table from session cookie, defined in admin_select_table()
+    if (my_table == ""):
+        abort(401)
+    if request.method == "GET":
+        return render_template("admin_sql_page.html")
+    elif request.method == "POST":
+        print("debug")
+        command = request.form["command"]
+        data = execute_sql(command)
+        data[1:] = sorted(data[1:])
+        return render_template("admin_view_page.html", data = data)
+
 
 
 
