@@ -15,15 +15,20 @@ from flask import session
 from forms import LoginForm
 from user import get_user
 
-def sqlgen_update(table_name, column_names, variables): #(string, list, list) !ID must be first item in lists. 
+def sqlgen_update(table_name, column_names, variables, primary_key_count): #(string, list, list) !ID must be first item in lists. 
     command = "UPDATE " + table_name + " "
-    for index in range(1,len(column_names)):#start from 1 to not change id
+    for index in range(primary_key_count,len(column_names)):#start from id_count in order to not change id
         if (variables[index] == "null"): 
             command += "SET " + column_names[index] + " = NULL, "         
         elif (variables[index] != ""):
             command += "SET " + column_names[index] + " = '" + variables[index] + "', "
     command = command[:-2] #remove last character (,) from string
-    command += " WHERE " + column_names[0] + " = '" + variables[0] + "';"
+    if (primary_key_count == 1):
+        command += " WHERE " + column_names[0] + " = '" + variables[0] + "';"
+    elif (primary_key_count == 2):
+        command += " WHERE " + column_names[0] + " = '" + variables[0] + "' AND " + column_names[1] + " = '" + variables[1] + "';"
+    else:
+        print("error primary_id_count must be 1 or 2")
     print("result: ")
     print(command)
     return command
@@ -412,6 +417,7 @@ def admin_update_page():
          #   new_id = request.form['country_id']
          #   table_name = "COUNTRIES"
         #    command = sqlgen_update(table_name, ["country_id", "country_name"], [new_name, new_id])
+        primary_key_count = 1; #counts how many primary keys there are, all main tables, except bookings, have one primary id
         if (my_table == 'PASSENGERS'):
             table_name = "PASSENGERS"
             values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"]] #add fotograph
@@ -422,8 +428,9 @@ def admin_update_page():
             column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date" ]
         elif (my_table == 'BOOKINGS'):
             table_name = "BOOKINGS"
-            values = [request.form["booking_id"], request.form["flight_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fare"]]
-            column_names = ["booking_id", "flight_id", "departure_date", "arrival_date", "fare"]
+            primary_key_count = 2
+            values = [request.form["booking_id"], request.form["flight_id"], request.form["passenger_id"], request.form["payment_type"],request.form["seat_number"], request.form["class_type"], request.form["fare"]]
+            column_names = ["booking_id", "flight_id", "passenger_id", "payment_type", "seat_number", "class_type", "fare"]
         elif (my_table == 'FLIGHTS'):
             table_name = "FLIGHTS"
             values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"]]
@@ -437,7 +444,7 @@ def admin_update_page():
             values = [request.form["route_id"], request.form["dep_airport_id"], request.form["arr_airport_id"], request.form["route_name"], request.form["distance"], request.form["number_of_airlines"], request.form["altitude"]]
             column_names = ["route_id", "dep_airport_id", "arr_airport_id", "route_name", "distance", "number_of_airlines", "altitude"]  
 
-        command = sqlgen_update(table_name, column_names, values)
+        command = sqlgen_update(table_name, column_names, values, primary_key_count)
         execute_sql(command)
         return redirect(url_for("admin_page")) #change this into a page that displays whether operation was successful or not
 
