@@ -7,15 +7,176 @@
     <h1 class="title">Update Countries</h1>
 
     <form method="POST" type="number">
-      Enter ID to update:<br>
+      Enter country ID to update:<br>
       <input type="number" name="country_id">
       <br>
       New country name:<br>
       <input type="text" name="country_name" >
       <br><br>
-      <input type="submit" value="Submit">
+      <br><input type="submit" value="Submit">
     </form> 
 
+    {% elif table == 'PASSENGERS' %}
+
+    
+    <h1 class="title">Update Passengers</h1>
+
+    <form method="POST" type="number">
+      Enter passenger ID to update:
+      <input type="number" name="passenger_id">
+      <br>Email:
+      <input type="text" name="email" >
+      <br>Country ID:
+      <input type="number" name="country_id">
+      <br>Name:
+      <input type="text" name="name">
+      <br>Middle name:
+      <input type="text" name="middlename">
+      <br>Surname:
+      <input type="text" name="surname">
+      <br>Fotograph:
+      <input type="file" name="fotograph" accept="image/*">
+      <br><input type="submit" value="Submit">
+    </form> 
+
+    {% elif table == 'STAFF' %}
+
+    
+    <h1 class="title">Update Staff</h1>
+
+    <form method="POST" type="number">
+      Enter staff ID to update:
+      <input type="number" name="staff_id">
+      <br>Country ID:
+      <input type="number" name="country_id">
+      <br>Airline ID:
+      <input type="number" name="airline_id">
+      <br>Job title:
+      <input type="text" name="job_title">
+      <br>Name:
+      <input type="text" name="name">
+      <br>Middle name:
+      <input type="text" name="middlename">
+      <br>Surname:
+      <input type="text" name="surname">
+      <br>Flight hours:
+      <input type="number" name="start_date">
+      <br>Fotograph:
+      <input type="file" name="fotograph" accept="image/*">
+      <br><input type="submit" value="Submit">
+
+    </form> 
+
+    {% elif table == 'FLIGHTS' %}
+
+    
+    <h1 class="title">Update Flights</h1>
+
+    <form method="POST" type="number">
+      Enter Flight ID to update:
+      <input type="number" name="flight_id">
+      <br>Aircraft ID:
+      <input type="number" name="aircraft_id">
+      <br>Route ID:
+      <input type="number" name="route_id">
+      <br>Departure Date:
+      <input type="date" name="departure_date">
+      <br>Arrival Date:
+      <input type="date" name="arrival_date">
+      <br>Fuel consumption in liters:
+      <input type="number" name="fuel_consumption">
+      <br>Average altitude:
+      <input type="number" name="average_altitude">
+      <br>Flight duration:
+      <input type="number" name="duration">
+        
+      <br><input type="submit" value="Submit">
+
+    </form>
+
+    {% elif table == 'BOOKINGS' %}
+
+    
+    <h1 class="title">Update Bookings</h1>
+
+    <form method="POST" type="number">
+      Enter Booking ID to update:
+      <input type="number" name="booking_id">
+      <br>Flight ID:
+      <input type="number" name="flight_id">
+      <br>Passenger ID:
+      <input type="number" name="passenger_id">
+      <br>Payment Type:
+      <select name="payment_type">
+        <option value="cash">cash</option>
+        <option value="credit">credit card</option>
+        <option value="check">check</option>
+        <option value="other">other</option>
+      </select>
+      <br>Seat number:
+      <input type="number" name="seat_number">
+      <br>Class Type:
+      <select name="class_type">
+        <option value="Budget">Budget</option>
+        <option value="Economy">Economy</option>
+        <option value="Buisness">Buisness</option>
+        <option value="Premium">Premium</option>
+      </select>
+      <br>Fare:
+      <input type="number" name="fare">
+      <br><input type="submit" value="Submit">
+    </form>
+
+    {% elif table == 'AIRCRAFTS' %}
+
+    
+    <h1 class="title">Update Aircrafts</h1>
+
+    <form method="POST" type="number">
+      Enter Aircraft ID to update:
+      <input type="number" name="aircraft_id">
+      Airline ID:
+      <input type="number" name="airline_id">
+      <br>Capacity (number of passengers):
+      <input type="number" name="capacity">
+      <br>Company name:
+            <select name="company_name">
+        <option value="x">x company</option>
+        <option value="y">y company</option>
+        <option value="z">z company</option>
+        <option value="other">other</option>
+      </select>
+      <br>Model name:
+      <input type="name" name="model_name">
+      <br>Maximum flight range (km):
+      <input type="number" name="maximum_range">
+      <br>Year produced:
+      <input type="number" name="year_produced">
+      <br><input type="submit" value="Submit">
+
+    </form>
+    {% elif table == 'ROUTES' %}
+
+    
+    <h1 class="title">Update Routes</h1>
+
+    <form method="POST" type="number">
+      Enter Route ID to update:
+      <input type="number" name="route_id">
+      <br>Departure airport ID:
+      <input type="number" name="dep_airport_id">
+      <br>Arrival airport ID:
+      <input type="number" name="arr_airport_id">
+      <br>Route name:
+      <input type="number" name="route_name">
+      <br>Distance (km):
+      <input type="number" name="distance">
+      <br>Number of airlines:
+      <input type="number" name="number_of_airlines">
+      <br>Altitude (km):
+      <input type="number" name="altitude">
+      <br><input type="submit" value="Submit">
+    </form>
 
     {% elif table == 'test' %}
 
