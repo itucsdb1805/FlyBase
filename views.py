@@ -73,7 +73,8 @@ def execute_sql(command):
             cursor = connection.cursor()
             print("debug2")
             cursor.execute(command)
-            print("Execute works!")
+            print("Execute works!!")
+
             connection.commit()
 
     except dbapi2.DatabaseError:
@@ -83,17 +84,7 @@ def execute_sql(command):
             return -1;
 
     try:
-            data_column = []
-            data_content = cursor.fetchall()
-            if(data_content[0][0] == None):
-                return -2
-            data_column.append(tuple([desc[0] for desc in cursor.description]))
-
-            print(data_column)
-            print(data_content)
-            data_column += data_content
-            print(data_column)
-
+            data = cursor.fetchall()
             cursor.close()
             connection.close()
 
@@ -103,7 +94,7 @@ def execute_sql(command):
             connection.rollback()
             return -2;
 
-    return data_column
+    return data
 
 @login_required
 def admin_page():
@@ -428,12 +419,12 @@ def admin_update_page():
         primary_key_count = 1; #counts how many primary keys there are, all main tables, except bookings, have one primary id
         if (my_table == 'PASSENGERS'):
             table_name = "PASSENGERS"
-            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"]] #add fotograph
-            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name" ]
+            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"], request.form["passport_id"] ,request.form["photograph"]]
+            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name", "passport_id" ,"photograph" ]
         elif (my_table == 'STAFF'):
             table_name = "STAFF"
-            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"]] #add fotograph
-            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date" ]
+            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"], request.form["fotograph"]] 
+            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date", "fotograph" ]
         elif (my_table == 'BOOKINGS'):
             table_name = "BOOKINGS"
             primary_key_count = 2
@@ -441,8 +432,8 @@ def admin_update_page():
             column_names = ["booking_id", "flight_id", "passenger_id", "payment_type", "seat_number", "class_type", "fare"]
         elif (my_table == 'FLIGHTS'):
             table_name = "FLIGHTS"
-            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"],  request.form["duration"], request.form["average_altitude"]]
-            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_consumption", "duration", "average_altitude"]
+            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"], request.form["duration"], request.form["average_altitude"]]
+            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_consumption", "duration", "averge altitude"]
         elif (my_table == 'AIRCRAFTS'):
             table_name = "AIRCRAFTS"  
             values = [request.form["aircraft_id"], request.form["airline_id"],request.form["capacity"], request.form["company_name"],request.form["model_name"], request.form["maximum_range"], request.form["year_produced"]]
@@ -464,15 +455,12 @@ def admin_view_page():
     my_table = session['table']  # get table from session cookie, defined in admin_select_table()
     if (my_table == ""):
         abort(401)
-    print(my_table)
     if request.method == "GET":
-        command = """SELECT * FROM 
-                          %(name)s;"""
+        command = """SELECT * FROM %(name)s;"""
 
         data = execute_sql(command % {'name': my_table})
-        data[1:] = sorted(data[1:])
-
-        return render_template("admin_view_page.html", table=my_table, data=data)
+        #print(data)
+        return render_template("admin_view_page.html", table=my_table, data=sorted(data))
 
 def admin_sql_page():
     if not current_user.is_admin:
@@ -489,6 +477,29 @@ def admin_sql_page():
         data[1:] = sorted(data[1:])
         return render_template("admin_view_page.html", data = data)
 
+def register_page():
+    if request.method == "GET":
+        return render_template("register_page.html")
+    elif request.method == "POST":
+        username = request.form["username"]
+        command = """ select username from USERS where username = %(username)s"""
+        result = execute_sql(command % {'username': username})
+        if (result != []):
+            print("Username already in use.")
+            abort(401)
+        else:
+            passport_id = request.form["passport_id"]
+            command = """ select passport_id from PASSENGERS where passport_if = %(passport_id)s"""
+            result = execute_sql(command % {'username': username})
+            if (result != []): # if passport id found in passengers table
+                print("User found in database.  Register complete")
+                hash_pwd = hasher.hash(request.form["password"])
+                command = """ INSERT INTO USERS (username, password, passport_id) VALUES (%(username)s, %(password)s, %(passport_id)s);"""
+                result = execute_sql(command % {'username': username, 'password': hash_pwd, 'passport_id': passport_id})
+                return redirect(url_for("home.html"))
+            else:
+                print("User not found in database.")
+                return render_template("home.html", password = password, user = user, passport_id = passport_id) #html page not made
 
 
 

@@ -2,19 +2,13 @@
 {% block title %}View Table{% endblock %}
 {% block content %}
 
-<table>
-
-    {% for item in data %}
-
-    <tr>
+{% for item in data %}
+<tr>
     {% for column in item %}
-        <td>{{ column }}</td>
+        <td>{column}</td>
     {% endfor %}
-    </tr>
+</tr>
 {% endfor %}
-
-</table>
-
 
 
 {% endblock %}
