@@ -81,9 +81,9 @@ INIT_STATEMENTS = [
             passenger_name varchar (30) NOT NULL,
             passenger_last_name varchar (30) NOT NULL,
             email varchar (50),
-            number_of_flights integer DEFAULT 0,
-            last_flight_date varchar (10) DEFAULT NULL,
             FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
+            gender  varchar (1) NOT NULL
+                CHECK (gender IN ( 'F' , 'M' ) ),
             passport_id integer NOT NULL UNIQUE
             file_data BYTEA
             );""",
@@ -100,7 +100,8 @@ INIT_STATEMENTS = [
             staff_name varchar (30) NOT NULL,
             staff_last_name varchar (30) NOT NULL,
             start_date varchar (10) NOT NULL,
-            number_of_flights integer DEFAULT 0,
+            gender  varchar (1) NOT NULL
+                CHECK (gender IN ( 'F' , 'M' ) ),
             file_data BYTEA
             FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id),
             FOREIGN KEY (airline_id) REFERENCES AIRLINES(airline_id)

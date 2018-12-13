@@ -428,12 +428,12 @@ def admin_update_page():
         primary_key_count = 1; #counts how many primary keys there are, all main tables, except bookings, have one primary id
         if (my_table == 'PASSENGERS'):
             table_name = "PASSENGERS"
-            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"], request.form["passport_id"] ,request.form["photograph"]]
-            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name", "passport_id" ,"photograph" ]
+            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"], request.form["passport_id"] ,request.form["photograph"], request.form[gender]]
+            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name", "passport_id" ,"photograph", "gender" ]
         elif (my_table == 'STAFF'):
             table_name = "STAFF"
-            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"], request.form["fotograph"]] 
-            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date", "fotograph" ]
+            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"], request.form["fotograph"], request.form[gender]] 
+            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date", "fotograph", "gender" ]
         elif (my_table == 'BOOKINGS'):
             table_name = "BOOKINGS"
             primary_key_count = 2
@@ -490,6 +490,21 @@ def register_page():
     if request.method == "GET":
         return render_template("register_page.html")
     elif request.method == "POST":
+        if ('userinfo' in session):
+            userinfo = session['userinfo']
+            session.pop('userinfo', None) # remove userinfo from session
+            command = """INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name, email, gender, passport_id)
+                         VALUES (%(country_id)s,
+                                 '%(passenger_name)s',
+                                 '%(passenger_last_name)s',
+                                 '%(email)s',
+                                 '%(gender)s',
+                                 %(passport_id)s;"""
+             execute_sql(command % {'passenger_name': request.form['passenger_name'], 'passenger_last_name': request.form['passenger_name'],'email': request.form['email'], 'gender': request.form['gender'], 'passport_id': userinfo[2]}) # add to table PASSENGERS
+            command = """ INSERT INTO USERS (username, password, passport_id) VALUES (%(username)s, %(password)s, %(passport_id)s);"""
+            execute_sql(command % {'username': userinfo[0], 'password': userinfo[1], 'passport_id': userinfo[2]}) # add to table USERS
+            return redirect(url_for("home.html"))
+            
         username = request.form["username"]
         command = """ select username from USERS where username = '%(username)s'"""
         result = execute_sql(command % {'username': username})
@@ -497,19 +512,19 @@ def register_page():
             flash("Username already in use.")
             return redirect(url_for("register_page"))
         else:
+            hash_pwd = hasher.hash(request.form["password"])
             passport_id = request.form["passport_id"]
             command = """ select passport_id from PASSENGERS where passport_id = %(passport_id)s"""
             result = execute_sql(command % {'passport_id': passport_id})
             if (result != -2): # -2 means return of the select call is empty
-
-                hash_pwd = hasher.hash(request.form["password"])
                 command = """ INSERT INTO USERS (username, password, passport_id) VALUES (%(username)s, %(password)s, %(passport_id)s);"""
                 result = execute_sql(command % {'username': username, 'password': hash_pwd, 'passport_id': passport_id})
                 flash("User found in database.  Register completed.")
                 return redirect(url_for("home.html"))
             else:
                 flash("User not found in database.")
-                return render_template("home.html", password = password, user = user, passport_id = passport_id) #html page not made
+                session['userinfo'] = (name, hash_pwd, passport_id)
+                return render_template("register_page_2.html", username = username, passport_id = passport_id) #html page not made
 
 def register_page():
     
