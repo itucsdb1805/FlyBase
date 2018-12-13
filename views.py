@@ -84,7 +84,16 @@ def execute_sql(command):
             return -1;
 
     try:
-            data = cursor.fetchall()
+            data_column = []
+            data_content = cursor.fetchall()
+            if (data_content[0][0] == None):
+               return -2
+            data_column.append(tuple([desc[0] for desc in cursor.description]))
+
+            print(data_column)
+            print(data_content)
+            data_column += data_content
+            print(data_column)
             cursor.close()
             connection.close()
 
@@ -94,7 +103,7 @@ def execute_sql(command):
             connection.rollback()
             return -2;
 
-    return data
+    return data_column
 
 @login_required
 def admin_page():
@@ -459,8 +468,8 @@ def admin_view_page():
         command = """SELECT * FROM %(name)s;"""
 
         data = execute_sql(command % {'name': my_table})
-        #print(data)
-        return render_template("admin_view_page.html", table=my_table, data=sorted(data))
+        data[1:] = sorted(data[1:])
+        return render_template("admin_view_page.html", table=my_table, data=data)
 
 def admin_sql_page():
     if not current_user.is_admin:
@@ -482,26 +491,28 @@ def register_page():
         return render_template("register_page.html")
     elif request.method == "POST":
         username = request.form["username"]
-        command = """ select username from USERS where username = %(username)s"""
+        command = """ select username from USERS where username = '%(username)s'"""
         result = execute_sql(command % {'username': username})
-        if (result != []):
-            print("Username already in use.")
-            abort(401)
+        if (result != -2): # -2 means return of the select call is empty
+            flash("Username already in use.")
+            return redirect(url_for("register_page"))
         else:
             passport_id = request.form["passport_id"]
-            command = """ select passport_id from PASSENGERS where passport_if = %(passport_id)s"""
-            result = execute_sql(command % {'username': username})
-            if (result != []): # if passport id found in passengers table
-                print("User found in database.  Register complete")
+            command = """ select passport_id from PASSENGERS where passport_id = %(passport_id)s"""
+            result = execute_sql(command % {'passport_id': passport_id})
+            if (result != -2): # -2 means return of the select call is empty
+
                 hash_pwd = hasher.hash(request.form["password"])
                 command = """ INSERT INTO USERS (username, password, passport_id) VALUES (%(username)s, %(password)s, %(passport_id)s);"""
                 result = execute_sql(command % {'username': username, 'password': hash_pwd, 'passport_id': passport_id})
+                flash("User found in database.  Register completed.")
                 return redirect(url_for("home.html"))
             else:
-                print("User not found in database.")
+                flash("User not found in database.")
                 return render_template("home.html", password = password, user = user, passport_id = passport_id) #html page not made
 
-
+def register_page():
+    
 
 
 
