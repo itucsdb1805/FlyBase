@@ -81,15 +81,14 @@ INIT_STATEMENTS = [
             passenger_name varchar (30) NOT NULL,
             passenger_last_name varchar (30) NOT NULL,
             email varchar (50),
-            FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT
-            gender  varchar (1) NOT NULL
-                CHECK (gender IN ( 'F' , 'M' ) ),
-            passport_id integer NOT NULL UNIQUE
+            FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id) ON DELETE RESTRICT,
+            gender  varchar (1) NOT NULL CHECK (gender IN ( 'F' , 'M' ) ),
+            passport_id integer NOT NULL UNIQUE,
             file_data BYTEA
             );""",
 
-    " INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name) VALUES (1, 'Bulut', 'Ozler');",
-    " INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name) VALUES (4, 'Chandler', 'Bing');",
+    " INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name, gender, passport_id) VALUES (1, 'Bulut', 'Ozler', 'M', 123456789);",
+    " INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name, gender, passport_id) VALUES (4, 'Chandler', 'Bing', 'M', 234567891);",
 
 
     """ CREATE TABLE IF NOT EXISTS STAFF(
@@ -100,14 +99,13 @@ INIT_STATEMENTS = [
             staff_name varchar (30) NOT NULL,
             staff_last_name varchar (30) NOT NULL,
             start_date varchar (10) NOT NULL,
-            gender  varchar (1) NOT NULL
-                CHECK (gender IN ( 'F' , 'M' ) ),
-            file_data BYTEA
+            gender  varchar (1) NOT NULL CHECK (gender IN ( 'F' , 'M' ) ),
+            file_data BYTEA,
             FOREIGN KEY (country_id) REFERENCES COUNTRIES(country_id),
             FOREIGN KEY (airline_id) REFERENCES AIRLINES(airline_id)
             );""",
 
-    " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date) VALUES (1, 2, 'Pilot', 'John', 'Doe', '2017-10-09');",
+    " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date, gender) VALUES (1, 2, 'Pilot', 'John', 'Doe', '2017-10-09', 'M');",
 
 
 
@@ -143,13 +141,29 @@ INIT_STATEMENTS = [
     " INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, miles_used, seat, class_of_seat, fare) VALUES (1, 2,  'Credit Card', 200, '42F', 'First Class', 300);",
 
 """ CREATE TABLE IF NOT EXISTS USERS(
-            username varchar NOT NULL UNIQUE CHECK (char_length(username) >= 5 AND char_length(username) <= 15)
+            username varchar NOT NULL UNIQUE PRIMARY KEY  CHECK (char_length(username) >= 5 AND char_length(username) <= 15),
             password varchar NOT NULL,
-            passport_id integer NOT NULL
-            );"""
+            passport_id integer,
+            FOREIGN KEY (passport_id) REFERENCES PASSENGERS(passport_id) ON UPDATE CASCADE
+            );""",
+
+    " INSERT INTO USERS (username, password) VALUES ('admin', '$pbkdf2-sha256$29000$PIdwDqH03hvjXAuhlLL2Pg$B1K8TX6Efq3GzvKlxDKIk4T7yJzIIzsuSegjZ6hAKLk');",
+
 ]
 
-INIT_STATEMENTS2 = ["TRUNCATE  flights,  aircrafts, airlines, routes,  passengers CASCADE;"]
+INIT_STATEMENTS2 = [
+
+    " DROP TABLE BOOKINGS ",
+    " DROP TABLE FLIGHTS ",
+    " DROP TABLE STAFF ",
+    " DROP TABLE AIRCRAFTS ",
+    " DROP TABLE AIRLINES ",
+    " DROP TABLE ROUTES ",
+    " DROP TABLE AIRPORTS ",
+    " DROP TABLE PASSENGERS ",
+    " DROP TABLE COUNTRIES ",
+    " DROP TABLE USERS "
+]
 
 INIT_STATEMENTS3 = [
 
@@ -171,8 +185,8 @@ INIT_STATEMENTS3 = [
 def initialize(url):
     with dbapi2.connect(url) as connection:
         cursor = connection.cursor()
-        #for statement in INIT_STATEMENTS2:
-            #cursor.execute(statement)
+        for statement in INIT_STATEMENTS2:
+            cursor.execute(statement)
         for statement in INIT_STATEMENTS:
             cursor.execute(statement)
 
