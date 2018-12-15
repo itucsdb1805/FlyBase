@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}View Flights{% endblock %}
+{% block content %}
+
+Flights found:
+<br>
+{% for item in data %}
+<tr>
+    {% for column in item %}
+        <td>{column}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+<br>
+
+Enter flight ID for more information:
+<br>
+Class type:
+<form method="POST">
+    Flight ID:
+      <input type="number" name="flight_id">
+<input type="submit" value="Submit">
+</form>
+{% endblock %}

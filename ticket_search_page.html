@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+    <form method="POST">
+      Date range:
+      <input type="date" name="min_date"> - 
+      <input type="date" name="max_date">
+      <br>Origin country:
+      <input type="date" name="origin">
+      <br>Destination country:
+      <input type="date" name="destination">
+      <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

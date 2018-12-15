@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Buy ticket{% endblock %}
+{% block content %}
+
+Flight information:
+<br>
+<tr>
+    {% for column in data %}
+        <td>{column}</td>
+    {% endfor %}
+</tr>
+<br>
+
+Purchase ticket:
+<br>
+Class type:
+<form method="POST">
+      <select name="class_type">
+        <option value="Budget">Budget (Fare: $100)</option>
+        <option value="Economy">Economy (Fare: $200)</option>
+        <option value="Buisness">Buisness (Fare: $300)</option>
+        <option value="Premium">Premium (Fare: $400)</option>
+      </select>
+    Enter credit card number:
+      <input type="number" name="cc">
+<input type="submit" value="Submit">
+</form>
+{% endblock %}

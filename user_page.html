@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}User Page{% endblock %}
+{% block content %}
+    <h1 class="title">User Page</h1>
+
+
+    <a href="{{ url_for('ticket_search_page') }}" class="button">Buy ticket</a>
+    <a href="{{ url_for('flight_history') }}" class="button">View your flights</a>
+
+
+
+
+{% endblock %}
