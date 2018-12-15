@@ -12,8 +12,8 @@ from flight import Flight
 lm = LoginManager()
 
 @lm.user_loader
-def load_user(user_id):
-    return get_user(user_id)
+def load_user(username):
+    return get_user(username)
 
 
 def create_app():
