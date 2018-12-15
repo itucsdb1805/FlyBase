@@ -526,7 +526,57 @@ def register_page():
                 session['userinfo'] = (name, hash_pwd, passport_id)
                 return render_template("register_page_2.html", username = username, passport_id = passport_id) #html page not made
 
-def register_page():
+def user_page():
+    if request.method == "GET":
+        return render_template("user_page.html")   
+
+def ticket_search_page():
+    if request.method == "GET":
+        return render_template("ticket_search_page.html")    
+    elif request.method == "POST":
+        try: #get all forms and check if they are empty or not
+            min_date = request.form["min_date"]
+            max_date = request.form["max_date"]
+            origin = request.form["origin"]
+            destination = request.form["destination"]
+        except:
+            flash("Please fill all forms")
+            return render_template("flight_search_page")
+        # write sql query to select country id based on for input
+        command = """SELECT flight_id, departure_date, arrival_date, duration FROM FLIGHTS 
+                    WHERE depature_date >= '%(min_date)s' AND arrival_date <= '%(max_date)s' """ # if possible also select departure and arrival airports
+        data = execute_sql(command % {'min_date': min_date, 'max_date': max_date})
+        session['ticket_search'] = data
+        return url_for("ticket_view_page")
+
+def ticket_view_page():
+    if request.method == "GET":
+        return render_template("ticket_search_page.html", data = session['ticket_search'])
+        session.pop('ticket_search', None)  
+    elif request.method == "POST":
+        flight_id = request.form("flight_id")
+        return url_for("ticket_buy_page", flight_id = flight_id) #send url parameter
+
+def ticket_buy_page(): # displays captain name, captain photo (when blob is complete), origin airline, destination airline, departure airline, flight duration
+    if request.method == "GET":
+        flight_id = request.args.get('flight_id')
+        #command selects relevant flight info
+        command = """SELECT """
+        return render_template("ticket_buy_page.html", ) 
+    elif request.method == "POST": #buy ticket
+        user = current_user.name
+        if (user == 'admin'):
+            flash("admins cannot buy tickets")
+            return url_for('home_page')
+        else:
+            command = """SELECT * FROM USERS INNER JOIN PASSENGERS ON (USERS.passport_id = PASSENGERS.passenger_id)
+                         WHERE USERS.username = '%(username)s'"""
+            passenger_data = (execute_sql(command % {'username': current_user.name}))
+        command = """ """
+        execute_sql(command)
+        flash("Ticket purchased")
+        return url_for("home_page")
+        
     
 
 
