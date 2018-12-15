@@ -13,7 +13,7 @@ from psycopg2.tests import dsn
 from flask import session
 
 from forms import LoginForm
-from user import get_user
+from user import get_user, execute_sql
 
 def sqlgen_update(table_name, column_names, variables, primary_key_count): #(string, list, list) !ID must be first item in lists. 
     command = "UPDATE " + table_name + " " + " SET "
@@ -61,49 +61,6 @@ def home_page():
     return render_template("home.html", day=day_name)
 
 
-def execute_sql(command):
-    print("executing...")
-    print(command)
-    #command = """UPDATE COUNTRIES SET country_name = Turkey WHERE country_id = 1;"""
-    try:
-            url = "postgres://itucs:itucspw@localhost:32769/itucsdb"#url = os.getenv("DATABASE_URL")  #
-            print("debug0")
-            connection = dbapi2.connect(url)
-            print("debug1")
-            cursor = connection.cursor()
-            print("debug2")
-            cursor.execute(command)
-            print("Execute works!!")
-
-            connection.commit()
-
-    except dbapi2.DatabaseError:
-            print("dataerror2")
-            print(dbapi2.DatabaseError)
-            connection.rollback()
-            return -1;
-
-    try:
-            data_column = []
-            data_content = cursor.fetchall()
-            if (data_content[0][0] == None):
-               return -2
-            data_column.append(tuple([desc[0] for desc in cursor.description]))
-
-            print(data_column)
-            print(data_content)
-            data_column += data_content
-            print(data_column)
-            cursor.close()
-            connection.close()
-
-    except dbapi2.DatabaseError:
-            print("dataerror3")
-            print(dbapi2.DatabaseError)
-            connection.rollback()
-            return -2;
-
-    return data_column
 
 @login_required
 def admin_page():
@@ -456,7 +413,6 @@ def admin_update_page():
         execute_sql(command)
         return redirect(url_for("admin_page")) #change this into a page that displays whether operation was successful or not
 
-
 @login_required
 def admin_view_page():
     if not current_user.is_admin:
@@ -488,22 +444,32 @@ def admin_sql_page():
 
 def register_page():
     if request.method == "GET":
+        if('userinfo' in session):
+            session.pop('userinfo', None)  # remove userinfo from session
+
+
         return render_template("register_page.html")
     elif request.method == "POST":
+        print("post mu")
         if ('userinfo' in session):
+            print("userinfo session'da var mı")
             userinfo = session['userinfo']
             session.pop('userinfo', None) # remove userinfo from session
+            print("userinfo session'dan cıktı mı")
+            print(session)
             command = """INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name, email, gender, passport_id)
                          VALUES (%(country_id)s,
                                  '%(passenger_name)s',
                                  '%(passenger_last_name)s',
                                  '%(email)s',
                                  '%(gender)s',
-                                 %(passport_id)s;"""
-             execute_sql(command % {'passenger_name': request.form['passenger_name'], 'passenger_last_name': request.form['passenger_name'],'email': request.form['email'], 'gender': request.form['gender'], 'passport_id': userinfo[2]}) # add to table PASSENGERS
-            command = """ INSERT INTO USERS (username, password, passport_id) VALUES (%(username)s, %(password)s, %(passport_id)s);"""
+                                 %(passport_id)s);"""
+            execute_sql(command % {'country_id': request.form['country_id'], 'passenger_name': request.form['passenger_name'], 'passenger_last_name': request.form['passenger_last_name'],'email': request.form['email'], 'gender': request.form['gender'], 'passport_id': userinfo[2]}) # add to table PASSENGERS
+            print("ilk execute")
+            command = """ INSERT INTO USERS (username, password, passport_id) VALUES ('%(username)s', '%(password)s', %(passport_id)s);"""
             execute_sql(command % {'username': userinfo[0], 'password': userinfo[1], 'passport_id': userinfo[2]}) # add to table USERS
-            return redirect(url_for("home.html"))
+            print("return oncesi burası")
+            return redirect(url_for("home_page"))
             
         username = request.form["username"]
         command = """ select username from USERS where username = '%(username)s'"""
@@ -517,13 +483,14 @@ def register_page():
             command = """ select passport_id from PASSENGERS where passport_id = %(passport_id)s"""
             result = execute_sql(command % {'passport_id': passport_id})
             if (result != -2): # -2 means return of the select call is empty
-                command = """ INSERT INTO USERS (username, password, passport_id) VALUES (%(username)s, %(password)s, %(passport_id)s);"""
+                command = """ INSERT INTO USERS (username, password, passport_id) VALUES ('%(username)s', '%(password)s', %(passport_id)s);"""
                 result = execute_sql(command % {'username': username, 'password': hash_pwd, 'passport_id': passport_id})
                 flash("User found in database.  Register completed.")
-                return redirect(url_for("home.html"))
+                return redirect(url_for("home_page"))
             else:
                 flash("User not found in database.")
-                session['userinfo'] = (name, hash_pwd, passport_id)
+                session['userinfo'] = (username, hash_pwd, passport_id)
+                print(session)
                 return render_template("register_page_2.html", username = username, passport_id = passport_id) #html page not made
 
 def user_page():
