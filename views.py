@@ -31,6 +31,7 @@ def sqlgen_update(table_name, column_names, variables, primary_key_count): #(str
         print("error primary_id_count must be 1 or 2")
     print("result: ")
     print(command)
+
     return command
 
 def login_page():
@@ -427,6 +428,7 @@ def admin_view_page():
         data[1:] = sorted(data[1:])
         return render_template("admin_view_page.html", table=my_table, data=data)
 
+@login_required
 def admin_sql_page():
     if not current_user.is_admin:
         abort(401)

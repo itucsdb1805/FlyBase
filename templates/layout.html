@@ -26,10 +26,15 @@
             <a class="button is-link" href="{{ url_for('register_page') }}">Register</a>
           </span>
           {% else %}
-
-          <span class="navbar-item">
-            <a class="button is-link" href="{{ url_for('admin_page') }}">{{ current_user.username }}</a>
-          </span>
+            {% if current_user.is_admin %}
+              <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('admin_page') }}">{{ current_user.username }}</a>
+              </span>
+            {% else %}
+              <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('user_page') }}">{{ current_user.username }}</a>
+              </span>
+            {% endif %}
           <span class="navbar-item">
             <a class="button is-link" href="{{ url_for('logout_page') }}">Logout</a>
           </span>

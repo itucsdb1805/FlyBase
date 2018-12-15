@@ -2,22 +2,13 @@
 {% block title %}Register{% endblock %}
 {% block content %}
     <form method="POST" type="number">
-      Username: {{username}}
-      <br>Password: ******
-      <br>Passport ID: {{passport_id}}
-      <br>Email:
-      <input type="text" name="email" >
-      <br>Country ID:
-      <input type="number" name="country_id">
-      <br>Name:
-      <input type="text" name="passenger_name">
-      <br>Surname:
-      <input type="text" name="passenger_last_name">
-      <input type="radio" name="gender" value="M"> Male<br>
-      <input type="radio" name="gender" value="F"> Female<br>
-      <br>Fotograph:
-      <input type="file" name="fotograph" accept="image/*">
-      <br><input type="submit" value="Submit">
+       Username:
+       <input type="text" name="username">
+       <br>Password:
+       <input type="password" name="password">
+       <br>Passport ID:
+       <input type="number" name="passport_id">
+       <input type="submit" value="Submit">
     </form>
 
 {% endblock %}

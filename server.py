@@ -38,7 +38,11 @@ def create_app():
     app.add_url_rule("/admin_page/view", view_func=views.admin_view_page, methods=["GET", "POST"])
     app.add_url_rule("/admin_page/sql", view_func=views.admin_sql_page, methods=["GET", "POST"])
     app.add_url_rule("/register", view_func=views.register_page, methods=["GET", "POST"])
-    
+    app.add_url_rule("/user_page", view_func=views.user_page, methods=["GET", "POST"])
+    app.add_url_rule("/ticket_search", view_func=views.ticket_search_page, methods=["GET", "POST"])
+    app.add_url_rule("/ticket_view", view_func=views.ticket_view_page, methods=["GET", "POST"])
+    app.add_url_rule("/ticket_buy", view_func=views.ticket_buy_page, methods=["GET", "POST"])
+
     lm.init_app(app)
     lm.login_view = "login_page"
 
