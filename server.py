@@ -19,7 +19,7 @@ def load_user(username):
 def create_app():
     app = Flask(__name__)
     app.secret_key = 'Q8z/n/xec]/b"_5#y2L"F4' #secret key needed for cookies
-    
+
     app.config.from_object("settings")
     app.add_url_rule("/", view_func=views.home_page)
     app.add_url_rule("/login", view_func=views.login_page, methods=["GET", "POST"])
@@ -42,6 +42,7 @@ def create_app():
     app.add_url_rule("/ticket_search", view_func=views.ticket_search_page, methods=["GET", "POST"])
     app.add_url_rule("/ticket_view", view_func=views.ticket_view_page, methods=["GET", "POST"])
     app.add_url_rule("/ticket_buy", view_func=views.ticket_buy_page, methods=["GET", "POST"])
+    app.add_url_rule("/user_flights_page", view_func=views.user_flights_page, methods=["GET", "POST"])
 
     lm.init_app(app)
     lm.login_view = "login_page"

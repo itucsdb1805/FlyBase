@@ -2,14 +2,22 @@
 {% block title %}Register{% endblock %}
 {% block content %}
     <form method="POST">
-      Date range:
-      <input type="date" name="min_date"> - 
+      Show me flights between :<br>
+      <input type="date" name="min_date"> and
       <input type="date" name="max_date">
-      <br>Origin country:
-      <input type="date" name="origin">
-      <br>Destination country:
-      <input type="date" name="destination">
-      <input type="submit" value="Submit">
+      <br>From:
+      <select name="departure_airport">
+        <option value="Ataturk Airport">Ataturk Airport, Turkey</option>
+        <option value="Sabiha Gokcen Airport">Sabiha Gokcen Airport, Turkey</option>
+        <option value="Esenboga Airport">Esenboga Airport, Turkey</option>
+      </select>
+      <br>To:
+      <select name="arrival_airport">
+        <option value="Ataturk Airport">Ataturk Airport, Turkey</option>
+        <option value="Sabiha Gokcen Airport">Sabiha Gokcen Airport, Turkey</option>
+        <option value="Esenboga Airport">Esenboga Airport, Turkey</option>
+      </select><br>
+      <input type="submit" value="GO!">
     </form>
 
 {% endblock %}

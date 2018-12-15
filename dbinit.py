@@ -106,15 +106,17 @@ INIT_STATEMENTS = [
             );""",
 
     " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date, gender) VALUES (1, 2, 'Pilot', 'John', 'Doe', '2017-10-09', 'M');",
-
+    " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date, gender) VALUES (1, 2, 'Pilot', 'Maria', 'Williams', '2015-10-09', 'F');",
+    " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date, gender) VALUES (1, 2, 'Pilot', 'Goksel', 'Sezen', '2012-10-09', 'M');",
+    " INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date, gender) VALUES (1, 2, 'Pilot', 'Dimitri', 'Petrov', '2016-10-09', 'M');",
 
 
     """ CREATE TABLE IF NOT EXISTS FLIGHTS(
             flight_id serial PRIMARY KEY,
             aircraft_id integer NOT NULL,
             route_id integer NOT NULL,
-            departure_date varchar (10) NOT NULL,
-            arrival_date varchar (10) NOT NULL,
+            departure_date timestamp NOT NULL,
+            arrival_date timestamp NOT NULL,
             fuel_consumption integer NOT NULL,
             duration integer NOT NULL,
             average_altitude integer NOT NULL,
@@ -122,15 +124,25 @@ INIT_STATEMENTS = [
             FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE RESTRICT
             );""",
 
-    " INSERT INTO FLIGHTS (aircraft_id, route_id, departure_date, arrival_date, fuel_consumption, duration, average_altitude) VALUES (1, 2, '2019-01-02', '2019-01-03', 150000, 10, 12000);",
+    " INSERT INTO FLIGHTS (aircraft_id, route_id, departure_date, arrival_date, fuel_consumption, duration, average_altitude) VALUES (1, 2, TIMESTAMP '2019-01-02 10:00:00', TIMESTAMP '2019-01-02 13:00:00', 150000, 3, 12000);",
+    " INSERT INTO FLIGHTS (aircraft_id, route_id, departure_date, arrival_date, fuel_consumption, duration, average_altitude) VALUES (1, 1, TIMESTAMP '2019-01-04 08:00:00', TIMESTAMP '2019-01-04 13:00:00', 150000, 5, 11000);",
 
+    """ CREATE TABLE IF NOT EXISTS STAFF_FLIGHT(
+            staff_id integer NOT NULL,
+            flight_id integer NOT NULL, 
+            FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id) ON DELETE RESTRICT,
+            FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE RESTRICT
+            );""",
+
+    " INSERT INTO STAFF_FLIGHT (staff_id, flight_id) VALUES (1, 1);",
+    " INSERT INTO STAFF_FLIGHT (staff_id, flight_id) VALUES (3, 2);",
 
     """ CREATE TABLE IF NOT EXISTS BOOKINGS(
             flight_id integer NOT NULL,
             passenger_id integer NOT NULL,
-            payment_type varchar (15) NOT NULL,
-            miles_used integer,
-            seat varchar (3) NOT NULL,
+            payment_type varchar (20) NOT NULL,
+            purchase_time timestamp NOT NULL,
+            seat VARCHAR (3) NOT NULL,
             class_of_seat varchar (15) NOT NULL,
             fare integer NOT NULL,
             FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE RESTRICT,
@@ -138,13 +150,13 @@ INIT_STATEMENTS = [
             PRIMARY KEY (flight_id, passenger_id)
             );"""
 
-    " INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, miles_used, seat, class_of_seat, fare) VALUES (1, 2,  'Credit Card', 200, '42F', 'First Class', 300);",
+    " INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, purchase_time, seat, class_of_seat, fare) VALUES (1, 2, 'Credit Card', TIMESTAMP '2018-12-15 20:00:00', '42F', 'First Class', 300);",
 
 """ CREATE TABLE IF NOT EXISTS USERS(
             username varchar NOT NULL UNIQUE PRIMARY KEY  CHECK (char_length(username) >= 5 AND char_length(username) <= 15),
             password varchar NOT NULL,
             passport_id integer,
-            FOREIGN KEY (passport_id) REFERENCES PASSENGERS(passport_id) ON UPDATE CASCADE
+            FOREIGN KEY (passport_id) REFERENCES PASSENGERS(passport_id) ON UPDATE CASCADE 
             );""",
 
     " INSERT INTO USERS (username, password) VALUES ('admin', '$pbkdf2-sha256$29000$PIdwDqH03hvjXAuhlLL2Pg$B1K8TX6Efq3GzvKlxDKIk4T7yJzIIzsuSegjZ6hAKLk');",
@@ -153,16 +165,18 @@ INIT_STATEMENTS = [
 
 INIT_STATEMENTS2 = [
 
-    " DROP TABLE BOOKINGS ",
-    " DROP TABLE FLIGHTS ",
-    " DROP TABLE STAFF ",
-    " DROP TABLE AIRCRAFTS ",
-    " DROP TABLE AIRLINES ",
-    " DROP TABLE ROUTES ",
-    " DROP TABLE AIRPORTS ",
-    " DROP TABLE PASSENGERS ",
-    " DROP TABLE COUNTRIES ",
-    " DROP TABLE USERS "
+    " DROP TABLE BOOKINGS CASCADE ",
+    " DROP TABLE FLIGHTS CASCADE",
+    " DROP TABLE STAFF CASCADE",
+    " DROP TABLE AIRCRAFTS CASCADE",
+    " DROP TABLE AIRLINES CASCADE",
+    " DROP TABLE ROUTES CASCADE",
+    " DROP TABLE AIRPORTS CASCADE",
+    " DROP TABLE PASSENGERS CASCADE",
+    " DROP TABLE COUNTRIES CASCADE",
+    " DROP TABLE USERS CASCADE",
+    " DROP TABLE STAFF_FLIGHT CASCADE"
+
 ]
 
 INIT_STATEMENTS3 = [

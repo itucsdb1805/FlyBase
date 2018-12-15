@@ -30,6 +30,7 @@ def execute_sql(command):
             data_content = cursor.fetchall()
             print(data_content)
             if (data_content == [] or data_content == [[]]):
+               print("data bos")
                return -2
             data_column.append(tuple([desc[0] for desc in cursor.description]))
             data_column += data_content
@@ -40,7 +41,7 @@ def execute_sql(command):
             print("dataerror3")
             print(dbapi2.DatabaseError)
             connection.rollback()
-            return -2;
+            return -3
 
     return data_column
 

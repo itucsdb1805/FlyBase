@@ -3,26 +3,33 @@
 {% block content %}
 
 Flight information:
-<br>
-<tr>
-    {% for column in data %}
-        <td>{column}</td>
-    {% endfor %}
-</tr>
-<br>
+<table>
 
-Purchase ticket:
+{% for item in data %}
+<tr>
+    {% for column in item %}
+        <td>{{column}}</td>
+    {% endfor %}
+
+</tr>
+{% endfor %}
+
+</table>
 <br>
-Class type:
+Class of Seat:
 <form method="POST">
       <select name="class_type">
         <option value="Budget">Budget (Fare: $100)</option>
         <option value="Economy">Economy (Fare: $200)</option>
-        <option value="Buisness">Buisness (Fare: $300)</option>
-        <option value="Premium">Premium (Fare: $400)</option>
+        <option value="Business">Business (Fare: $300)</option>
+        <option value="First Class">First Class (Fare: $400)</option>
       </select>
-    Enter credit card number:
-      <input type="number" name="cc">
-<input type="submit" value="Submit">
+    Enter Payment Type:
+      <select name="payment_type">
+        <option value="Credit Card">Credit Card</option>
+        <option value="Paypal">Paypal</option>
+        <option value="Cryptocurrency">Cryptocurrency</option>
+      </select>
+      <input type="submit" value="Submit">
 </form>
 {% endblock %}

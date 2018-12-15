@@ -2,16 +2,18 @@
 {% block title %}View Table{% endblock %}
 {% block content %}
 
-
+<h1>PAST FLIGHTS</h1>
 <table>
 
 {% for item in data %}
 <tr>
     {% for column in item %}
-        <td>{{column}}</td>
-    {% endfor %}
 
+            <td>{{column}}</td>
+
+    {% endfor %}
 </tr>
+
 {% endfor %}
 
 </table>

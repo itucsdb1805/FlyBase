@@ -3,22 +3,28 @@
 {% block content %}
 
 Flights found:
-<br>
+<table>
+
 {% for item in data %}
 <tr>
     {% for column in item %}
-        <td>{column}</td>
+        <td>{{column}}</td>
     {% endfor %}
+
 </tr>
 {% endfor %}
-<br>
 
+</table>
 Enter flight ID for more information:
 <br>
-Class type:
 <form method="POST">
     Flight ID:
-      <input type="number" name="flight_id">
-<input type="submit" value="Submit">
+    <select name="id">
+        {% for id in ids %}
+        <option value= "{{id}}">{{ id }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="GO!">
 </form>
 {% endblock %}

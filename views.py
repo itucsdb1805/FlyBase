@@ -1,15 +1,15 @@
 import os
-from datetime import datetime
+import random
 from passlib.hash import pbkdf2_sha256 as hasher
 import psycopg2 as dbapi2
-
+import datetime
 from flask import abort, current_app, render_template, flash
 from flask import request
 from flask import redirect
 from flask import url_for
 from flask_login import login_required, current_user, login_user, logout_user
 from psycopg2.tests import dsn
-
+import string
 from flask import session
 
 from forms import LoginForm
@@ -57,7 +57,7 @@ def logout_page():
     return redirect(url_for("home_page"))
 
 def home_page():
-    today = datetime.today()
+    today = datetime.datetime.today()
     day_name = today.strftime("%A")
     return render_template("home.html", day=day_name)
 
@@ -499,53 +499,125 @@ def user_page():
     if request.method == "GET":
         return render_template("user_page.html")   
 
+@login_required
 def ticket_search_page():
     if request.method == "GET":
         return render_template("ticket_search_page.html")    
     elif request.method == "POST":
-        try: #get all forms and check if they are empty or not
-            min_date = request.form["min_date"]
-            max_date = request.form["max_date"]
-            origin = request.form["origin"]
-            destination = request.form["destination"]
-        except:
-            flash("Please fill all forms")
-            return render_template("flight_search_page")
+         #get all forms and check if they are empty or not
+        min_date = request.form["min_date"]
+        max_date = request.form["max_date"]
+        departure_airport = request.form["departure_airport"]
+        arrival_airport = request.form["arrival_airport"]
+        if(min_date == "" or max_date == "" or departure_airport == "" or arrival_airport == ""):
+            flash("Please give me enough information.")
+            return redirect(url_for("ticket_search_page"))
         # write sql query to select country id based on for input
-        command = """SELECT flight_id, departure_date, arrival_date, duration FROM FLIGHTS 
-                    WHERE depature_date >= '%(min_date)s' AND arrival_date <= '%(max_date)s' """ # if possible also select departure and arrival airports
-        data = execute_sql(command % {'min_date': min_date, 'max_date': max_date})
-        session['ticket_search'] = data
-        return url_for("ticket_view_page")
+        command = """SELECT flight_id, departure_date, arrival_date, duration, route_name FROM ROUTES, FLIGHTS 
+                    where departure_date >= '%(min_date)s' and departure_date <= '%(max_date)s' and 
+                    dep_airport_id = (SELECT airport_id FROM AIRPORTS WHERE airport_name = '%(departure_airport)s') and 
+                    arr_airport_id = (SELECT airport_id FROM AIRPORTS WHERE airport_name = '%(arrival_airport)s') and 
+                    ROUTES.route_id = FLIGHTS.route_id;"""
+        data = execute_sql(command % {'min_date': min_date, 'max_date': max_date, 'departure_airport': departure_airport, 'arrival_airport': arrival_airport})
+        if(data == -2):
+            flash("No flights found. Please try again.")
+            return redirect(url_for("ticket_search_page"))
+        else:
+            print(data)
+            ids = [r[0] for r in data]
+            ids = ids[1:]
+            session['ticket_search'] = data
+            session['id_values'] = ids
+            return redirect(url_for("ticket_view_page"))
+    else:
+        flash("Something went wrong.")
+        return redirect(url_for("home_page"))
 
+@login_required
 def ticket_view_page():
     if request.method == "GET":
-        return render_template("ticket_search_page.html", data = session['ticket_search'])
-        session.pop('ticket_search', None)  
-    elif request.method == "POST":
-        flight_id = request.form("flight_id")
-        return url_for("ticket_buy_page", flight_id = flight_id) #send url parameter
+        data = session['ticket_search']
+        ids = session['id_values']
+        session.pop('ticket_search', None)
+        session.pop('id_values', None)
+        return render_template("ticket_view_page.html", data = data, ids = ids )
 
+    elif request.method == "POST":
+        flight_id = request.form["id"]
+        session['ticket_buy_flight_id'] = flight_id
+        return redirect(url_for("ticket_buy_page")) #send url parameter
+@login_required
 def ticket_buy_page(): # displays captain name, captain photo (when blob is complete), origin airline, destination airline, departure airline, flight duration
     if request.method == "GET":
-        flight_id = request.args.get('flight_id')
+        flight_id = session['ticket_buy_flight_id']
+
         #command selects relevant flight info
-        command = """SELECT """
-        return render_template("ticket_buy_page.html", ) 
+        command = """SELECT flight_id, departure_date, arrival_date, duration, route_name, staff_name, staff_last_name, job_title FROM ROUTES, FLIGHTS, STAFF 
+                            where flight_id = %(flight_id)s and 
+                            staff_id = (SELECT staff_id FROM STAFF_FLIGHT WHERE flight_id = %(flight_id)s) and
+                            routes.route_id = (SELECT route_id FROM FLIGHTS WHERE flight_id = %(flight_id)s);"""
+        data = execute_sql(command % {'flight_id': flight_id})
+        return render_template("ticket_buy_page.html", data=data)
     elif request.method == "POST": #buy ticket
-        user = current_user.name
-        if (user == 'admin'):
+        username = current_user.username
+        if (username == 'admin'):
             flash("admins cannot buy tickets")
             return url_for('home_page')
         else:
-            command = """SELECT * FROM USERS INNER JOIN PASSENGERS ON (USERS.passport_id = PASSENGERS.passenger_id)
-                         WHERE USERS.username = '%(username)s'"""
-            passenger_data = (execute_sql(command % {'username': current_user.name}))
-        command = """ """
-        execute_sql(command)
+            print(username)
+            flight_id = session['ticket_buy_flight_id']
+            class_of_seat = request.form["class_type"]
+            payment_type = request.form["payment_type"]
+            command = """SELECT passenger_id FROM USERS INNER JOIN PASSENGERS ON (USERS.passport_id = PASSENGERS.passport_id)
+                         WHERE username = '%(username)s'"""
+            data = (execute_sql(command % {'username': username}))
+            passenger_id = data[1][0]
+            purchase_time = str(datetime.datetime.now())[:19]
+            seat = str(random.randint(1,99)) + random.choice('ABCD')
+            fare = 100 if(class_of_seat == 'Budget')  else 200 if (class_of_seat == 'Economy') else 300 if (class_of_seat == 'Business') else 400
+
+        command = """INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, purchase_time, seat, class_of_seat, fare)
+                                 VALUES (%(flight_id)s,
+                                         %(passenger_id)s,
+                                         '%(payment_type)s',
+                                        TIMESTAMP '%(purchase_time)s',
+                                        '%(seat)s',
+                                        '%(class_of_seat)s',
+                                        %(fare)s);"""
+        data = execute_sql(command % {'flight_id': flight_id, 'passenger_id': passenger_id, 'payment_type': payment_type, 'purchase_time': purchase_time, 'seat': seat, 'class_of_seat': class_of_seat, 'fare': fare})
         flash("Ticket purchased")
-        return url_for("home_page")
-        
+        return redirect(url_for("user_page"))
+
+
+
+@login_required
+def user_flights_page():
+    username = current_user.username
+    if (username == 'admin'):
+        flash("admins cannot buy tickets")
+        return url_for('home_page')
+    else:
+        if request.method == "GET":
+
+            command = """SELECT passenger_id FROM USERS INNER JOIN PASSENGERS ON (USERS.passport_id = PASSENGERS.passport_id)
+                                     WHERE username = '%(username)s'"""
+            data = (execute_sql(command % {'username': username}))
+            passenger_id = data[1][0]
+            command = """SELECT FLIGHTS.flight_id, passenger_name, passenger_last_name, route_name, departure_date, arrival_date, seat, class_of_seat FROM ROUTES, FLIGHTS, BOOKINGS, PASSENGERS WHERE
+                                BOOKINGS.passenger_id = %(passenger_id)s and 
+                                bookings.flight_id = flights.flight_id and 
+                                flights.route_id = routes.route_id and 
+                                passengers.passenger_id = bookings.passenger_id;"""
+            data = execute_sql(command % {'passenger_id': passenger_id})
+            print(data)
+            if(data == -2):
+                data = [[]]
+            else:
+                return render_template("user_flights_page.html", data=data)
+
+
+
+
     
 
 
