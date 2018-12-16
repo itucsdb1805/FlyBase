@@ -136,8 +136,8 @@
       Route Name:<br>
       <input type="text" placeholder="e.g. IST-PEK" name="route_name" >
       <br><br>
-      Distance:<br>
-      <input type="number" name="distance" >
+      Distance in KM:<br>
+      <input type="number" name="distance_km" >
       <br><br>
       Number of Airlines using this route:<br>
       <input type="number" name="number_of_airlines" >
@@ -181,8 +181,15 @@
       Date of Start:<br>
       <input type="date" name="start_date" >
       <br><br>
-      Number of Flights:<br>
-      <input type="number" name="number_of_flights" >
+      Gender:<br>
+      <select name="gender">
+        <option value="M">M</option>
+        <option value="F">F</option>
+        <option value="OTHER">OTHER</option>
+      </select>
+      <br><br>
+      Fotograph:<br>
+      <input type="file" name="fotograph" accept="image/*">
       <br><br>
 
       <input type="submit" value="Submit">

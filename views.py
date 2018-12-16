@@ -251,7 +251,7 @@ def admin_add_page():
 
             route_name = request.form['route_name']
 
-            distance = request.form['distance']
+            distance_km = request.form['distance_km']
             number_of_airlines = request.form['number_of_airlines']
             intercontinental = request.form['intercontinental']
 
@@ -260,23 +260,26 @@ def admin_add_page():
             altitude_feet = request.form['altitude_feet']
 
 
-            if (dep_airport_id == '' or arr_airport_id == '' or route_name == '' or distance == '' or number_of_airlines == '' or intercontinental == '' or active_since == '' or altitude_feet == '' ):
+            if (dep_airport_id == '' or arr_airport_id == '' or route_name == '' or distance_km == '' or number_of_airlines == '' or intercontinental == '' or active_since == '' or altitude_feet == '' ):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO ROUTES (dep_airport_id, arr_airport_id, route_name, distance, number_of_airlines, intercontinental, active_since, altitude_feet)
+            command = """INSERT INTO ROUTES (dep_airport_id, arr_airport_id, route_name, distance_km, number_of_airlines, intercontinental, active_since, altitude_feet)
                          VALUES (%(dep_airport_id)s,
                                  %(arr_airport_id)s,
                                  '%(route_name)s',
-                                 %(distance)s,
-                                 '%(number_of_airlines)s',
+                                 %(distance_km)s,
+                                 %(number_of_airlines)s,
                                  '%(intercontinental)s',
                                  %(active_since)s,
                                  %(altitude_feet)s);"""
 
 
-            data = execute_sql(command % { 'dep_airport_id': dep_airport_id, 'arr_airport_id': arr_airport_id, 'route_name': route_name, 'distance': distance, 'number_of_airlines': number_of_airlines, 'intercontinental': intercontinental, 'active_since': active_since, 'altitude_feet': altitude_feet})
+            data = execute_sql(command % { 'dep_airport_id': dep_airport_id, 'arr_airport_id': arr_airport_id, 'route_name': route_name, 'distance_km': distance_km, 'number_of_airlines': number_of_airlines, 'intercontinental': intercontinental, 'active_since': active_since, 'altitude_feet': altitude_feet})
             print(data)
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
 
         elif (my_table == 'STAFF'):
             country_id = request.form['country_id']
@@ -290,25 +293,26 @@ def admin_add_page():
 
             start_date = request.form['start_date']
 
+            gender = request.form['gender']
 
-            if (country_id == '' or airline_id == '' or job_title == '' or staff_name == '' or staff_last_name == '' or start_date == ''):
+            if (country_id == '' or airline_id == '' or job_title == '' or staff_name == '' or staff_last_name == '' or start_date == '' or gender == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date)
+            command = """INSERT INTO STAFF (country_id, airline_id, job_title, staff_name, staff_last_name, start_date, gender)
                          VALUES (%(country_id)s,
                                  %(airline_id)s,
                                  '%(job_title)s',
                                  '%(staff_name)s',
                                  '%(staff_last_name)s',
-                                 '%(start_date)s');"""
+                                 date '%(start_date)s',
+                                 '%(gender)s');"""
 
 
-            data = execute_sql(command % { 'country_id': country_id, 'airline_id': airline_id, 'job_title': job_title, 'staff_name': staff_name, 'staff_last_name': staff_last_name, 'start_date': start_date})
+            data = execute_sql(command % { 'country_id': country_id, 'airline_id': airline_id, 'job_title': job_title, 'staff_name': staff_name, 'staff_last_name': staff_last_name, 'start_date': start_date, 'gender': gender})
             print(data)
             if (data == -1):
                 flash("Something went wrong. Please try again.")
-                return redirect(url_for("admin_page"))
 
         return redirect(url_for("admin_page"))
 
@@ -336,7 +340,10 @@ def admin_delete_page():
 
 
             data = execute_sql(command % {'name': passenger_id})
-
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+            else:
+                flash("Entry deleted successfully.")
 
 
         elif (my_table == 'FLIGHTS'):
@@ -347,9 +354,13 @@ def admin_delete_page():
                 return redirect(url_for("admin_delete_page"))
             # rewrite command so that FLIGHTS forms do not change during the update command
             command = """DELETE FROM FLIGHTS 
-                             WHERE flight_id = %(name)s"""
+                             WHERE flight_id = %(name)s;"""
 
             data = execute_sql(command % {'name': flight_id})
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+            else:
+                flash("Entry deleted successfully.")
 
         elif (my_table == 'BOOKINGS'):
             flight_id = request.form['flight_id']
@@ -360,9 +371,14 @@ def admin_delete_page():
                 return redirect(url_for("admin_delete_page"))
             # rewrite command so that FLIGHTS forms do not change during the update command
             command = """DELETE FROM BOOKINGS 
-                             WHERE (flight_id = %(flight_id)s) and (passenger_id = %(passenger_id)s)"""
+                             WHERE (flight_id = %(flight_id)s) and (passenger_id = %(passenger_id)s);"""
 
             data = execute_sql(command % {'flight_id': flight_id, 'passenger_id': passenger_id})
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+            else:
+                flash("Entry deleted successfully.")
+
 
         elif (my_table == 'AIRCRAFTS'):
             aircraft_id = request.form['aircraft_id']
@@ -372,9 +388,14 @@ def admin_delete_page():
                 return redirect(url_for("admin_delete_page"))
             # rewrite command so that FLIGHTS forms do not change during the update command
             command = """DELETE FROM AIRCRAFTS 
-                             WHERE aircraft_id = %(name)s"""
+                             WHERE aircraft_id = %(name)s;"""
 
             data = execute_sql(command % {'name': aircraft_id})
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+            else:
+                flash("Entry deleted successfully.")
+
 
         elif (my_table == 'ROUTES'):
             route_id = request.form['route_id']
@@ -384,9 +405,14 @@ def admin_delete_page():
                 return redirect(url_for("admin_delete_page"))
             # rewrite command so that FLIGHTS forms do not change during the update command
             command = """DELETE FROM ROUTES 
-                             WHERE route_id = %(name)s"""
+                             WHERE route_id = %(name)s;"""
 
             data = execute_sql(command % {'name': route_id})
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+            else:
+                flash("Entry deleted successfully.")
+
 
         elif (my_table == 'STAFF'):
             staff_id = request.form['staff_id']
@@ -395,12 +421,23 @@ def admin_delete_page():
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_delete_page"))
             # rewrite command so that FLIGHTS forms do not change during the update command
-            command = """DELETE FROM STAFF 
-                             WHERE staff_id = %(name)s"""
+            command = """DELETE FROM FLIGHTS 
+                                                     WHERE flight_id = (SELECT flight_id from STAFF_FLIGHT WHERE staff_id = %(name)s);"""
 
             data = execute_sql(command % {'name': staff_id})
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
+            else:
+                command = """DELETE FROM STAFF 
+                                 WHERE staff_id = %(name)s;"""
 
+                data = execute_sql(command % {'name': staff_id})
 
+                if (data == -1):
+                    flash("Something went wrong. Please try again.")
+                else:
+                    flash("Entry deleted successfully.")
 
         return redirect(url_for("admin_page"))  # change this into a page that displays whether operation was successful or not
 
@@ -464,6 +501,9 @@ def admin_view_page():
         command = """SELECT * FROM %(name)s;"""
 
         data = execute_sql(command % {'name': my_table})
+        if(data == -2):
+            flash("Nothing to show. No records found.")
+            return redirect(url_for("admin_page"))
         data[1:] = sorted(data[1:])
         return render_template("admin_view_page.html", table=my_table, data=data)
 

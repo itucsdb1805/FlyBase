@@ -222,7 +222,7 @@ INIT_STATEMENTS = [
             staff_id serial PRIMARY KEY,
             country_id integer NOT NULL,
             airline_id integer NOT NULL,
-            job_title varchar (20) NOT NULL,
+            job_title varchar (20) NOT NULL CHECK (job_title IN ('Pilot', 'Cabin Crew')),
             staff_name varchar (20) NOT NULL,
             staff_last_name varchar (20) NOT NULL,
             start_date date NOT NULL,
@@ -270,8 +270,8 @@ INIT_STATEMENTS = [
             fuel_liter integer NOT NULL CHECK (fuel_liter BETWEEN 15000 and 170000),
             time_hours integer NOT NULL CHECK (time_hours BETWEEN 1 and 10),
             number_passengers integer DEFAULT 0,
-            FOREIGN KEY (aircraft_id) REFERENCES AIRCRAFTS(aircraft_id) ON DELETE RESTRICT,
-            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE RESTRICT
+            FOREIGN KEY (aircraft_id) REFERENCES AIRCRAFTS(aircraft_id) ON DELETE CASCADE,
+            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE CASCADE
             );""",
 
     """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
@@ -358,8 +358,8 @@ INIT_STATEMENTS = [
     """ CREATE TABLE IF NOT EXISTS ROUTE_AIRLINE(
             route_id integer NOT NULL,
             airline_id integer NOT NULL, 
-            FOREIGN KEY (airline_id) REFERENCES AIRLINES(airline_id) ON DELETE RESTRICT,
-            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE RESTRICT,
+            FOREIGN KEY (airline_id) REFERENCES AIRLINES(airline_id) ON DELETE CASCADE,
+            FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE CASCADE,
             PRIMARY KEY (airline_id, route_id)
             );""",
 
@@ -407,8 +407,8 @@ INIT_STATEMENTS = [
     """ CREATE TABLE IF NOT EXISTS STAFF_FLIGHT(
             flight_id integer NOT NULL,
             staff_id integer NOT NULL, 
-            FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id) ON DELETE RESTRICT,
-            FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE RESTRICT,
+            FOREIGN KEY (staff_id) REFERENCES STAFF(staff_id) ON DELETE CASCADE,
+            FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE CASCADE,
             PRIMARY KEY (staff_id, flight_id)
             );""",
 
