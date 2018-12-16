@@ -269,91 +269,92 @@ INIT_STATEMENTS = [
             arrival_date timestamp NOT NULL,
             fuel_liter integer NOT NULL CHECK (fuel_liter BETWEEN 15000 and 170000),
             time_hours integer NOT NULL CHECK (time_hours BETWEEN 1 and 10),
+            gate_number integer NOT NULL CHECK (gate_number BETWEEN 1 and 10),
             number_passengers integer DEFAULT 0,
             FOREIGN KEY (aircraft_id) REFERENCES AIRCRAFTS(aircraft_id) ON DELETE CASCADE,
             FOREIGN KEY (route_id) REFERENCES ROUTES(route_id) ON DELETE CASCADE
             );""",
 
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (1, 11, TIMESTAMP '2018-12-20 10:00:00', TIMESTAMP '2018-12-20 12:00:00', 31000, 2);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (2, 11, TIMESTAMP '2018-12-20 17:00:00', TIMESTAMP '2018-12-20 19:00:00', 32000, 2);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (3, 10, TIMESTAMP '2018-12-21 10:00:00', TIMESTAMP '2018-12-21 20:00:00', 150000, 10);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (4, 12, TIMESTAMP '2018-12-21 08:00:00', TIMESTAMP '2018-12-21 18:00:00', 145000, 10);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (5, 15, TIMESTAMP '2018-12-22 10:00:00', TIMESTAMP '2018-12-22 14:00:00', 55000, 4);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (6, 13, TIMESTAMP '2018-12-22 11:00:00', TIMESTAMP '2018-12-22 15:00:00', 60000, 4);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (7, 6, TIMESTAMP '2018-12-23 10:00:00', TIMESTAMP '2018-12-23 20:00:00', 140000, 10);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (8, 6, TIMESTAMP '2018-12-23 23:00:00', TIMESTAMP '2018-12-24 09:00:00', 150000, 10);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (9, 14, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 13:00:00', 47000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (10, 12, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 13:00:00', 53000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (11, 26, TIMESTAMP '2018-12-25 10:00:00', TIMESTAMP '2018-12-25 15:00:00', 75000, 5);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (12, 27, TIMESTAMP '2018-12-25 14:00:00', TIMESTAMP '2018-12-25 19:00:00', 89000, 5);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (13, 7, TIMESTAMP '2018-12-26 20:00:00', TIMESTAMP '2018-12-27 02:00:00', 90000, 6);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (14, 6, TIMESTAMP '2018-12-26 11:00:00', TIMESTAMP '2018-12-26 17:00:00', 80000, 6);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (15, 8, TIMESTAMP '2018-12-27 10:00:00', TIMESTAMP '2018-12-27 19:00:00', 140000, 9);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (16, 6, TIMESTAMP '2018-12-27 10:00:00', TIMESTAMP '2018-12-27 19:00:00', 130000, 9);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (17, 8, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 18:00:00', 130000, 8);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (18, 6, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 18:00:00', 140000, 8);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (19, 10, TIMESTAMP '2018-12-29 17:00:00', TIMESTAMP '2018-12-29 23:00:00', 100000, 6);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (20, 12, TIMESTAMP '2018-12-29 10:00:00', TIMESTAMP '2018-12-29 16:00:00', 100000, 6);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (21, 7, TIMESTAMP '2018-12-20 10:00:00', TIMESTAMP '2018-12-20 15:00:00', 50000, 5);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (22, 8, TIMESTAMP '2018-12-21 10:00:00', TIMESTAMP '2018-12-21 15:00:00', 50000, 5);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (23, 9, TIMESTAMP '2018-12-22 10:00:00', TIMESTAMP '2018-12-22 14:00:00', 55000, 4);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (24, 9, TIMESTAMP '2018-12-23 17:00:00', TIMESTAMP '2018-12-23 21:00:00', 50000, 4);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (25, 6, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 18:00:00', 150000, 8);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (26, 6, TIMESTAMP '2018-12-25 15:00:00', TIMESTAMP '2018-12-25 23:00:00', 140000, 8);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (27, 1, TIMESTAMP '2018-12-26 10:00:00', TIMESTAMP '2018-12-26 13:00:00', 45000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (28, 1, TIMESTAMP '2018-12-27 10:00:00', TIMESTAMP '2018-12-27 13:00:00', 44000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (29, 6, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 20:00:00', 150000, 10);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (30, 8, TIMESTAMP '2018-12-29 10:00:00', TIMESTAMP '2018-12-29 20:00:00', 150000, 10);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (31, 4, TIMESTAMP '2018-12-21 10:00:00', TIMESTAMP '2018-12-21 13:00:00', 43000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (32, 5, TIMESTAMP '2018-12-22 09:00:00', TIMESTAMP '2018-12-22 12:00:00', 51000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (33, 8, TIMESTAMP '2018-12-23 10:00:00', TIMESTAMP '2018-12-23 17:00:00', 130000, 7);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (34, 6, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 17:00:00', 120000, 7);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (35, 4, TIMESTAMP '2018-12-25 10:00:00', TIMESTAMP '2018-12-25 13:00:00', 150000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (36, 5, TIMESTAMP '2018-12-26 14:00:00', TIMESTAMP '2018-12-26 17:00:00', 48000, 3);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (37, 9, TIMESTAMP '2018-12-27 19:00:00', TIMESTAMP '2018-12-28 01:00:00', 83000, 6);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (38, 15, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 16:00:00', 73000, 6);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (39, 21, TIMESTAMP '2018-12-29 10:00:00', TIMESTAMP '2018-12-29 17:00:00', 110000, 7);""",
-    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours) VALUES 
-        (40, 22, TIMESTAMP '2018-12-25 10:00:00', TIMESTAMP '2018-12-25 17:00:00', 110000, 7);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (1, 11, TIMESTAMP '2018-12-20 10:00:00', TIMESTAMP '2018-12-20 12:00:00', 31000, 2, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (2, 11, TIMESTAMP '2018-12-20 17:00:00', TIMESTAMP '2018-12-20 19:00:00', 32000, 2, 8);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (3, 10, TIMESTAMP '2018-12-21 10:00:00', TIMESTAMP '2018-12-21 20:00:00', 150000, 10, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (4, 12, TIMESTAMP '2018-12-21 08:00:00', TIMESTAMP '2018-12-21 18:00:00', 145000, 10, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (5, 15, TIMESTAMP '2018-12-22 10:00:00', TIMESTAMP '2018-12-22 14:00:00', 55000, 4, 3);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (6, 13, TIMESTAMP '2018-12-22 11:00:00', TIMESTAMP '2018-12-22 15:00:00', 60000, 4, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (7, 6, TIMESTAMP '2018-12-23 10:00:00', TIMESTAMP '2018-12-23 20:00:00', 140000, 10, 8);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (8, 6, TIMESTAMP '2018-12-23 23:00:00', TIMESTAMP '2018-12-24 09:00:00', 150000, 10, 8);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (9, 14, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 13:00:00', 47000, 3, 2);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (10, 12, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 13:00:00', 53000, 3, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (11, 26, TIMESTAMP '2018-12-25 10:00:00', TIMESTAMP '2018-12-25 15:00:00', 75000, 5, 2);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (12, 27, TIMESTAMP '2018-12-25 14:00:00', TIMESTAMP '2018-12-25 19:00:00', 89000, 5, 3);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (13, 7, TIMESTAMP '2018-12-26 20:00:00', TIMESTAMP '2018-12-27 02:00:00', 90000, 6, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (14, 6, TIMESTAMP '2018-12-26 11:00:00', TIMESTAMP '2018-12-26 17:00:00', 80000, 6, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (15, 8, TIMESTAMP '2018-12-27 10:00:00', TIMESTAMP '2018-12-27 19:00:00', 140000, 9, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (16, 6, TIMESTAMP '2018-12-27 10:00:00', TIMESTAMP '2018-12-27 19:00:00', 130000, 9, 8);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (17, 8, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 18:00:00', 130000, 8, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (18, 6, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 18:00:00', 140000, 8, 9);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (19, 10, TIMESTAMP '2018-12-29 17:00:00', TIMESTAMP '2018-12-29 23:00:00', 100000, 6, 2);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (20, 12, TIMESTAMP '2018-12-29 10:00:00', TIMESTAMP '2018-12-29 16:00:00', 100000, 6, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (21, 7, TIMESTAMP '2018-12-20 10:00:00', TIMESTAMP '2018-12-20 15:00:00', 50000, 5, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (22, 8, TIMESTAMP '2018-12-21 10:00:00', TIMESTAMP '2018-12-21 15:00:00', 50000, 5, 8);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (23, 9, TIMESTAMP '2018-12-22 10:00:00', TIMESTAMP '2018-12-22 14:00:00', 55000, 4, 3);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (24, 9, TIMESTAMP '2018-12-23 17:00:00', TIMESTAMP '2018-12-23 21:00:00', 50000, 4, 9);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (25, 6, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 18:00:00', 150000, 8, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (26, 6, TIMESTAMP '2018-12-25 15:00:00', TIMESTAMP '2018-12-25 23:00:00', 140000, 8, 2);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (27, 1, TIMESTAMP '2018-12-26 10:00:00', TIMESTAMP '2018-12-26 13:00:00', 45000, 3, 1);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (28, 1, TIMESTAMP '2018-12-27 10:00:00', TIMESTAMP '2018-12-27 13:00:00', 44000, 3, 9);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (29, 6, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 20:00:00', 150000, 10, 6);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (30, 8, TIMESTAMP '2018-12-29 10:00:00', TIMESTAMP '2018-12-29 20:00:00', 150000, 10, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (31, 4, TIMESTAMP '2018-12-21 10:00:00', TIMESTAMP '2018-12-21 13:00:00', 43000, 3, 9);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (32, 5, TIMESTAMP '2018-12-22 09:00:00', TIMESTAMP '2018-12-22 12:00:00', 51000, 3, 3);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (33, 8, TIMESTAMP '2018-12-23 10:00:00', TIMESTAMP '2018-12-23 17:00:00', 130000, 7, 6);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (34, 6, TIMESTAMP '2018-12-24 10:00:00', TIMESTAMP '2018-12-24 17:00:00', 120000, 7, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (35, 4, TIMESTAMP '2018-12-25 10:00:00', TIMESTAMP '2018-12-25 13:00:00', 150000, 3, 9);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (36, 5, TIMESTAMP '2018-12-26 14:00:00', TIMESTAMP '2018-12-26 17:00:00', 48000, 3, 8);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (37, 9, TIMESTAMP '2018-12-27 19:00:00', TIMESTAMP '2018-12-28 01:00:00', 83000, 6, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (38, 15, TIMESTAMP '2018-12-28 10:00:00', TIMESTAMP '2018-12-28 16:00:00', 73000, 6, 3);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (39, 21, TIMESTAMP '2018-12-29 10:00:00', TIMESTAMP '2018-12-29 17:00:00', 110000, 7, 5);""",
+    """ INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number) VALUES 
+        (40, 22, TIMESTAMP '2018-12-25 10:00:00', TIMESTAMP '2018-12-25 17:00:00', 110000, 7, 8);""",
 
     """ CREATE TABLE IF NOT EXISTS ROUTE_AIRLINE(
             route_id integer NOT NULL,

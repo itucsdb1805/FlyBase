@@ -144,10 +144,11 @@ def admin_add_page():
             print(departure_date)
             fuel_liter = request.form['fuel_liter']
             time_hours = int(request.form['time_hours'])
+            gate_number = int(request.form['gate_number'])
             arrival_date = arrival_date + ' ' + str(10+time_hours) + ':00:00'
             print(arrival_date)
 
-            if (route_id == ''  or departure_date == '' or arrival_date == '' or fuel_liter == '' or time_hours == ''):
+            if (route_id == ''  or departure_date == '' or arrival_date == '' or fuel_liter == '' or time_hours == '' or gate_number == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
 
@@ -161,16 +162,17 @@ def admin_add_page():
                 flash("Something went wrong. Please try again.")
                 return redirect(url_for("admin_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours)
+            command = """INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours, gate_number)
                          VALUES (%(route_id)s,
                                  %(aircraft_id)s,
                                  timestamp '%(departure_date)s',
                                  timestamp '%(arrival_date)s',
                                  %(fuel_liter)s,
-                                 %(time_hours)s);"""
+                                 %(time_hours)s,
+                                 %(gate_number)s);"""
 
 
-            data = execute_sql(command % {'route_id': route_id, 'aircraft_id': aircraft_id, 'departure_date': departure_date, 'arrival_date': arrival_date, 'fuel_liter': fuel_liter, 'time_hours': time_hours})
+            data = execute_sql(command % {'route_id': route_id, 'aircraft_id': aircraft_id, 'departure_date': departure_date, 'arrival_date': arrival_date, 'fuel_liter': fuel_liter, 'time_hours': time_hours, 'gate_number': gate_number})
             print(data)
             if(data == -1):
                 flash("Something went wrong. Please try again.")
@@ -708,7 +710,7 @@ def user_flights_page():
                                      WHERE username = '%(username)s'"""
             data = (execute_sql(command % {'username': username}))
             passenger_id = data[1][0]
-            command = """SELECT FLIGHTS.flight_id, passenger_name, passenger_last_name, route_name, departure_date, arrival_date, seat, class_of_seat FROM ROUTES, FLIGHTS, BOOKINGS, PASSENGERS WHERE
+            command = """SELECT FLIGHTS.flight_id, passenger_name, passenger_last_name, route_name, departure_date, arrival_date, seat, class_of_seat, gate_number FROM ROUTES, FLIGHTS, BOOKINGS, PASSENGERS WHERE
                                 BOOKINGS.passenger_id = %(passenger_id)s and 
                                 bookings.flight_id = flights.flight_id and 
                                 flights.route_id = routes.route_id and 
