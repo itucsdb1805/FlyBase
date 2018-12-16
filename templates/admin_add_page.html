@@ -11,22 +11,26 @@
       Country ID:<br>
       <input type="number" name="country_id" >
       <br><br>
+      Passport ID:<br>
+      <input type="number" name="passport_id" >
+      <br><br>
       Name:<br>
       <input type="text" name="passenger_name" >
       <br><br>
       Last Name:<br>
       <input type="text" name="passenger_last_name" >
       <br><br>
-      Email:<br>
-      <input type="text" name="email" >
+      Gender:<br>
+      <select name="gender">
+        <option value="M">M</option>
+        <option value="F">F</option>
+        <option value="OTHER">OTHER</option>
+      </select>
       <br><br>
-      Number of Flights:<br>
-      <input type="number" name="number_of_flights" >
+      Fotograph:<br>
+      <input type="file" name="fotograph" accept="image/*">
       <br><br>
-      Last Flight Date:<br>
-      <input type="date" name="last_flight_date" >
-      <br><br>
-      <input type="submit" value="Submit">
+      <input type="submit" value="ADD!">
     </form>
 
 
@@ -37,28 +41,20 @@
 
     <form method="POST" type="number">
 
-      Aircraft ID:<br>
-      <input type="number" name="aircraft_id" >
-      <br><br>
       Route ID:<br>
       <input type="text" name="route_id" >
       <br><br>
       Departure Date:<br>
       <input type="date" name="departure_date" >
       <br><br>
-      Arrival Date:<br>
-      <input type="date" name="arrival_date" >
-      <br><br>
       Fuel Consumption in liters:<br>
-      <input type="number" name="fuel_consumption" >
+      <input type="number" placeholder="15k-150k" name="fuel_liter" >
       <br><br>
-      Duration:<br>
-      <input type="number" name="duration" >
+      Duration in hours:<br>
+      <input type="number" name="time_hours" >
       <br><br>
-      Average Altitude in meters:<br>
-      <input type="number" name="average_altitude" >
-      <br><br>
-      <input type="submit" value="Submit">
+
+      <input type="submit" value="ADD!">
     </form>
 
 
@@ -76,19 +72,19 @@
       <input type="number" name="passenger_id" >
       <br><br>
       Payment Type:<br>
-      <input type="text" name="payment_type" >
+      <select name="payment_type">
+        <option value="Credit Card">Credit Card</option>
+        <option value="Paypal">Paypal</option>
+        <option value="Cryptocurrency">Cryptocurrency</option>
+      </select>
       <br><br>
-      Miles Used:<br>
-      <input type="number" name="miles_used" >
-      <br><br>
-      Seat:<br>
-      <input type="text" name="seat" >
-      <br><br>
-      Class:<br>
-      <input type="text" name="class" >
-      <br><br>
-      Fare:<br>
-      <input type="number" name="fare" >
+      Class of Seat:<br>
+      <select name="class_of_seat">
+        <option value="Budget">Budget (Fare: $100)</option>
+        <option value="Economy">Economy (Fare: $200)</option>
+        <option value="Business">Business (Fare: $300)</option>
+        <option value="First Class">First Class (Fare: $400)</option>
+      </select>
       <br><br>
 
       <input type="submit" value="Submit">
@@ -105,7 +101,7 @@
       <input type="number" name="airline_id" >
       <br><br>
       Capacity:<br>
-      <input type="number" name="capacity" >
+      <input type="number" placeholder="300-700" name="capacity" >
       <br><br>
       Company Name:<br>
       <input type="text" name="company_name" >
@@ -113,8 +109,8 @@
       Model Name:<br>
       <input type="text" name="model_name" >
       <br><br>
-      Maximum Range:<br>
-      <input type="number" name="maximum_range" >
+      Maximum Range in km:<br>
+      <input type="number" placeholder="3500-7000" name="maximum_range_km" >
       <br><br>
       Year Produced:<br>
       <input type="number" name="year_produced" >
@@ -138,19 +134,22 @@
       <input type="number" name="arr_airport_id" >
       <br><br>
       Route Name:<br>
-      <input type="text" name="route_name" >
+      <input type="text" placeholder="e.g. IST-PEK" name="route_name" >
       <br><br>
       Distance:<br>
       <input type="number" name="distance" >
       <br><br>
-      Number of Flights:<br>
-      <input type="number" name="number_of_flights" >
-      <br><br>
-      Number of Airlines:<br>
+      Number of Airlines using this route:<br>
       <input type="number" name="number_of_airlines" >
       <br><br>
-      Number of Passengers:<br>
-      <input type="number" name="number_of_passengers" >
+      Is intercontinental?:<br>
+      <input type="text" placeholder="y or n" name="intercontinental" >
+      <br><br>
+      Actively used since:<br>
+      <input type="text" name="active_since" >
+      <br><br>
+      Average altitude in feet:<br>
+      <input type="text" placeholder="30000-40000" name="altitude_feet" >
       <br><br>
 
       <input type="submit" value="Submit">

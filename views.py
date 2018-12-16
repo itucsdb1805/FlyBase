@@ -113,80 +113,104 @@ def admin_add_page():
         if (my_table == 'PASSENGERS'):
 
             country_id = request.form['country_id']
+            passport_id = request.form['passport_id']
             passenger_name = request.form['passenger_name']
             passenger_last_name = request.form['passenger_last_name']
-            number_of_flights = request.form['number_of_flights']
-            last_flight_date = request.form['last_flight_date']
-            email = request.form['email']
-            if (country_id == '' or passenger_name == '' or passenger_last_name == ''):
+
+            gender = request.form['gender']
+            if (country_id == '' or passport_id == '' or passenger_name == '' or passenger_last_name == '' or gender == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO PASSENGERS (country_id, passenger_name, passenger_last_name)
+            command = """INSERT INTO PASSENGERS (country_id, passport_id, passenger_name, passenger_last_name, gender)
                          VALUES (%(country_id)s,
+                                 %(passport_id)s,
                                  '%(passenger_name)s',
-                                 '%(passenger_last_name)s');"""
+                                 '%(passenger_last_name)s',
+                                 '%(gender)s');"""
 
 
-            data = execute_sql(command % {'country_id': country_id, 'passenger_name': passenger_name, 'passenger_last_name': passenger_last_name})
+
+            data = execute_sql(command % {'country_id': country_id, 'passport_id': passport_id, 'passenger_name': passenger_name, 'passenger_last_name': passenger_last_name, 'gender': gender})
             print(data)
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
 
         elif (my_table == 'FLIGHTS'):
-            aircraft_id = request.form['aircraft_id']
-            print(aircraft_id)
             route_id = request.form['route_id']
-            departure_date = request.form['departure_date']
+            departure_date = str(request.form['departure_date'])
+            arrival_date = departure_date
+            departure_date += ' 10:00:00'
+            print(departure_date)
+            fuel_liter = request.form['fuel_liter']
+            time_hours = int(request.form['time_hours'])
+            arrival_date = arrival_date + ' ' + str(10+time_hours) + ':00:00'
+            print(arrival_date)
 
-            arrival_date = request.form['arrival_date']
-            fuel_consumption = request.form['fuel_consumption']
-            duration = request.form['duration']
-            average_altitude = request.form['average_altitude']
-            if (aircraft_id == '' or route_id == ''  or departure_date == '' or arrival_date == '' or fuel_consumption == '' or duration == '' or average_altitude == ''):
+            if (route_id == ''  or departure_date == '' or arrival_date == '' or fuel_liter == '' or time_hours == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
-            # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO FLIGHTS (aircraft_id, route_id, staff_id, departure_date, arrival_date, fuel_consumption, duration, average_altitude)
-                         VALUES (%(aircraft_id)s,
-                                 %(route_id)s,
-                                 '%(departure_date)s',
-                                 '%(arrival_date)s',
-                                 %(fuel_consumption)s,
-                                 %(duration)s,
-                                 %(average_altitude)s);"""
 
-
-            data = execute_sql(command % {'aircraft_id': aircraft_id, 'route_id': route_id, 'departure_date': departure_date, 'arrival_date': arrival_date, 'fuel_consumption': fuel_consumption, 'duration': duration, 'average_altitude': average_altitude})
+            command = "select aircraft_id from aircrafts where airline_id = (select airline_id from route_airline where route_id = %(route_id)s);"
+            data = execute_sql(command % {'route_id': route_id})
             print(data)
+            num = random.randint(1,7)
+            try:
+                aircraft_id = data[num][0]
+            except:
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
+            # rewrite command so that empty forms do not change during the update command
+            command = """INSERT INTO FLIGHTS (route_id, aircraft_id, departure_date, arrival_date, fuel_liter, time_hours)
+                         VALUES (%(route_id)s,
+                                 %(aircraft_id)s,
+                                 timestamp '%(departure_date)s',
+                                 timestamp '%(arrival_date)s',
+                                 %(fuel_liter)s,
+                                 %(time_hours)s);"""
+
+
+            data = execute_sql(command % {'route_id': route_id, 'aircraft_id': aircraft_id, 'departure_date': departure_date, 'arrival_date': arrival_date, 'fuel_liter': fuel_liter, 'time_hours': time_hours})
+            print(data)
+            if(data == -1):
+                flash("Something went wrong. Please try again.")
+
 
         elif (my_table == 'BOOKINGS'):
             flight_id = request.form['flight_id']
-            print(flight_id)
 
             passenger_id = request.form['passenger_id']
+            purchase_time = str(datetime.datetime.now())[:19]
+            class_of_seat = request.form["class_of_seat"]
+            payment_type = request.form["payment_type"]
+            seat = str(random.randint(1, 99)) + random.choice('ABCD')
+            fare = 100 if (class_of_seat == 'Budget') else 200 if (class_of_seat == 'Economy') else 300 if (class_of_seat == 'Business') else 400
 
-            payment_type = request.form['payment_type']
 
-            miles_used = request.form['miles_used']
-            seat = request.form['seat']
-
-            class_of_seat = request.form['class']
-            fare = request.form['fare']
-            if (flight_id == '' or passenger_id == '' or payment_type == '' or miles_used == '' or seat == '' or class_of_seat == '' or fare == ''  ):
+            if (flight_id == '' or passenger_id == '' or payment_type == '' or class_of_seat == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, miles_used, seat, class_of_seat, fare)
-                         VALUES (%(flight_id)s,
-                                 %(passenger_id)s,
-                                 '%(payment_type)s',
-                                 %(miles_used)s,
-                                 '%(seat)s',
-                                 '%(class_of_seat)s',
-                                 %(fare)s);"""
+            command = """INSERT INTO BOOKINGS (flight_id, passenger_id, payment_type, purchase_time, seat, class_of_seat, fare)
+                                             VALUES (%(flight_id)s,
+                                                     %(passenger_id)s,
+                                                     '%(payment_type)s',
+                                                    TIMESTAMP '%(purchase_time)s',
+                                                    '%(seat)s',
+                                                    '%(class_of_seat)s',
+                                                    %(fare)s);"""
+            data = execute_sql(
+                command % {'flight_id': flight_id, 'passenger_id': passenger_id, 'payment_type': payment_type,
+                           'purchase_time': purchase_time, 'seat': seat, 'class_of_seat': class_of_seat, 'fare': fare})
+            if(data == -1):
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
 
-
-            data = execute_sql(command % { 'flight_id': flight_id, 'passenger_id': passenger_id, 'payment_type': payment_type, 'miles_used': miles_used, 'seat': seat, 'class_of_seat': class_of_seat, 'fare': fare})
-            print(data)
+            command = "UPDATE FLIGHTS SET number_passengers = number_passengers + 1 WHERE flight_id = %(flight_id)s;"
+            data = execute_sql(command % {'flight_id': flight_id})
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
 
 
         elif (my_table == 'AIRCRAFTS'):
@@ -197,25 +221,28 @@ def admin_add_page():
             company_name = request.form['company_name']
 
             model_name = request.form['model_name']
-            maximum_range = request.form['maximum_range']
+            maximum_range_km = request.form['maximum_range_km']
 
             year_produced = request.form['year_produced']
 
-            if (airline_id == '' or capacity == '' or company_name == '' or model_name == '' or maximum_range == '' or year_produced == ''):
+            if (airline_id == '' or capacity == '' or company_name == '' or model_name == '' or maximum_range_km == '' or year_produced == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO AIRCRAFTS (airline_id, capacity, company_name, model_name, maximum_range, year_produced)
+            command = """INSERT INTO AIRCRAFTS (airline_id, capacity, company_name, model_name, maximum_range_km, year_produced)
                          VALUES (%(airline_id)s,
                                  %(capacity)s,
                                  '%(company_name)s',
                                  '%(model_name)s',
-                                 %(maximum_range)s,
+                                 %(maximum_range_km)s,
                                  %(year_produced)s);"""
 
 
-            data = execute_sql(command % { 'airline_id': airline_id, 'capacity': capacity, 'company_name': company_name, 'model_name': model_name, 'maximum_range': maximum_range, 'year_produced': year_produced})
+            data = execute_sql(command % { 'airline_id': airline_id, 'capacity': capacity, 'company_name': company_name, 'model_name': model_name, 'maximum_range_km': maximum_range_km, 'year_produced': year_produced})
             print(data)
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
 
         elif (my_table == 'ROUTES'):
             dep_airport_id = request.form['dep_airport_id']
@@ -226,20 +253,29 @@ def admin_add_page():
 
             distance = request.form['distance']
             number_of_airlines = request.form['number_of_airlines']
+            intercontinental = request.form['intercontinental']
 
-            if (dep_airport_id == '' or arr_airport_id == '' or route_name == '' or distance == '' or number_of_airlines == ''):
+            active_since = request.form['active_since']
+
+            altitude_feet = request.form['altitude_feet']
+
+
+            if (dep_airport_id == '' or arr_airport_id == '' or route_name == '' or distance == '' or number_of_airlines == '' or intercontinental == '' or active_since == '' or altitude_feet == '' ):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
-            command = """INSERT INTO ROUTES (dep_airport_id, arr_airport_id, route_name, distance, number_of_airlines)
+            command = """INSERT INTO ROUTES (dep_airport_id, arr_airport_id, route_name, distance, number_of_airlines, intercontinental, active_since, altitude_feet)
                          VALUES (%(dep_airport_id)s,
                                  %(arr_airport_id)s,
                                  '%(route_name)s',
                                  %(distance)s,
-                                 %(number_of_airlines)s);"""
+                                 '%(number_of_airlines)s',
+                                 '%(intercontinental)s',
+                                 %(active_since)s,
+                                 %(altitude_feet)s);"""
 
 
-            data = execute_sql(command % { 'dep_airport_id': dep_airport_id, 'arr_airport_id': arr_airport_id, 'route_name': route_name, 'distance': distance, 'number_of_airlines': number_of_airlines})
+            data = execute_sql(command % { 'dep_airport_id': dep_airport_id, 'arr_airport_id': arr_airport_id, 'route_name': route_name, 'distance': distance, 'number_of_airlines': number_of_airlines, 'intercontinental': intercontinental, 'active_since': active_since, 'altitude_feet': altitude_feet})
             print(data)
 
         elif (my_table == 'STAFF'):
@@ -270,6 +306,9 @@ def admin_add_page():
 
             data = execute_sql(command % { 'country_id': country_id, 'airline_id': airline_id, 'job_title': job_title, 'staff_name': staff_name, 'staff_last_name': staff_last_name, 'start_date': start_date})
             print(data)
+            if (data == -1):
+                flash("Something went wrong. Please try again.")
+                return redirect(url_for("admin_page"))
 
         return redirect(url_for("admin_page"))
 
@@ -505,33 +544,43 @@ def ticket_search_page():
         return render_template("ticket_search_page.html")    
     elif request.method == "POST":
          #get all forms and check if they are empty or not
-        min_date = request.form["min_date"]
-        max_date = request.form["max_date"]
-        departure_airport = request.form["departure_airport"]
-        arrival_airport = request.form["arrival_airport"]
-        if(min_date == "" or max_date == "" or departure_airport == "" or arrival_airport == ""):
-            flash("Please give me enough information.")
-            return redirect(url_for("ticket_search_page"))
-        # write sql query to select country id based on for input
-        command = """SELECT flight_id, departure_date, arrival_date, duration, route_name FROM ROUTES, FLIGHTS 
-                    where departure_date >= '%(min_date)s' and departure_date <= '%(max_date)s' and 
-                    dep_airport_id = (SELECT airport_id FROM AIRPORTS WHERE airport_name = '%(departure_airport)s') and 
-                    arr_airport_id = (SELECT airport_id FROM AIRPORTS WHERE airport_name = '%(arrival_airport)s') and 
-                    ROUTES.route_id = FLIGHTS.route_id;"""
-        data = execute_sql(command % {'min_date': min_date, 'max_date': max_date, 'departure_airport': departure_airport, 'arrival_airport': arrival_airport})
-        if(data == -2):
-            flash("No flights found. Please try again.")
-            return redirect(url_for("ticket_search_page"))
-        else:
-            print(data)
-            ids = [r[0] for r in data]
-            ids = ids[1:]
-            session['ticket_search'] = data
-            session['id_values'] = ids
-            return redirect(url_for("ticket_view_page"))
-    else:
-        flash("Something went wrong.")
-        return redirect(url_for("home_page"))
+         min_date = request.form["min_date"]
+         print(min_date)
+         max_date = request.form["max_date"]
+         print(max_date)
+         dep_country_name = request.form["dep_country_name"]
+         print(dep_country_name)
+         arr_country_name = request.form["arr_country_name"]
+         print(dep_country_name)
+
+
+         if(min_date == "" or max_date == "" or dep_country_name == "" or arr_country_name == ""):
+              flash("Please give me enough information.")
+              return redirect(url_for("ticket_search_page"))
+         else:
+              # write sql query to select country id based on for input
+              command = """SELECT flight_id, departure_date, arrival_date, time_hours, route_name from FLIGHTS INNER JOIN ROUTES ON FLIGHTS.route_id = ROUTES.route_id INNER JOIN 
+              AIRPORTS ON ROUTES.dep_airport_id = AIRPORTS.airport_id WHERE 
+              departure_date <= '%(max_date)s' AND departure_date >= '%(min_date)s' AND AIRPORTS.country_id = (SELECT country_id FROM COUNTRIES WHERE country_name = '%(dep_country_name)s') 
+              INTERSECT 
+              SELECT flight_id, departure_date, arrival_date, time_hours, route_name from FLIGHTS INNER JOIN ROUTES ON FLIGHTS.route_id = ROUTES.route_id INNER JOIN 
+              AIRPORTS ON ROUTES.arr_airport_id = AIRPORTS.airport_id WHERE 
+              departure_date <= '%(max_date)s' AND departure_date >= '%(min_date)s' AND AIRPORTS.country_id = (SELECT country_id FROM COUNTRIES WHERE country_name = '%(arr_country_name)s');"""
+
+              data = execute_sql(command % {'min_date': min_date, 'max_date': max_date, 'dep_country_name': dep_country_name, 'arr_country_name': arr_country_name})
+              if(data == -2):
+                   flash("No flights found. Please try again.")
+                   return redirect(url_for("ticket_search_page"))
+              else:
+                   print(data)
+                   ids = [r[0] for r in data]
+                   ids = ids[1:]
+                   session['ticket_search'] = data
+                   session['id_values'] = ids
+                   return redirect(url_for("ticket_view_page"))
+
+    flash("Something went wrong.")
+    return redirect(url_for("home_page"))
 
 @login_required
 def ticket_view_page():
@@ -552,7 +601,7 @@ def ticket_buy_page(): # displays captain name, captain photo (when blob is comp
         flight_id = session['ticket_buy_flight_id']
 
         #command selects relevant flight info
-        command = """SELECT flight_id, departure_date, arrival_date, duration, route_name, staff_name, staff_last_name, job_title FROM ROUTES, FLIGHTS, STAFF 
+        command = """SELECT flight_id, departure_date, arrival_date, time_hours, route_name, staff_name, staff_last_name, job_title FROM ROUTES, FLIGHTS, STAFF 
                             where flight_id = %(flight_id)s and 
                             staff_id = (SELECT staff_id FROM STAFF_FLIGHT WHERE flight_id = %(flight_id)s) and
                             routes.route_id = (SELECT route_id FROM FLIGHTS WHERE flight_id = %(flight_id)s);"""
@@ -585,8 +634,14 @@ def ticket_buy_page(): # displays captain name, captain photo (when blob is comp
                                         '%(class_of_seat)s',
                                         %(fare)s);"""
         data = execute_sql(command % {'flight_id': flight_id, 'passenger_id': passenger_id, 'payment_type': payment_type, 'purchase_time': purchase_time, 'seat': seat, 'class_of_seat': class_of_seat, 'fare': fare})
+        command = "UPDATE FLIGHTS SET number_passengers = number_passengers + 1 WHERE flight_id = %(flight_id)s;"
+        data = execute_sql(command % {'flight_id': flight_id})
+
         flash("Ticket purchased")
         return redirect(url_for("user_page"))
+
+    flash("Something went wrong.")
+    return redirect(url_for("home_page"))
 
 
 
@@ -613,13 +668,13 @@ def user_flights_page():
             if(data == -2):
                 data = [[]]
             else:
+
                 return render_template("user_flights_page.html", data=data)
+            flash("You have no tickets purchased.")
+            return redirect(url_for("user_page"))
 
-
-
-
-    
-
+        flash("Something went wrong.")
+        return redirect(url_for("home_page"))
 
 
 
