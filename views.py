@@ -475,19 +475,21 @@ def admin_update_page():
             column_names = ["booking_id", "flight_id", "passenger_id", "payment_type", "seat_number", "class_type", "fare"]
         elif (my_table == 'FLIGHTS'):
             table_name = "FLIGHTS"
-            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_consumption"], request.form["duration"], request.form["average_altitude"]]
-            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_consumption", "duration", "averge altitude"]
+            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_liter"], request.form["time_hours"], request.form["average_altitude"]]
+            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_liter", "time_hours", "averge altitude"]
         elif (my_table == 'AIRCRAFTS'):
             table_name = "AIRCRAFTS"  
             values = [request.form["aircraft_id"], request.form["airline_id"],request.form["capacity"], request.form["company_name"],request.form["model_name"], request.form["maximum_range"], request.form["year_produced"]]
             column_names =  ["aircraft_id", "airline_id","capacity", "company_name", "model_name", "maximum_range", "year_produced"]      
         elif (my_table == 'ROUTES'):
             table_name = "ROUTES"  
-            values = [request.form["route_id"], request.form["dep_airport_id"], request.form["arr_airport_id"], request.form["route_name"], request.form["distance"], request.form["number_of_airlines"], request.form["altitude"]]
-            column_names = ["route_id", "dep_airport_id", "arr_airport_id", "route_name", "distance", "number_of_airlines", "altitude"]  
+            values = [request.form["route_id"], request.form["dep_airport_id"], request.form["arr_airport_id"], request.form["route_name"], request.form["distance_km"], request.form["number_of_airlines"], request.form["altitude_feet"], request.form["intercontinental"],request.form["active_since"]]
+            column_names = ["route_id", "dep_airport_id", "arr_airport_id", "route_name", "distance_km", "number_of_airlines", "altitude_feet","intercontinental", "active_since"]  
 
         command = sqlgen_update(table_name, column_names, values, primary_key_count)
-        execute_sql(command)
+        data = execute_sql(command)
+        if (data == -1):
+            flash("Something went wrong. Please try again.")
         return redirect(url_for("admin_page")) #change this into a page that displays whether operation was successful or not
 
 @login_required
@@ -598,7 +600,7 @@ def ticket_search_page():
               flash("Please give me enough information.")
               return redirect(url_for("ticket_search_page"))
          else:
-              # write sql query to select country id based on for input
+              # write sql query to select valid flights based on form inputs
               command = """SELECT flight_id, departure_date, arrival_date, time_hours, route_name from FLIGHTS INNER JOIN ROUTES ON FLIGHTS.route_id = ROUTES.route_id INNER JOIN 
               AIRPORTS ON ROUTES.dep_airport_id = AIRPORTS.airport_id WHERE 
               departure_date <= '%(max_date)s' AND departure_date >= '%(min_date)s' AND AIRPORTS.country_id = (SELECT country_id FROM COUNTRIES WHERE country_name = '%(dep_country_name)s') 
@@ -690,6 +692,9 @@ def user_flights_page():
     username = current_user.username
     if (username == 'admin'):
         flash("admins cannot buy tickets")
+        return url_for('home_page')
+    elif (username == ''):
+        flash("You must login to buy tickets")
         return url_for('home_page')
     else:
         if request.method == "GET":
