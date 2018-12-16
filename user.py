@@ -62,9 +62,14 @@ class User(UserMixin):
 
 def get_user(username):
     getPassword = """SELECT (password) FROM USERS WHERE username = '%(name)s'"""
-    password = execute_sql(getPassword % {'name': username})[1][0]
+    password = execute_sql(getPassword % {'name': username})
+    if(password != -2):
+        password = password[1][0]
+        user = User(username, password) if password else None
+    else:
+        user = None
     #password = current_app.config["PASSWORDS"].get(username)
-    user = User(username, password) if password else None
+
     if user is not None:
         user.is_admin = True if (username == 'admin') else False
     return user
