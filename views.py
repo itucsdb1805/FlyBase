@@ -378,6 +378,11 @@ def admin_delete_page():
                 flash("Something went wrong. Please try again.")
             else:
                 flash("Entry deleted successfully.")
+                command = "UPDATE FLIGHTS SET number_passengers = number_passengers - 1 WHERE flight_id = %(flight_id)s;"
+                data = execute_sql(command % {'flight_id': flight_id})
+                if (data == -1):
+                    flash("Something went wrong. Please try again.")
+                    return redirect(url_for("admin_page"))
 
 
         elif (my_table == 'AIRCRAFTS'):
@@ -720,6 +725,5 @@ def user_flights_page():
 
         flash("Something went wrong.")
         return redirect(url_for("home_page"))
-
 
 
