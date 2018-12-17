@@ -7,7 +7,6 @@ from flask_login import LoginManager
 from user import get_user
 
 import views
-from flight import Flight
 
 lm = LoginManager()
 
