@@ -8,7 +8,7 @@ def execute_sql(command):
     print(command)
     #command = """UPDATE COUNTRIES SET country_name = Turkey WHERE country_id = 1;"""
     try:
-            url = "postgres://itucs:itucspw@localhost:32769/itucsdb"#url = os.getenv("DATABASE_URL")  #
+            url = os.getenv("DATABASE_URL")  #url = "postgres://itucs:itucspw@localhost:32769/itucsdb"#
             print("debug0")
             connection = dbapi2.connect(url)
             print("debug1")
