@@ -667,25 +667,43 @@ def ticket_view_page():
         data = session['ticket_search']
         ids = session['id_values']
         session.pop('ticket_search', None)
+        session.pop('ticket_buy_info', None)
         session.pop('id_values', None)
         return render_template("ticket_view_page.html", data = data, ids = ids )
 
     elif request.method == "POST":
         flight_id = request.form["id"]
+        
         session['ticket_buy_flight_id'] = flight_id
+        try:
+            show_info = request.form["show_info"]      
+            session['ticket_buy_info'] = show_info
+        except:
+            session['ticket_buy_info'] = False
+            
         return redirect(url_for("ticket_buy_page")) #send url parameter
 @login_required
 def ticket_buy_page(): # displays captain name, captain photo (when blob is complete), origin airline, destination airline, departure airline, flight duration
     if request.method == "GET":
         flight_id = session['ticket_buy_flight_id']
-
+        show_info = session['ticket_buy_info']
         #command selects relevant flight info
         command = """SELECT flight_id, departure_date, arrival_date, time_hours, route_name, staff_name, staff_last_name, job_title FROM ROUTES, FLIGHTS, STAFF 
                             where flight_id = %(flight_id)s and 
                             staff_id = (SELECT staff_id FROM STAFF_FLIGHT WHERE flight_id = %(flight_id)s) and
                             routes.route_id = (SELECT route_id FROM FLIGHTS WHERE flight_id = %(flight_id)s);"""
         data = execute_sql(command % {'flight_id': flight_id})
-        return render_template("ticket_buy_page.html", data=data)
+        command = """SELECT file_data FROM ROUTES, FLIGHTS, STAFF 
+                            where flight_id = %(flight_id)s and 
+                            staff_id = (SELECT staff_id FROM STAFF_FLIGHT WHERE flight_id = %(flight_id)s) and
+                            routes.route_id = (SELECT route_id FROM FLIGHTS WHERE flight_id = %(flight_id)s);"""
+        file_data = execute_sql(command % {'flight_id': flight_id}) #store image binary data    
+        #print("----------------------------------------------------------------------")        
+        #print(file_data)
+        if(show_info):
+            return render_template("ticket_buy_page.html", data=data, picture = file_data[1][0])
+        else:
+            return render_template("ticket_buy_page_noinfo.html", data=data)
     elif request.method == "POST": #buy ticket
         username = current_user.username
         if (username == 'admin'):
@@ -721,6 +739,7 @@ def ticket_buy_page(): # displays captain name, captain photo (when blob is comp
 
     flash("Something went wrong.")
     return redirect(url_for("home_page"))
+
 
 
 
