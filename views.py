@@ -186,10 +186,10 @@ def admin_add_page():
             class_of_seat = request.form["class_of_seat"]
             payment_type = request.form["payment_type"]
             seat = str(random.randint(1, 99)) + random.choice('ABCD')
-            fare = 100 if (class_of_seat == 'Budget') else 200 if (class_of_seat == 'Economy') else 300 if (class_of_seat == 'Business') else 400
+            fare = request.form["fare"]
 
 
-            if (flight_id == '' or passenger_id == '' or payment_type == '' or class_of_seat == ''):
+            if (flight_id == '' or passenger_id == '' or payment_type == '' or class_of_seat == '' or fare == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_add_page"))
             # rewrite command so that empty forms do not change during the update command
