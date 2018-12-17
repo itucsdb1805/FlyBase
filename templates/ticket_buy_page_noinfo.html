@@ -2,25 +2,6 @@
 {% block title %}Buy ticket{% endblock %}
 {% block content %}
 
-<p>Captain picture:
-<img src="data:image/png;base64,{picture}">
-</table>
-<br>
-
-Flight information:
-<table>
-
-{% for item in data %}
-<tr>
-    {% for column in item %}
-        <td>{{column}}</td>
-    {% endfor %}
-
-</tr>
-{% endfor %}
-
-
-
 Class of Seat:
 <form method="POST">
       <select name="class_type">
