@@ -523,7 +523,7 @@ def admin_update_page():
         elif (my_table == 'AIRCRAFTS'):
             table_name = "AIRCRAFTS"  
             values = [request.form["aircraft_id"], request.form["airline_id"],request.form["capacity"], request.form["company_name"],request.form["model_name"], request.form["maximum_range"], request.form["year_produced"]]
-            column_names =  ["aircraft_id", "airline_id","capacity", "company_name", "model_name", "maximum_range", "year_produced"]      
+            column_names =  ["aircraft_id", "airline_id","capacity", "company_name", "model_name", "maximum_range_km", "year_produced"]
         elif (my_table == 'ROUTES'):
             table_name = "ROUTES"  
             values = [request.form["route_id"], request.form["dep_airport_id"], request.form["arr_airport_id"], request.form["route_name"], request.form["distance_km"], request.form["number_of_airlines"], request.form["altitude_feet"], request.form["intercontinental"],request.form["active_since"]]
