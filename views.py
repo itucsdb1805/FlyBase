@@ -469,12 +469,42 @@ def admin_update_page():
         primary_key_count = 1; #counts how many primary keys there are, all main tables, except bookings, have one primary id
         if (my_table == 'PASSENGERS'):
             table_name = "PASSENGERS"
-            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"], request.form["passport_id"] ,request.form["photograph"], request.form[gender]]
-            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name", "passport_id" ,"photograph", "gender" ]
+            try:
+                pic = request.files["file_data"]
+                file_data = pic.read().decode("base64")
+                print("data:")
+                print(file_data)
+                #image_command = """UPDATE PASSENGERS SET """
+                
+            except:
+                file_data = None
+            try:
+                gender = request.form["gender"] #check if radio is selected or not
+            except: #radio left empty
+                gender = ""
+            values = [request.form['passenger_id'], request.form["email"], request.form["country_id"], request.form["name"], request.form["middlename"],               request.form["surname"], request.form["passport_id"] , gender]
+            column_names = ["passenger_id", "email", "country_id", "passenger_name", "passenger_middle_name", "passenger_last_name", "passport_id" , "gender"]
         elif (my_table == 'STAFF'):
             table_name = "STAFF"
-            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"], request.form["fotograph"], request.form[gender]] 
-            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date", "fotograph", "gender" ]
+            try:
+                print("blob debug0")
+                pic = request.files["file_data"]
+                print("blob debug1")
+                file_data = pic.read()
+                print("blob debug2")
+                file_data = file_data.encode("base64")
+                print("data:")
+                print(file_data)
+            except:
+                print("blob debug3")
+                file_data = ""
+            try:
+                gender = request.form["gender"] #check if radio is selected or not
+            except: #radio left empty
+                gender = ""
+                
+            values = [request.form["staff_id"], request.form["country_id"], request.form["airline_id"], request.form["job_title"], request.form["name"], request.form["surname"], request.form["start_date"], gender, file_data] 
+            column_names = ["staff_id", "country_id", "airline_id", "job_title", "staff_name", "staff_last_name", "start_date", "gender", "file_data" ]
         elif (my_table == 'BOOKINGS'):
             table_name = "BOOKINGS"
             primary_key_count = 2
@@ -482,8 +512,8 @@ def admin_update_page():
             column_names = ["booking_id", "flight_id", "passenger_id", "payment_type", "seat_number", "class_type", "fare"]
         elif (my_table == 'FLIGHTS'):
             table_name = "FLIGHTS"
-            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_liter"], request.form["time_hours"], request.form["average_altitude"]]
-            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_liter", "time_hours", "averge altitude"]
+            values = [request.form["flight_id"], request.form["aircraft_id"], request.form["route_id"], request.form["departure_date"], request.form["arrival_date"], request.form["fuel_liter"], request.form["time_hours"], request.form["average_altitude"], request.form["gate_number"]]
+            column_names = ["flight_id", "aircraft_id", "route_id", "departure_date", "arrival_date", "fuel_liter", "time_hours", "averge altitude", "gate_number"]
         elif (my_table == 'AIRCRAFTS'):
             table_name = "AIRCRAFTS"  
             values = [request.form["aircraft_id"], request.form["airline_id"],request.form["capacity"], request.form["company_name"],request.form["model_name"], request.form["maximum_range"], request.form["year_produced"]]
