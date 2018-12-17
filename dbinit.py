@@ -462,7 +462,7 @@ INIT_STATEMENTS = [
             purchase_time timestamp NOT NULL,
             seat VARCHAR (3) NOT NULL,
             class_of_seat varchar (15) NOT NULL CHECK (class_of_seat IN ('Budget', 'Economy', 'Business', 'First Class')),
-            fare integer NOT NULL CHECK (fare IN (100, 200, 300, 400)),
+            fare integer NOT NULL,
             FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE RESTRICT,
             FOREIGN KEY (passenger_id) REFERENCES PASSENGERS(passenger_id) ON DELETE RESTRICT,
             PRIMARY KEY (flight_id, passenger_id)
