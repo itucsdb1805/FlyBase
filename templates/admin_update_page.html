@@ -21,7 +21,7 @@
     
     <h1 class="title">Update Passengers</h1>
 
-    <form method="POST" type="number">
+    <form method="POST" type="number" enctype="multipart/form-data">
       Enter passenger ID to update:
       <input type="number" name="passenger_id">
       <br>Email:
@@ -34,10 +34,12 @@
       <input type="text" name="middlename">
       <br>Surname:
       <input type="text" name="surname">
-      <input type="radio" name="gender" value="M"> Male<br>
-      <input type="radio" name="gender" value="F"> Female<br>
+      <br>Gender:
+      <input type="radio" name="gender" value="M"> Male
+      <input type="radio" name="gender" value="F"> Female
+      <input type="radio" name="gender" value="OTHER">Other
       <br>Passport id:
-      <input type="number" name="passport_id">
+      <input type="number" name="passport_id" min="10000" max="99999">
       <br>Fotograph:
       <input type="file" name="file_data" accept="image/*">
       <br><input type="submit" value="Submit">
@@ -63,8 +65,10 @@
       <input type="text" name="middlename">
       <br>Surname:
       <input type="text" name="surname">
-      <input type="radio" name="gender" value="M"> Male<br>
-      <input type="radio" name="gender" value="F"> Female<br>
+      <br>Gender:
+      <input type="radio" name="gender" value="M"> Male
+      <input type="radio" name="gender" value="F"> Female
+      <input type="radio" name="gender" value="OTHER">Other
       <br>Flight hours:
       <input type="number" name="start_date">
       <br>Fotograph:
@@ -95,6 +99,8 @@
       <input type="number" name="average_altitude">
       <br>Flight duration in hours:
       <input type="number" name="time_hours">
+      <br>Gate number:
+      <input type="number" name="gate_number">
         
       <br><input type="submit" value="Submit">
 
