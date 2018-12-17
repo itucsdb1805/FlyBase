@@ -371,6 +371,12 @@ def admin_delete_page():
             if (flight_id == '' or passenger_id == ''):
                 flash("Insufficient Entry")
                 return redirect(url_for("admin_delete_page"))
+            command = """SELECT * FROM BOOKINGS 
+                                                     WHERE (flight_id = %(flight_id)s) and (passenger_id = %(passenger_id)s);"""
+            data = execute_sql(command % {'flight_id': flight_id, 'passenger_id': passenger_id})
+            if (data == -2):
+                flash("There is no such booking")
+                return redirect(url_for("admin_delete_page"))
             # rewrite command so that FLIGHTS forms do not change during the update command
             command = """DELETE FROM BOOKINGS 
                              WHERE (flight_id = %(flight_id)s) and (passenger_id = %(passenger_id)s);"""
