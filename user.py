@@ -1,7 +1,7 @@
 from flask import current_app
 from flask_login import UserMixin
 import psycopg2 as dbapi2
-
+import os
 
 def execute_sql(command):
     print("executing...")
