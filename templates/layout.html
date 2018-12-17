@@ -7,7 +7,7 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"/>
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='mymovies.css') }}"/>
+          href="{{ url_for('static', filename='template.css') }}"/>
   </head>
   <body>
     <header>
@@ -16,17 +16,41 @@
           <span class="navbar-item">
             <a class="button is-link" href="{{ url_for('home_page') }}">Home</a>
           </span>
+
+          {% if not current_user.is_authenticated %}
+
           <span class="navbar-item">
-            <a class="button is-link" href="{{ url_for('flights_page') }}">Flights</a>
+            <a class="button is-link" href="{{ url_for('login_page') }}">Login</a>
           </span>
           <span class="navbar-item">
-            <a class="button is-link" href="{{ url_for('add_page') }}">Add country</a>
+            <a class="button is-link" href="{{ url_for('register_page') }}">Register</a>
           </span>
+          {% else %}
+            {% if current_user.is_admin %}
+              <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('admin_page') }}">{{ current_user.username }}</a>
+              </span>
+            {% else %}
+              <span class="navbar-item">
+                <a class="button is-link" href="{{ url_for('user_page') }}">{{ current_user.username }}</a>
+              </span>
+            {% endif %}
+          <span class="navbar-item">
+            <a class="button is-link" href="{{ url_for('logout_page') }}">Logout</a>
+          </span>
+          {% endif %}
+
+
+
         </div>
       </nav>
     </header>
 
     <main>
+        {% for message in get_flashed_messages() %}
+        <div class="notification is-info">{{ message }}</div>
+        {% endfor %}
+
       <section class="section">
         <div class="content">
           {% block content %}{% endblock %}
@@ -35,8 +59,8 @@
     </main>
 
     <footer class="footer">
-      <div class="content">
-        <small>&copy; 2018-2018, FlySys</small>
+      <div class="content" >
+        <small>&copy; 2018, FlySys.</small>
       </div>
     </footer>
   </body>

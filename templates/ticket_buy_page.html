@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Buy ticket{% endblock %}
+{% block content %}
+
+<p>Captain picture:
+<img src="data:image/png;base64,{picture}">
+
+<br>
+
+Flight information:
+<table>
+
+{% for item in data %}
+<tr>
+    {% for column in item %}
+        <td>{{column}}</td>
+    {% endfor %}
+
+</tr>
+{% endfor %}
+</table>
+
+
+
+Class of Seat:
+<form method="POST">
+      <select name="class_type">
+        <option value="Budget">Budget (Fare: $100)</option>
+        <option value="Economy">Economy (Fare: $200)</option>
+        <option value="Business">Business (Fare: $300)</option>
+        <option value="First Class">First Class (Fare: $400)</option>
+      </select>
+    Enter Payment Type:
+      <select name="payment_type">
+        <option value="Credit Card">Credit Card</option>
+        <option value="Paypal">Paypal</option>
+        <option value="Cryptocurrency">Cryptocurrency</option>
+      </select>
+      <input type="submit" value="Submit">
+</form>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block title %}Delete{% endblock %}
+{% block content %}
+    {% if table == 'PASSENGERS' %}
+
+
+    <h1 class="title">Delete a Passenger</h1>
+
+    <form method="POST" type="number">
+      Passenger ID:<br>
+      <input type="number" name="passenger_id">
+      <br><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+
+    {% elif table == 'FLIGHTS' %}
+
+
+    <h1 class="title">Delete a Flight</h1>
+
+    <form method="POST" type="number">
+      Flight ID:<br>
+      <input type="number" name="flight_id">
+      <br><br>
+      <input type="submit" value="Submit">
+
+    </form>
+
+
+    {% elif table == 'BOOKINGS' %}
+
+
+    <h1 class="title">Delete a Booking</h1>
+
+    <form method="POST" type="number">
+      Flight ID:<br>
+      <input type="number" name="flight_id">
+      <br><br>
+      Passenger ID:<br>
+      <input type="number" name="passenger_id">
+      <br><br>
+      <input type="submit" value="Submit">
+
+    </form>
+
+
+
+    {% elif table == 'AIRCRAFTS' %}
+
+
+    <h1 class="title">Delete an Aircraft</h1>
+
+    <form method="POST" type="number">
+      Aircraft ID:<br>
+      <input type="number" name="aircraft_id">
+      <br><br>
+      <input type="submit" value="Submit">
+
+    </form>
+
+
+
+    {% elif table == 'ROUTES' %}
+
+
+    <h1 class="title">Delete a Route</h1>
+
+    <form method="POST" type="number">
+      Route ID:<br>
+      <input type="number" name="route_id">
+      <br><br>
+      <input type="submit" value="Submit">
+
+    </form>
+
+
+
+    {% elif table == 'STAFF' %}
+
+
+    <h1 class="title">Delete a Staff</h1>
+
+    <form method="POST" type="number">
+      Staff ID:<br>
+      <input type="number" name="staff_id">
+      <br><br>
+      <input type="submit" value="Submit">
+
+    </form>
+
+    {% endif %}
+
+{% endblock %}

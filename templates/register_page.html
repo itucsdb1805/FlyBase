@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+    <form method="POST" type="number">
+       Username:
+       <input type="text" name="username">
+       <br>Password:
+       <input type="password" name="password">
+       <br>Passport ID:
+       <input type="number" name="passport_id">
+       <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}View Flights{% endblock %}
+{% block content %}
+
+Flights found:
+<table>
+
+{% for item in data %}
+<tr>
+    {% for column in item %}
+        <td>{{column}}</td>
+    {% endfor %}
+
+</tr>
+{% endfor %}
+
+</table>
+Enter flight ID for more information:
+<br>
+<form method="POST">
+    Flight ID:
+    <select name="id">
+        {% for id in ids %}
+        <option value= "{{id}}">{{ id }}</option>
+        {% endfor %}
+    </select>
+     <br> Show flight information:
+     <input type="checkbox" name="show_info" value="True"> <br>
+    <input type="submit" value="GO!">
+</form>
+{% endblock %}

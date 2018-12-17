@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+    <form method="POST">
+      Show me flights between: <br>
+      <input type="date" name="min_date"> and
+      <input type="date" name="max_date">
+      <br>From:
+      <select name="dep_country_name">
+        <option value="Turkey">Turkey</option>
+        <option value="China">China</option>
+        <option value="Germany">Germany</option>
+        <option value="United States of America">United States of America</option>
+        <option value="Russia">Russia</option>
+        <option value="Australia">Australia</option>
+        <option value="Brazil">Brazil</option>
+      </select>
+
+      <br>To:
+      <select name="arr_country_name">
+        <option value="Turkey">Turkey</option>
+        <option value="China">China</option>
+        <option value="Germany">Germany</option>
+        <option value="United States of America">United States of America</option>
+        <option value="Russia">Russia</option>
+        <option value="Australia">Australia</option>
+        <option value="Brazil">Brazil</option>
+      </select>
+      <input type="submit" value="GO!">
+    </form>
+
+{% endblock %}
