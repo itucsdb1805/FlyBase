@@ -529,6 +529,7 @@ def admin_update_page():
             flash("Something went wrong. Please try again.")
         return redirect(url_for("admin_page")) #change this into a page that displays whether operation was successful or not
 
+
 @login_required
 def admin_view_page():
     if not current_user.is_admin:
