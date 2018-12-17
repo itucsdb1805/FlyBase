@@ -466,7 +466,7 @@ INIT_STATEMENTS = [
             FOREIGN KEY (flight_id) REFERENCES FLIGHTS(flight_id) ON DELETE RESTRICT,
             FOREIGN KEY (passenger_id) REFERENCES PASSENGERS(passenger_id) ON DELETE RESTRICT,
             PRIMARY KEY (flight_id, passenger_id)
-            );"""
+            );""",
 
 
 """ CREATE TABLE IF NOT EXISTS USERS(
