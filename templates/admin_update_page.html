@@ -112,7 +112,8 @@
     <h1 class="title">Update Bookings</h1>
 
     <form method="POST" type="number">
-      Enter Booking ID to update:
+      Enter Booking ID and Flight ID to update:
+      <br>Booking ID:
       <input type="number" name="booking_id">
       <br>Flight ID:
       <input type="number" name="flight_id">
@@ -135,7 +136,7 @@
         <option value="Premium">Premium</option>
       </select>
       <br>Fare:
-      <input type="number" name="fare">
+      <input type="number" name="fare" min="0">
       <br><input type="submit" value="Submit">
     </form>
 
