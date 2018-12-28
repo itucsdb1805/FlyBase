@@ -26,7 +26,7 @@ Member 1 Ahmed Gulhan as a new user. He is in the Passengers table of the databa
 .. figure:: photos/user_found.jpg
 
 
-Since he is already in the Passengers table of the database, his all necessary information to register is in the database.
+Since he is already in the Passengers table, all the necessary information to register is in the database. Therefore he does not need to fill any extra information to be a user. 
 
 .. figure:: photos/register_page3.jpg
 
@@ -36,4 +36,4 @@ Let's try to register as a person who is not in the Passengers table of the data
 .. figure:: photos/user_not_found.jpg
 
 
-Since he is not in the database, website asks him to fill out some information. 
+Since he is not in the database, website asks him to fill out some information as you see above. 
