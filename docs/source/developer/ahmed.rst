@@ -1,6 +1,10 @@
 Parts Implemented by Ahmed Burak Gulhan
 ================================
 
+Main tables ROUTES, STAFF, AIRCRAFT
+and extra tables AIRPORTS, COUNTRIES, AIRLINES
+are implemented by me.
+
 Functions in user.py
 ------------
 
