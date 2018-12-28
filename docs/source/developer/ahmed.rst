@@ -814,16 +814,3 @@ ticket_buy_page()
 This page is used to view information about a flight and purchase a ticket for this flight.  The sessions ‘ticket_buy_flight_id’ and ’ticket_buy_info’ is saved as the variables flight_id and show_info respectively.  Then a sql query that gets relevant flight info is executed using execute_sql() and saved to the variable ‘data’.  And another sql command that gets file_data (the image) from the table STAFF is executed and the result saved to the variable ‘file_data’, however since image uploading is not implemented this part is irrelevant.  Then depending on the variable show_info either the html page “ticket_buy_page.html” or “ticket_buy_page_noinfo.html” in rendered.  These pages contain some information about the flight and a form for purchasing a ticket.  After submitting the form then this function is called with the method “POST”.  If the method is “POST” then the function first gets the current users username and sets it as the variable ‘username’.  If the user is an admin then the purchase is not done and an error message is flashed.  If the user is not an admin, then the required forms are requested and an sql command that joins the tables USERS and PASSENGERS and finds the passenger_id of the current user using the username is executed using execute_sql().  The result is saved as the variable “data”.  The passenger_id is taken from the variable ‘data’ and saved as passenger_id, the variable purchase_time is set as the current time, the variable seat is randomly set and the fare is calculated using the variable class_of_seat, which was requested from the form.  Using these variables an sql insertion command is made to insert a row into the table BOOKINGS and executed using execute_sql().  Then the message “Ticket bought” is flashed on screen and the page for home page is called.
 (Members Ahmed and Bulut implemented this part together with equal amount of work done)
 
-my_function()
-^^^^^^^^
-.. code-block:: python
-  mycode
-
-explanation of code
-
-my_function()
-^^^^^^^^
-.. code-block:: python
-  mycode
-
-explanation of code
