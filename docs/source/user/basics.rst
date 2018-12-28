@@ -6,7 +6,7 @@ Main Page
 
 .. figure:: photos/main_page.jpg
 
-    Main Page
+
 This is what you see when you open the website.
 
 
