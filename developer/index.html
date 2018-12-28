@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer Guide &mdash; ITUCSDB1805  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parts Implemented by Ahmed Burak Gulhan" href="ahmed.html" />
+    <link rel="prev" title="User" href="../user/user.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1805
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#database-design">Database Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html">Parts Implemented by Ahmed Burak Gulhan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html">Parts Implemented by Kadir Bulut Ozler</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1805</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Developer Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-guide">
+<h1>Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="database-design">
+<h2>Database Design<a class="headerlink" href="#database-design" title="Permalink to this headline">¶</a></h2>
+<p>Here is the database diagram. There are 6 main tables and 6 extra tables. Each main table has at least 5 non key elements.</p>
+<p><strong>Main tables: Passengers, Flights, Routes, Bookings, Staff and Aircrafts</strong></p>
+<p><strong>Extra tables: Countries,  Airlines,  Airports, Route-Airline, Staff-Flight, Users</strong></p>
+<div class="figure">
+<img alt="../_images/tables_diagram.jpg" src="../_images/tables_diagram.jpg" />
+</div>
+<p><strong>Main Tables</strong></p>
+<p>Every passenger has a unique passenger id and passport id. Passenger id is related to tables, passport id is more like real id. Country id represents passenger’s nation (connects to COUNTRIES table). Passport id is also a non key. Other non keys are about other specifications of passengers:</p>
+<p><em>Name, last name, email, gender, photograph</em></p>
+<p>Every flight has a unique flight id. A flight has a route and aircraft: route id and aircraft id (connects to ROUTES table and AIRCRAFTS table). Non keys are used to define other specifics:</p>
+<p><em>Departure and arrival date, consumed fuel, duration of the flight, number of passengers</em></p>
+<p>Each route has unique route id. Departure and arrival airports are important for a route: departure/arrival airport id (connects to AIRPORTS table). Non keys are:</p>
+<p><em>route name, distance, number of airlines using the route</em></p>
+<p><em>Intercontinental: Does the route end up in a different continent?</em></p>
+<p><em>Active since which year? e.g. China related routes appearing later than other routes</em></p>
+<p><em>Altitude information is about the required height the planes should fly at</em></p>
+<p>Flight id and passenger id are sufficient to represent primary key together (connects to FLIGHTS table and PASSENGERS table). Non keys are features of a receipt/booking:</p>
+<p><em>Payment type, exact purchasing time, seat number, class of the seat, and fare</em></p>
+<p>Each staff has staff id. Nation of the staff and employer airline are represented as country id and airline id (connects to COUNTRIES table and AIRLINES table). Non keys are about other specifics of the staff:</p>
+<p><em>Job title, name, last name, start date of employement, gender, and photograph</em></p>
+<p>Each aircraft has its id. Airlines who own the aircrafts are represented as airline id (connects to AIRLINES table). Non keys are:</p>
+<p><em>capacity, manufacturer name, model name, maximum flight range, year produced</em></p>
+<p><strong>Extra Tables</strong></p>
+<p>Countries table contains list of countries that are used throughout the website/Project</p>
+<p>Airlines table contains information about airlines that main/roof company have</p>
+<p>Airports table contains name, city name, country id of airports</p>
+<p>Route-Airline table contains information about which airline uses which route</p>
+<p>Staff-Flight table contains which staff is assigned to which flight</p>
+<p>Users table contains users of the website</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ahmed.html">Parts Implemented by Ahmed Burak Gulhan</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ahmed.html#functions-in-user-py">Functions in user.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#execute-sql">execute_sql()</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ahmed.html#functions-in-views-py">Functions in views.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#sqlgen-update">sqlgen_update()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#admin-select-table">admin_select_table()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#admin-add-page">admin_add_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#admin-delete-page">admin_delete_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#admin-update-page">admin_update_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#admin-view-page">admin_view_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#admin-sql-page">admin_sql_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#register-page">register_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#ticket-search-page">ticket_search_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#ticket-view-page">ticket_view_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ahmed.html#ticket-buy-page">ticket_buy_page()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bulut.html">Parts Implemented by Kadir Bulut Ozler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bulut.html#functions-in-user-py">Functions in user.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#execute-sql">execute_sql()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#user">User()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#get-user">get_user()</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bulut.html#functions-in-views-py">Functions in views.py</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#login-page">login_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#logout-page">logout_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#home-page">home_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#admin-page">admin_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#admin-add-page">admin_add_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#admin-delete-page">admin_delete_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#admin-update-page">admin_update_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#admin-view-page">admin_view_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#register-page">register_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#user-page">user_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#ticket-search-page">ticket_search_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#ticket-view-page">ticket_view_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#ticket-buy-page">ticket_buy_page()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html#user-flights-page">user_flights_page()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ahmed.html" class="btn btn-neutral float-right" title="Parts Implemented by Ahmed Burak Gulhan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../user/user.html" class="btn btn-neutral" title="User" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1805
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

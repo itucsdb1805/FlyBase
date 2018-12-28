@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Parts Implemented by Ahmed Burak Gulhan &mdash; ITUCSDB1805  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parts Implemented by Kadir Bulut Ozler" href="bulut.html" />
+    <link rel="prev" title="Developer Guide" href="index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ITUCSDB1805
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#database-design">Database Design</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Parts Implemented by Ahmed Burak Gulhan</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#functions-in-user-py">Functions in user.py</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functions-in-views-py">Functions in views.py</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bulut.html">Parts Implemented by Kadir Bulut Ozler</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ITUCSDB1805</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Developer Guide</a> &raquo;</li>
+        
+      <li>Parts Implemented by Ahmed Burak Gulhan</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer/ahmed.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parts-implemented-by-ahmed-burak-gulhan">
+<h1>Parts Implemented by Ahmed Burak Gulhan<a class="headerlink" href="#parts-implemented-by-ahmed-burak-gulhan" title="Permalink to this headline">¶</a></h1>
+<p>Main tables ROUTES, STAFF, AIRCRAFT
+and extra tables AIRPORTS, COUNTRIES, AIRLINES
+are implemented by me.</p>
+<div class="section" id="functions-in-user-py">
+<h2>Functions in user.py<a class="headerlink" href="#functions-in-user-py" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="execute-sql">
+<h3>execute_sql()<a class="headerlink" href="#execute-sql" title="Permalink to this headline">¶</a></h3>
+<p>This function takes an string which contains PostgreSQL code and executes it.  The first try, except loop (implemented by member Ahmed) tries to connect to the sql server.  If successful it executes the sql code and if there is any query result from this code it saves it the variable “data” then moves on to the seconds try, except loop.  If unsuccessful it returns -1.  The second try, except loop (implemented  by member Bulut) checks if the variable “data” is empty.  If it is then the value -2 is returned.  If “data” is not empty, the names of the columns are appended to the list (data) as the first item and data is returned.</p>
+</div>
+</div>
+<div class="section" id="functions-in-views-py">
+<h2>Functions in views.py<a class="headerlink" href="#functions-in-views-py" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sqlgen-update">
+<h3>sqlgen_update()<a class="headerlink" href="#sqlgen-update" title="Permalink to this headline">¶</a></h3>
+<p>This function is located in views.py
+This function is used to generate an sql update command and return it as a string.  The inputs are:
+table_name: a string with the name of the table being updated.
+column_names: name of the columns of the table as a list of string.  Must include all column names, with the first item being the primary ID(s).
+variables: a list of strings with the new values of the list’s columns.  The values must be in the same index as the input column_names with respect to it’s column name.  If the value will not be changed, then it must be an empty string “”.  If the value is being set to null the the value must be the string “null”.
+primary_key_count: an integer.  Must be 1 or 2.  Used to generate an sql command with respect to how many primary keys the table has.  If the primary key count in a table is 1 then the value of this input is 1.  If it is 2 then the value of this input is 2.
+The function makes a variable called “command” with it’s value initially set as “UPDATE” + table_name + “SET”.  This is the beginning of every sql update command.  Then the function enters a for loop where the variable “command” is appended with the parts where the columns names are being updated with respect to the variables.  This part checks if the variables are and empty string or “null” and appends accordingly.  After this for loop the “WHERE” part of the sql code is added to “command”.  This part checks the variable primary_key_count and acts accordingly.  Then the variable “command” which contains the full sql code is returned.</p>
+</div>
+<div class="section" id="admin-select-table">
+<h3>admin_select_table()<a class="headerlink" href="#admin-select-table" title="Permalink to this headline">¶</a></h3>
+<p>return redirect(url_for(“admin_page”))</p>
+<p>This function is used to render the admin_select_table page.  This page is used to select which table we are operating on after we select and operation.  This page is accessed from the admin_page, and after selecting an operation from admin page, admin_select_table is opened with a url parameter containing the operation.  If the function is called using ‘GET’, the the html for admin_select_table is rendered.  In this page a table is selected.  If this function is called using ‘POST’ (after submitting the form) then the selected table is stored as a session called ‘table’.  Then depending on the operation, which we get from the url, the respective function for rendering the operation is called.</p>
+</div>
+<div class="section" id="admin-add-page">
+<h3>admin_add_page()<a class="headerlink" href="#admin-add-page" title="Permalink to this headline">¶</a></h3>
+<p>This function is used to add rows to a table.  This function first checks if the user is an admin.  If not then the function aborts.  The function gets the table name from the session ‘table’ then stores it as the variable my_table.  If there session is empty the function aborts. If the function is called using ‘GET’ then the html page “admin_add_page.html” is rendered with the parameter as the variable table so that the correct form is displayed in the html page.  After submitting the form the function will be called using ‘POST’.  Here the function checks the table name using if and elif.  Then depending on the table the proper request forms are called and the correct sql add code is generated and executed using the function execute_sql().  Then the page for admin page is called.  Each member implemented parts for their tables.</p>
+</div>
+<div class="section" id="admin-delete-page">
+<h3>admin_delete_page()<a class="headerlink" href="#admin-delete-page" title="Permalink to this headline">¶</a></h3>
+<p>This function is used to delete rows from a table using the primary key(s).  This function first checks if the user is an admin.  If not then the function aborts.  The function gets the table name from the session ‘table’ then stores it as the variable my_table.  If there session is empty the function aborts. If the function is called using ‘GET’ then the html page “admin_delete_page.html” is rendered with the parameter as the variable table so that the correct form is displayed in the html page.  After submitting the form the function will be called using ‘POST’.  Here the function checks the table name using if and elif.  Then depending on the table the proper request forms are called and the correct sql delete code is generated and executed using the function execute_sql().  Each member implemented parts for their tables.</p>
+</div>
+<div class="section" id="admin-update-page">
+<h3>admin_update_page()<a class="headerlink" href="#admin-update-page" title="Permalink to this headline">¶</a></h3>
+<p>This function is used to update rows in a table using the primary key(s).  This function first checks if the user is an admin.  If not then the function aborts.  The function gets the table name from the session ‘table’ then stores it as the variable my_table.  If there session is empty the function aborts. If the function is called using ‘GET’ then the html page “admin_update_page.html” is rendered with the parameter as the variable table so that the correct form is displayed in the html page.  After submitting the form the function will be called using ‘POST’.  Here the function sets the variables table_name, values, column_keys and primary_key_count are set according to the table name.  Then the sql code is generated using these variables and the function sqlgen_update().  This code is then executed using the function execute_sql().  Depending on the result of execute_sql() an error message is displayed and the page for admin_page is called.</p>
+</div>
+<div class="section" id="admin-view-page">
+<h3>admin_view_page()<a class="headerlink" href="#admin-view-page" title="Permalink to this headline">¶</a></h3>
+<p>return render_template(“admin_view_page.html”, table=my_table, data=data)</p>
+<p>This function is used to show all columns and rows in a table.  This function first checks if the user is an admin.  If not then the function aborts.  The function gets the table name from the session ‘table’ then stores it as the variable my_table.  If there session is empty the function aborts. The variable my_table is used to generate and execute an sql query using execute_sql() and the query result is saved as the variable ‘data’.  If the variable ‘data’ is empty (set as -2) then an error message is flashed on screen.  Else the data is sorted and the html page “admin_view_page.html” is called with the parameters ;data’ and my_table.</p>
+</div>
+<div class="section" id="admin-sql-page">
+<h3>admin_sql_page()<a class="headerlink" href="#admin-sql-page" title="Permalink to this headline">¶</a></h3>
+<p>This function is used to execute sql commands and view sql queries directly from the site.  This is implemented if the administrator wants to execute a specific sql command that is not available elsewhere.  This function first checks if the user is an admin.  If not then the function aborts.  If the function is called using ‘GET’ then the html page “admin_sql_page.html” is rendered, which contains a text box where the sql code in written.  After submitting the form the function will be called using ‘POST’.  Here the code is executed using execute_sql() and the result is stored as the variable ‘data’.  Then the page “admin_view_page” is called using the parameter “data” in order to view the sql command’s results, if any.</p>
+</div>
+<div class="section" id="register-page">
+<h3>register_page()<a class="headerlink" href="#register-page" title="Permalink to this headline">¶</a></h3>
+<p>This function is used to make registrations.  If the function is called with the method “GET” then the session ‘userinfo’ is cleared and the html page “register_page.html” is rendered.  In this html page there is a form for username, password and passport id.  Once the form is submitted the function is called with the method “POST”.  Here we check if the session ‘userinfo’ exists.  If it does not exist then we check if the username exists by executing a query for the table USERS using execute_sql().  If the username exists then an error message is flashed and the register page is rendered again.  If the username does not exist then the password and passport id are requested from the forms and the password is hashed using hasher.hash().  Then we make and execute a query in order to check if the passport id already exists in the table PASSENGERS.  If it does exist then the information from this table is used to complete the registration.  If it does not exist then the html page then we make a session called ‘userinfo’ and store the username, hashed password and passport id here.  Then “register_page_2” is rendered with the parameters username and passport_id.  Here there are more forms that must be filled.  After submitting this form the function is called using the method “POST”.  This time the function checks that a session called ‘userinfo’ exists and enters another part of the code.  Here the forms from register_page_2.html are requested.  Using these values and the values from session ‘userinfo’ an sql insertion command is generated to insert the relevant information to the table PASSENGERS and the table USERS.  Then the page for home_page is called.
+For more information view the registration operation is user documents.
+(Members Ahmed and Bulut implemented this part together with equal amount of work done)</p>
+</div>
+<div class="section" id="ticket-search-page">
+<h3>ticket_search_page()<a class="headerlink" href="#ticket-search-page" title="Permalink to this headline">¶</a></h3>
+<p>This function is used to search for flights meeting a certain criteria which is given by the user.  If the function is called using the method “GET” then the html page “ticket_search_page.html” is rendered.  Here there are forms which ask user for the departure and arrival country and the min and max date for the flights the user wants.  Once these are submitted this function is called with the method “POST”.  If the method is “POST” then the function request the forms and checks if the forms are empty.  If the forms are empty and error message is flashed and the html page is rendered again.  If the forms are valid then an sql code is set as the variable “command”.  This sql code find the departure_date, arrival_date, time_hours (flight time) and route_name columns for the criteria inputted by the user.  Or in other words it finds valid flights and information that meets the users criteria.  This code is executed using execute_sql() and the result is saved to the variable ‘data’.  If no results meeting the user criteria are found (data = -2) then an error message is flashed and ticket_search_page.html is rendered again.  If there are results then the variable data is stored in the session ‘ticket_search’ and the ids of the flights we found are stored in the session ‘id_values’.  Then the page ticket_view_page is called.
+(Members Ahmed and Bulut implemented this part together with equal amount of work done)</p>
+</div>
+<div class="section" id="ticket-view-page">
+<h3>ticket_view_page()<a class="headerlink" href="#ticket-view-page" title="Permalink to this headline">¶</a></h3>
+<p>return redirect(url_for(“ticket_buy_page”)) #send url parameter</p>
+<p>This page is used to view and select flight that have been searched by the user.  In this function if the method is “GET” then the function gets the information from the sessions ‘ticket_search’ and ‘id_values’ and stores them in the variables ‘data’ and ‘ids’ respectively.  Then pops the sessions: ‘ticket_search’, ‘ticket_buy_info’ and ‘id_values’.  Then the html page ‘ticket_view_page.html’ is rendered using with the parameters ‘ids’ and ‘data’.  This html page shows the flight ids and has a drop-down selection form for these flight ids.  This page also has a checkbox where the user can click to view detailed information about the flight they are selecting. After submitting this form this function is called with the method “POST”.  If the method is “POST” then the function request the forms and sets the sessions ‘ticket_buy_flight_id’ as the selected flight id and ‘ticket_buy_info’ as true or false depending on whether the checkbox in the form was selected or not.  Then the page for ticket_buy_page is called.
+(Members Ahmed and Bulut implemented this part together with equal amount of work done)</p>
+</div>
+<div class="section" id="ticket-buy-page">
+<h3>ticket_buy_page()<a class="headerlink" href="#ticket-buy-page" title="Permalink to this headline">¶</a></h3>
+<p>This page is used to view information about a flight and purchase a ticket for this flight.  The sessions ‘ticket_buy_flight_id’ and ’ticket_buy_info’ is saved as the variables flight_id and show_info respectively.  Then a sql query that gets relevant flight info is executed using execute_sql() and saved to the variable ‘data’.  And another sql command that gets file_data (the image) from the table STAFF is executed and the result saved to the variable ‘file_data’, however since image uploading is not implemented this part is irrelevant.  Then depending on the variable show_info either the html page “ticket_buy_page.html” or “ticket_buy_page_noinfo.html” in rendered.  These pages contain some information about the flight and a form for purchasing a ticket.  After submitting the form then this function is called with the method “POST”.  If the method is “POST” then the function first gets the current users username and sets it as the variable ‘username’.  If the user is an admin then the purchase is not done and an error message is flashed.  If the user is not an admin, then the required forms are requested and an sql command that joins the tables USERS and PASSENGERS and finds the passenger_id of the current user using the username is executed using execute_sql().  The result is saved as the variable “data”.  The passenger_id is taken from the variable ‘data’ and saved as passenger_id, the variable purchase_time is set as the current time, the variable seat is randomly set and the fare is calculated using the variable class_of_seat, which was requested from the form.  Using these variables an sql insertion command is made to insert a row into the table BOOKINGS and executed using execute_sql().  Then the message “Ticket bought” is flashed on screen and the page for home page is called.
+(Members Ahmed and Bulut implemented this part together with equal amount of work done)</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="bulut.html" class="btn btn-neutral float-right" title="Parts Implemented by Kadir Bulut Ozler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Developer Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, ITUCSDB1805
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
