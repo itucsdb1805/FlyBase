@@ -1,17 +1,16 @@
-Welcome to itucsdbNN's documentation!
+Welcome to itucsdb05's documentation!
 =====================================
 
-:Team: Team Name
+:Team: ITUCSDB1805 - FLYSYS
 
 :Members:
 
-   * Member 1
-   * Member 2
-   * Member 3
-   * Member 4
-   * Member 5
+   * Ahmed Burak Gulhan
+   * Kadir Bulut Ozler
 
-**project description goes here (a few paragraphs)**
+
+**FLYSYS: the website where you'd like to buy your next flight ticket**
+
 
 Contents:
 
