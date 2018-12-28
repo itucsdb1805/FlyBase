@@ -4,9 +4,9 @@ Developer Guide
 Database Design
 ---------------
 
-**explain the database design of your project**
+.. figure:: tables_diagram.jpg
 
-**include the E/R diagram(s)**
+Here is the database diagram. 
 
 Code
 ----
@@ -24,8 +24,6 @@ Code
 
 .. toctree::
 
-   member1
-   member2
-   member3
-   member4
-   member5
+   Ahmed
+   Bulut
+
