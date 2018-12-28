@@ -78,6 +78,6 @@ Users table contains users of the website
 
 .. toctree::
 
-   Ahmed
-   Bulut
+   ahmed
+   bulut
 
